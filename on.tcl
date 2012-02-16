@@ -28,16 +28,8 @@ proc unknown {args} {
 
     foreach expectation $expectations {
 
-      set section  0
-      foreach word $expectation {
-        if {$section == 0 && $word ne "return"} {
-          lappend proccall $word
-        } elseif {$section == 0 && $word eq "return"} {
-          set section 1
-        } else {
-          set procreturn $word
-        }
-      }
+      set proccall [lrange $expectation 0 end-2]
+      set procreturn [lindex $expectation end]
 
       if { $proccall == $args} {
         puts "Returning value $procreturn for $proccall"
@@ -51,7 +43,6 @@ proc unknown {args} {
 
   }
 
-  
   uplevel ::tcl::unknown $args
 }
 
