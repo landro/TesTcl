@@ -13,7 +13,12 @@ proc assertNumber {expected actual} {
 }
 
 proc on {args} {
-  puts "on called with the following [llength $args] arguments: $args"
+  
+  global debugOn
+  
+  if {[info exists debugOn] == 1} {
+    puts "on called with the following [llength $args] arguments: $args"
+  }  
   
   global expectations
   lappend expectations $args
@@ -22,6 +27,7 @@ proc on {args} {
 
 proc unknown {args} {
 
+  global debugOn
   global expectations
 
   if { [info exists expectations] == 1} {
@@ -32,7 +38,9 @@ proc unknown {args} {
       set procreturn [lindex $expectation end]
 
       if { $proccall == $args} {
-        puts "Returning value $procreturn for $proccall"
+        if {[info exists debugOn] == 1} {
+          puts "Returning value $procreturn for $proccall"
+        }
         return $procreturn
       } else {
         set proccall [list]

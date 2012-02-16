@@ -1,5 +1,7 @@
 source tclprocmock/on.tcl
 
+set debugOn true
+
 on add 2 2 return 4
 on add 2 3 return 5
 on add {2 3 2} return 7
