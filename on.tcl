@@ -33,7 +33,19 @@ proc unknown {args} {
   if { [info exists expectations] == 1} {
 
     foreach expectation $expectations {
-
+      
+      switch -regexp [lindex $expectation end-1] {
+        return {
+          puts "return found"
+        }
+        {^error$} {
+           puts "error found"
+        }
+        default {
+          puts "default found"
+        }
+      }
+      
       set proccall [lrange $expectation 0 end-2]
       set procreturn [lindex $expectation end]
 
