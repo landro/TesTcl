@@ -35,7 +35,7 @@ proc unknown {args} {
     foreach expectation $expectations {
       
       switch -regexp [lindex $expectation end-1] {
-        return {
+        {^return$} {
           puts "return found"
         }
         {^error$} {
