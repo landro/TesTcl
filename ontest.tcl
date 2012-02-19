@@ -8,8 +8,8 @@ on add {2 3 2} return 7
 on substract 2 1 return 1
 on add {{item 1} {item 2} {item 3}} return 3
 
-assertNumber [add 2 2] 4
-assertNumber [add 2 3] 5
-assertNumber [add {2 3 2}] 7
-assertNumber [substract 2 1] 1
-assertNumber [add [split "item 1.item 2.item 3" "."]] 3
+assertNumber 4 [add 2 2]
+assertNumber 5 [add 2 3]
+assertNumber 7 [add {2 3 2}]
+assertNumber 1 [substract 2 1]
+assertNumber 3 [add [split "item 1.item 2.item 3" "."]]

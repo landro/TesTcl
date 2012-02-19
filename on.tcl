@@ -16,7 +16,7 @@ proc on {args} {
   
   global debugOn
   
-  if {[info exists debugOn] == 1} {
+  if { [info exists debugOn] } {
     puts "on called with the following [llength $args] arguments: $args"
   }  
   
@@ -30,34 +30,36 @@ proc unknown {args} {
   global debugOn
   global expectations
 
-  if { [info exists expectations] == 1} {
+  if { [info exists expectations] } {
 
     foreach expectation $expectations {
-      
-      switch -regexp [lindex $expectation end-1] {
-        {^return$} {
-          puts "return found"
-        }
-        {^error$} {
-           puts "error found"
-        }
-        default {
-          puts "default found"
-        }
-      }
-      
+
       set proccall [lrange $expectation 0 end-2]
-      set procreturn [lindex $expectation end]
+      set procresult [lindex $expectation end]
 
       if { $proccall == $args} {
-        if {[info exists debugOn] == 1} {
-          puts "Returning value $procreturn for $proccall"
+        switch -regexp [lindex $expectation end-1] {
+          {^return$} {
+              if {[info exists debugOn] } {
+                puts "Returning value $procresult for $proccall"
+              }
+              return $procresult
+          }
+          {^error$} {
+              if {[info exists debugOn] } {
+                puts "Generate error $procresult for $proccall"
+              }
+              error $procresult
+          }
+          {^end$} {
+            puts "end found"
+          }
+          default {
+            error "Invalid expectation - expected one of return, error or end."
+          }
         }
-        return $procreturn
-      } else {
-        set proccall [list]
-        set procreturn [list]
       }
+      
 
     }
 
