@@ -40,19 +40,22 @@ proc unknown {args} {
       if { $proccall == $args} {
         switch -regexp [lindex $expectation end-1] {
           {^return$} {
-              if {[info exists debugOn] } {
-                puts "Returning value $procresult for $proccall"
-              }
-              return $procresult
+            if {[info exists debugOn] } {
+              puts "Returning value '$procresult' for '$proccall'"
+            }
+            return $procresult
           }
           {^error$} {
-              if {[info exists debugOn] } {
-                puts "Generate error $procresult for $proccall"
-              }
-              error $procresult
+            if {[info exists debugOn] } {
+              puts "Generate error '$procresult' for '$proccall'"
+            }
+            error $procresult
           }
           {^end$} {
-            puts "end found"
+            if {[info exists debugOn] } {
+              puts "Hitting end state '$proccall'"
+            }
+            error $proccall $proccall { END_STATE $proccall }
           }
           default {
             error "Invalid expectation - expected one of return, error or end."
@@ -60,7 +63,6 @@ proc unknown {args} {
         }
       }
       
-
     }
 
   }
