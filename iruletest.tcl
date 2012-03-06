@@ -4,6 +4,7 @@ source tclprocmock/onirule.tcl
 set debugOn true
 
 on HTTP::uri return "/foo/admin"
-on pool foo end "whatever"
+
+endstate pool bar
 
 source tclprocmock/irule.tcl

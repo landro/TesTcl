@@ -25,8 +25,13 @@ proc on {args} {
   
 }
 
-proc endstate {} {
-  return "pool foobar"
+proc endstate {args} {
+  global expectedEndState
+  # TODO add more
+  if { [llength $args] == 2 } {
+    on [lindex $args 0] [lindex $args 1] end endstate
+    set expectedEndState $args
+  }
 }
 
 proc unknown {args} {
@@ -59,8 +64,7 @@ proc unknown {args} {
             if {[info exists debugOn] } {
               puts "Hitting end state '$proccall'"
             }
-            #error $proccall $proccall { END_STATE $proccall }
-            return -code return $proccall
+            return -code 1000 $proccall
           }
           default {
             error "Invalid expectation - expected one of return, error or end."
@@ -72,7 +76,7 @@ proc unknown {args} {
 
   }
 
-  #error "Unexpected unknown command invocation '$args'"
-  uplevel ::tcl::unknown $args
+  error "Unexpected unknown command invocation '$args'"
+  #uplevel ::tcl::unknown $args
 }
 
