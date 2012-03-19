@@ -2,13 +2,13 @@ rename unknown ::tcl::unknown
 
 proc assertString {expected actual} {
   if {$expected ne $actual} {
-    error "Expected $expected, got $actual"
+    error "Expected '$expected', got '$actual'"
   }
 }
 
 proc assertNumber {expected actual} {
   if {$expected != $actual} {
-    error "Expected $expected, got $actual"
+    error "Expected '$expected', got '$actual'"
   }
 }
 
