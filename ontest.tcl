@@ -1,4 +1,4 @@
-source tclprocmock/on.tcl
+source on.tcl
 
 set debugOn true
 

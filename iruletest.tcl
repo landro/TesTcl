@@ -1,5 +1,5 @@
-source tclprocmock/on.tcl
-source tclprocmock/onirule.tcl
+source on.tcl
+source onirule.tcl
 
 set debugOn true
 
@@ -9,7 +9,7 @@ on HTTP::uri return "/foo/admin"
 
 endstate pool foo
 
-set rc [catch {source tclprocmock/irule.tcl} result]
+set rc [catch {source irule.tcl} result]
 
 assertString "rule irule" $result
 assertNumber 0 $rc
