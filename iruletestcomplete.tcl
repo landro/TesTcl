@@ -2,7 +2,7 @@ source on.tcl
 source onirule.tcl
 source it.tcl
 
-#set debugOn true
+set debugOn true
 
 it "should handle request using pool bar" {
 

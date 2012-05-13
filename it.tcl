@@ -1,20 +1,28 @@
+source logging.tcl
+
 set nbOfTestFailures 0
 
-proc it {description body} {
-  
-  # Clear out expectations
+proc reset_expectations { } {
   global expectations
   if { [info exists expectations] } {
-    puts "Reset expectations"
+    log_debug "Reset expectations"
     unset expectations
   }
   global expectedEndState
   if { [info exists expectedEndState] } {
-    puts "Reset end state"
+    log_debug "Reset end state"
     unset expectedEndState
   }
+}
+
+
+proc it {description body} {
+
+  reset_expectations
+  
+  puts "**************************************************************************"
   puts "* it $description"
-  puts "************************"
+  puts "**************************************************************************"
   global nbOfTestFailures
   set rc [catch $body result]
   
