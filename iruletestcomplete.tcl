@@ -1,22 +1,8 @@
 source on.tcl
 source onirule.tcl
+source it.tcl
 
-set debugOn true
-
-set nbOfTestFailures 0
-
-proc it {description body} {
-  global nbOfTestFailures
-  set rc [catch $body result]
-  
-  if {$rc != 0 } {
-    puts "Test failure"
-    incr $nbOfTestFailures
-  } else {
-    puts "Test ok"
-  }
-  
-}
+#set debugOn true
 
 it "should handle request using pool bar" {
 
