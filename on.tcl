@@ -1,3 +1,5 @@
+source logging.tcl
+
 rename unknown ::tcl::unknown
 
 proc assertString {expected actual} {
@@ -14,11 +16,7 @@ proc assertNumber {expected actual} {
 
 proc on {args} {
   
-  global debugOn
-  
-  if { [info exists debugOn] } {
-    puts "on called with the following [llength $args] arguments: $args"
-  }  
+  log_info "on called with the following [llength $args] arguments: $args"
   
   global expectations
   lappend expectations $args

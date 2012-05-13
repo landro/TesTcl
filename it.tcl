@@ -23,6 +23,7 @@ proc it {description body} {
   puts "**************************************************************************"
   puts "* it $description"
   puts "**************************************************************************"
+  
   global nbOfTestFailures
   set rc [catch $body result]
   
