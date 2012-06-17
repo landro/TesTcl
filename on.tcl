@@ -1,6 +1,4 @@
-source logging.tcl
-
-rename unknown ::tcl::unknown
+package require log
 
 proc assertString {expected actual} {
   if {$expected ne $actual} {
@@ -15,9 +13,7 @@ proc assertNumber {expected actual} {
 }
 
 proc on {args} {
-  
-  log_info "on called with the following [llength $args] arguments: $args"
-  
+  log::log debug "on called with the following [llength $args] arguments: $args"
   global expectations
   lappend expectations $args
   
@@ -32,9 +28,10 @@ proc endstate {args} {
   }
 }
 
+rename unknown ::tcl::unknown
+
 proc unknown {args} {
 
-  global debugOn
   global expectations
 
   if { [info exists expectations] } {
@@ -47,21 +44,15 @@ proc unknown {args} {
       if { $proccall == $args} {
         switch -regexp [lindex $expectation end-1] {
           {^return$} {
-            if {[info exists debugOn] } {
-              puts "Returning value '$procresult' for '$proccall'"
-            }
+            log::log info "Returning value '$procresult' for '$proccall'"
             return $procresult
           }
           {^error$} {
-            if {[info exists debugOn] } {
-              puts "Generate error '$procresult' for '$proccall'"
-            }
+            log::log info "Generate error '$procresult' for '$proccall'"
             error $procresult
           }
           {^end$} {
-            if {[info exists debugOn] } {
-              puts "Hitting end state '$proccall'"
-            }
+            log::log info "Hitting end state '$proccall'"
             return -code 1000 $proccall
           }
           default {
@@ -75,6 +66,7 @@ proc unknown {args} {
   }
 
   error "Unexpected unknown command invocation '$args'"
+  # TODO?
   #uplevel ::tcl::unknown $args
 }
 

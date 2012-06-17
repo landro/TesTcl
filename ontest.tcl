@@ -1,6 +1,7 @@
 source on.tcl
 
-set debugOn true
+# Comment out to suppress logging
+log::lvSuppressLE info 0
 
 on add 2 2 return 4
 on add 2 3 return 5
