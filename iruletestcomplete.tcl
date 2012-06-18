@@ -2,7 +2,8 @@ source on.tcl
 source onirule.tcl
 source it.tcl
 
-set debugOn true
+# Comment out to suppress logging
+log::lvSuppressLE info 0
 
 it "should handle request using pool bar" {
 

@@ -1,7 +1,8 @@
 source on.tcl
 source onirule.tcl
 
-set debugOn true
+# Comment out to suppress logging
+log::lvSuppressLE info 0
 
 event HTTP_RESPONSE
 
