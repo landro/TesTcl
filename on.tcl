@@ -1,13 +1,19 @@
 package require log
 
-proc on {args} {
+namespace eval ::testcl {
+  namespace export on 
+  namespace export endstate
+  namespace export unknown
+}
+
+proc ::testcl::on {args} {
   log::log debug "on called with the following [llength $args] arguments: $args"
   global expectations
   lappend expectations $args
   
 }
 
-proc endstate {args} {
+proc ::testcl::endstate {args} {
   global expectedEndState
   # TODO add more
   if { [llength $args] == 2 } {
@@ -18,7 +24,7 @@ proc endstate {args} {
 
 rename unknown ::tcl::unknown
 
-proc unknown {args} {
+proc ::testcl::unknown {args} {
 
   global expectations
 
@@ -32,11 +38,11 @@ proc unknown {args} {
       if { $proccall == $args} {
         switch -regexp [lindex $expectation end-1] {
           {^return$} {
-            log::log info "Returning value '$procresult' for '$proccall'"
+            log::log info "Returning value '$procresult' for procedure call '$proccall'"
             return $procresult
           }
           {^error$} {
-            log::log info "Generate error '$procresult' for '$proccall'"
+            log::log info "Generate error '$procresult' for procedure call'$proccall'"
             error $procresult
           }
           {^end$} {

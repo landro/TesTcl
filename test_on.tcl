@@ -1,5 +1,7 @@
 source on.tcl
 source assert.tcl
+namespace import ::testcl::on
+namespace import ::testcl::unknown
 
 # Comment out to suppress logging
 log::lvSuppressLE info 0
