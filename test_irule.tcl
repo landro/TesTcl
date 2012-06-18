@@ -1,4 +1,5 @@
 source on.tcl
+source assert.tcl
 source onirule.tcl
 
 # Comment out to suppress logging

@@ -1,4 +1,5 @@
 source on.tcl
+source assert.tcl
 
 # Comment out to suppress logging
 log::lvSuppressLE info 0

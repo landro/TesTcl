@@ -1,17 +1,5 @@
 package require log
 
-proc assertString {expected actual} {
-  if {$expected ne $actual} {
-    error "Expected '$expected', got '$actual'"
-  }
-}
-
-proc assertNumber {expected actual} {
-  if {$expected != $actual} {
-    error "Expected '$expected', got '$actual'"
-  }
-}
-
 proc on {args} {
   log::log debug "on called with the following [llength $args] arguments: $args"
   global expectations

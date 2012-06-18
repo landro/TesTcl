@@ -1,4 +1,5 @@
 source on.tcl
+source assert.tcl
 source onirule.tcl
 source it.tcl
 
