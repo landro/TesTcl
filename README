@@ -1,6 +1,6 @@
-OnTCL
+TesTCL
 
-OnTCL is a mock oriented TCL test framework which was developed in order to unit test iRules which are used in configuring F5 BigIP devices. 
+TesTCL is a mock oriented TCL test framework which was developed in order to unit test iRules which are used when configuring F5 BigIP devices. 
 
 In particular, the goal of this framework is to be able to unit test iRules used when load balancing HTTP traffic.
 
