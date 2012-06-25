@@ -29,6 +29,8 @@ proc it {description body} {
   
   if {$rc != 0 } {
     puts "-> Test failure!!"
+    puts "-> -> $result"
+    log::log error $result 
     incr $nbOfTestFailures
   } else {
     puts "-> Test ok"

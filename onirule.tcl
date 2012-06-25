@@ -1,5 +1,7 @@
 package require log
 
+# Override of irule commands
+
 proc rule {ruleName body} {
   log::log debug "rule $ruleName invoked"
   set rc [catch $body result]
@@ -37,6 +39,10 @@ proc when {event body} {
   }
 
 }
+
+# Extensions
+
+# Command used to signal type of event
 
 proc event {event_type} {
   global expectedEvent

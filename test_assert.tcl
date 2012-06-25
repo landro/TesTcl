@@ -1,4 +1,6 @@
 source assert.tcl
+namespace import ::testcl::assertNumber
+namespace import ::testcl::assertString
 
 # Comment out to suppress logging
 log::lvSuppressLE info 0
