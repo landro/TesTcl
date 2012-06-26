@@ -1,8 +1,14 @@
 package require log
 
+namespace eval ::testcl {
+  namespace export rule
+  namespace export when
+  namespace export event
+}
+
 # Override of irule commands
 
-proc rule {ruleName body} {
+proc ::testcl::rule {ruleName body} {
   log::log debug "rule $ruleName invoked"
   set rc [catch $body result]
   log::log info "rule $ruleName finished, return code: $rc  result: $result"
@@ -15,7 +21,7 @@ proc rule {ruleName body} {
   
 }
 
-proc when {event body} {
+proc ::testcl::when {event body} {
 
   global expectedEvent
 
@@ -44,7 +50,7 @@ proc when {event body} {
 
 # Command used to signal type of event
 
-proc event {event_type} {
+proc ::testcl::event {event_type} {
   global expectedEvent
   if {$event_type eq "HTTP_REQUEST" || $event_type eq "HTTP_RESPONSE"} {
     set expectedEvent $event_type
