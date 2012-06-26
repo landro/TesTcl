@@ -1,14 +1,7 @@
 source on.tcl
 source assert.tcl
 source onirule.tcl
-namespace import ::testcl::on
-namespace import ::testcl::unknown
-namespace import ::testcl::endstate
-namespace import ::testcl::event
-namespace import ::testcl::when
-namespace import ::testcl::rule
-namespace import ::testcl::assertStringEquals
-namespace import ::testcl::assertNumberEquals
+namespace import ::testcl::*
 
 # Comment out to suppress logging
 log::lvSuppressLE info 0

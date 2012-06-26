@@ -1,6 +1,5 @@
 source assert.tcl
-namespace import ::testcl::assertNumberEquals
-namespace import ::testcl::assertStringEquals
+namespace import ::testcl::*
 
 # Comment out to suppress logging
 log::lvSuppressLE info 0
