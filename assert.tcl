@@ -17,7 +17,7 @@ namespace eval ::testcl {
 # None.
 #
 # Results:
-# Returns error if values don't match
+# Throws error if values don't match
 proc ::testcl::assertStringEquals {expected actual} {
   log::log debug "Expecting '$expected', got actual '$actual'"
   if {$expected ne $actual} {
@@ -25,6 +25,19 @@ proc ::testcl::assertStringEquals {expected actual} {
   }
 }
 
+# testcl::assertNumberEquals --
+#
+# Asserts that actual numeric value matches expected numeric value
+#
+# Arguments:
+# expected The expected numeric value
+# actual The actual numeric value
+#
+# Side Effects:
+# None.
+#
+# Results:
+# Throws error if values don't match
 proc ::testcl::assertNumberEquals {expected actual} {
   log::log debug "Expecting '$expected', got actual '$actual'"
   if {$expected != $actual} {
