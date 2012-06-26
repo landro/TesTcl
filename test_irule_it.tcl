@@ -5,8 +5,8 @@ source it.tcl
 namespace import ::testcl::on
 namespace import ::testcl::unknown
 namespace import ::testcl::endstate
-namespace import ::testcl::assertString
-namespace import ::testcl::assertNumber
+namespace import ::testcl::assertStringEquals
+namespace import ::testcl::assertNumberEquals
 
 # Comment out to suppress logging
 log::lvSuppressLE info 0
@@ -21,8 +21,8 @@ it "should handle request using pool bar" {
   
   set rc [catch {source irule.tcl} result]
   
-  assertString "rule irule" $result
-  assertNumber 0 $rc
+  assertStringEquals "rule irule" $result
+  assertNumberEquals 0 $rc
   
 }
 
@@ -36,7 +36,7 @@ it "should handle request using pool foo" {
   
   set rc [catch {source irule.tcl} result]
   
-  assertString "rule irule" $result
-  assertNumber 0 $rc
+  assertStringEquals "rule irule" $result
+  assertNumberEquals 0 $rc
   
 }

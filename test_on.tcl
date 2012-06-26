@@ -2,7 +2,7 @@ source on.tcl
 source assert.tcl
 namespace import ::testcl::on
 namespace import ::testcl::unknown
-namespace import ::testcl::assertNumber
+namespace import ::testcl::assertNumberEquals
 
 # Comment out to suppress logging
 log::lvSuppressLE info 0
@@ -13,8 +13,8 @@ on add {2 3 2} return 7
 on substract 2 1 return 1
 on add {{item 1} {item 2} {item 3}} return 3
 
-assertNumber 4 [add 2 2]
-assertNumber 5 [add 2 3]
-assertNumber 7 [add {2 3 2}]
-assertNumber 1 [substract 2 1]
-assertNumber 3 [add [split "item 1.item 2.item 3" "."]]
+assertNumberEquals 4 [add 2 2]
+assertNumberEquals 5 [add 2 3]
+assertNumberEquals 7 [add {2 3 2}]
+assertNumberEquals 1 [substract 2 1]
+assertNumberEquals 3 [add [split "item 1.item 2.item 3" "."]]

@@ -1,11 +1,11 @@
 package require log
 
 namespace eval ::testcl {
-  namespace export assertString
-  namespace export assertNumber
+  namespace export assertStringEquals
+  namespace export assertNumberEquals
 }
 
-# testcl::assertString --
+# testcl::assertStringEquals --
 #
 # Asserts that actual string value matches expected string value
 #
@@ -18,14 +18,14 @@ namespace eval ::testcl {
 #
 # Results:
 # Returns error if values don't match
-proc ::testcl::assertString {expected actual} {
+proc ::testcl::assertStringEquals {expected actual} {
   log::log debug "Expecting '$expected', got actual '$actual'"
   if {$expected ne $actual} {
     error "Expected '$expected', got '$actual'"
   }
 }
 
-proc ::testcl::assertNumber {expected actual} {
+proc ::testcl::assertNumberEquals {expected actual} {
   log::log debug "Expecting '$expected', got actual '$actual'"
   if {$expected != $actual} {
     error "Expected '$expected', got '$actual'"
