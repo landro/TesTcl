@@ -8,6 +8,7 @@ namespace import ::testcl::endstate
 namespace import ::testcl::event
 namespace import ::testcl::when
 namespace import ::testcl::rule
+namespace import ::testcl::it
 namespace import ::testcl::assertStringEquals
 namespace import ::testcl::assertNumberEquals
 

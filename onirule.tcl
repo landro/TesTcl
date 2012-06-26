@@ -1,6 +1,7 @@
 package require log
 
 namespace eval ::testcl {
+  variable expectedEvent
   namespace export rule
   namespace export when
   namespace export event
@@ -23,7 +24,7 @@ proc ::testcl::rule {ruleName body} {
 
 proc ::testcl::when {event body} {
 
-  global expectedEvent
+  variable expectedEvent
 
   if {[info exists expectedEvent] && $event eq $expectedEvent} {
     log::log debug "when invoked with expected event '$event'"
@@ -34,7 +35,7 @@ proc ::testcl::when {event body} {
       error "Expected end state with return code 1000, got $rc"
     }
     
-    global expectedEndState
+    variable expectedEndState
     
     if {$result ne $expectedEndState} {
       error "Expected end state $expectedEndState, got $result"
@@ -51,7 +52,7 @@ proc ::testcl::when {event body} {
 # Command used to signal type of event
 
 proc ::testcl::event {event_type} {
-  global expectedEvent
+  variable expectedEvent
   if {$event_type eq "HTTP_REQUEST" || $event_type eq "HTTP_RESPONSE"} {
     set expectedEvent $event_type
   } else {

@@ -3,7 +3,7 @@ package require log
 namespace eval ::testcl {
   variable expectations {}
   variable expectedEndState
-  namespace export on 
+  namespace export on
   namespace export endstate
   namespace export unknown
 }

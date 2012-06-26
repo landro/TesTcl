@@ -1,14 +1,17 @@
 package require log
 
-set nbOfTestFailures 0
+namespace eval ::testcl {
+  variable nbOfTestFailures 0
+  namespace export it
+}
 
-proc reset_expectations { } {
-  global expectations
+proc ::testcl::reset_expectations { } {
+  variable expectations
   if { [info exists expectations] } {
     log::log debug "Reset expectations"
     unset expectations
   }
-  global expectedEndState
+  variable expectedEndState
   if { [info exists expectedEndState] } {
     log::log debug "Reset end state"
     unset expectedEndState
@@ -16,15 +19,15 @@ proc reset_expectations { } {
 }
 
 
-proc it {description body} {
+proc ::testcl::it {description body} {
 
-  reset_expectations
+  ::testcl::reset_expectations
   
   puts "\n**************************************************************************"
   puts "* it $description"
   puts "**************************************************************************"
   
-  global nbOfTestFailures
+  variable nbOfTestFailures
   set rc [catch $body result]
   
   if {$rc != 0 } {
