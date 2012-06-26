@@ -1,6 +1,8 @@
 package require log
 
 namespace eval ::testcl {
+  variable expectations {}
+  variable expectedEndState
   namespace export on 
   namespace export endstate
   namespace export unknown
@@ -8,13 +10,13 @@ namespace eval ::testcl {
 
 proc ::testcl::on {args} {
   log::log debug "on called with the following [llength $args] arguments: $args"
-  global expectations
+  variable expectations
   lappend expectations $args
   
 }
 
 proc ::testcl::endstate {args} {
-  global expectedEndState
+  variable expectedEndState
   # TODO add more
   if { [llength $args] == 2 } {
     on [lindex $args 0] [lindex $args 1] end endstate
@@ -26,9 +28,9 @@ rename unknown ::tcl::unknown
 
 proc ::testcl::unknown {args} {
 
-  global expectations
+  variable expectations
 
-  if { [info exists expectations] } {
+  if { [llength $expectations] > 0 } {
 
     foreach expectation $expectations {
 
