@@ -42,6 +42,7 @@ proc ::testcl::when {event body} {
     }
     return -code 2000 "when $event"
   } else {
+    log::log error "when not invoked due to missing expected event"
     error "when not invoked due to missing expected event"
   }
 

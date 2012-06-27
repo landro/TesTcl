@@ -10,7 +10,7 @@ event HTTP_RESPONSE
 
 # TODO fails 
 
-set rc [catch {source irule.tcl} result]
+set rc [catch {source simple_irule.tcl} result]
 
 assertStringEquals "rule irule" $result
 assertNumberEquals 0 $rc

@@ -61,6 +61,7 @@ proc ::testcl::unknown {args} {
 
   }
 
+  log::log error "Unexpected unknown command invocation '$args'"
   error "Unexpected unknown command invocation '$args'"
   # TODO?
   #uplevel ::tcl::unknown $args
