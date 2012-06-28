@@ -16,6 +16,11 @@ proc ::testcl::reset_expectations { } {
     log::log debug "Reset end state"
     unset expectedEndState
   }
+  variable expectedEvent
+  if { [info exists expectedEvent] } {
+    log::log debug "Reset expected event"
+    unset expectedEvent
+  }
 }
 
 
