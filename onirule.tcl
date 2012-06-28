@@ -63,6 +63,20 @@ proc ::testcl::event {event_type} {
   }
 }
 
+# testcl::run --
+#
+# Run irule
+#
+# Arguments:
+# irule the file containing the irule
+# rc return code
+# result string "rule <rulename>", where <rulename> is the actual name of the irule
+#
+# Side Effects:
+# rc and result variables are modified
+#
+# Results:
+# none
 proc ::testcl::run {irule rc result} {
   log::log info "Running irule $irule"
   upvar $rc rc_ref
