@@ -12,7 +12,7 @@ on HTTP::uri return "/foo/admin"
 
 endstate pool foo
 
-set rc [catch {source simple_irule.tcl} result]
+run simple_irule.tcl rc result
 
 assertStringEquals "rule irule" $result
 assertNumberEquals 0 $rc

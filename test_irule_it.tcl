@@ -15,7 +15,7 @@ it "should handle request using pool bar" {
   
   endstate pool bar
   
-  set rc [catch {source simple_irule.tcl} result]
+  run simple_irule.tcl rc result
   
   assertStringEquals "rule irule" $result
   assertNumberEquals 0 $rc
@@ -30,7 +30,7 @@ it "should handle request using pool foo" {
   
   endstate pool foo
   
-  set rc [catch {source irule.tcl} result]
+  run simple_irule.tcl rc result
   
   assertStringEquals "rule irule" $result
   assertNumberEquals 0 $rc

@@ -5,6 +5,7 @@ namespace eval ::testcl {
   namespace export rule
   namespace export when
   namespace export event
+  namespace export run
 }
 
 # Override of irule commands
@@ -57,6 +58,14 @@ proc ::testcl::event {event_type} {
   if {$event_type eq "HTTP_REQUEST" || $event_type eq "HTTP_RESPONSE"} {
     set expectedEvent $event_type
   } else {
+    log::log error "Usupported event: $event_type. Supported events are HTTP_REQUEST and HTTP_RESPONSE"
     error "Usupported event: $event_type. Supported events are HTTP_REQUEST and HTTP_RESPONSE"
   }
+}
+
+proc ::testcl::run {irule rc result} {
+  log::log info "Running irule $irule"
+  upvar $rc rc_ref
+  upvar $result result_ref
+  set rc_ref [catch {source $irule} result_ref]
 }
