@@ -28,6 +28,7 @@ rename unknown ::tcl::unknown
 
 proc ::testcl::unknown {args} {
 
+  log::log debug "unknown called with args: $args"
   variable expectations
 
   if { [llength $expectations] > 0 } {
