@@ -9,7 +9,7 @@ proc ::testcl::reset_expectations { } {
   variable expectations
   if { [info exists expectations] } {
     log::log debug "Reset expectations"
-    unset expectations
+    set expectations {}
   }
   variable expectedEndState
   if { [info exists expectedEndState] } {
