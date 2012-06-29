@@ -16,12 +16,22 @@ proc ::testcl::on {args} {
 }
 
 proc ::testcl::endstate {args} {
+  log::log debug "endstate called with args: $args"
   variable expectedEndState
-  # TODO add more
   if { [llength $args] == 2 } {
     on [lindex $args 0] [lindex $args 1] end endstate
-    set expectedEndState $args
+  } elseif { [llength $args] == 3 } {
+    on [lindex $args 0] [lindex $args 1] [lindex $args 2] end endstate
+  } elseif { [llength $args] == 4 } {
+    on [lindex $args 0] [lindex $args 1] [lindex $args 2] [lindex $args 3] end endstate
+  } elseif { [llength $args] == 5 } {
+    on [lindex $args 0] [lindex $args 1] [lindex $args 2] [lindex $args 3] [lindex $args 4] end endstate
+  } else {
+    set errorMessage "Too many ([llength $args]) arguments for edstate: '$args'"
+    log::log error $errorMessage
+    error $errorMessage
   }
+  set expectedEndState $args
 }
 
 rename unknown ::tcl::unknown
@@ -61,9 +71,9 @@ proc ::testcl::unknown {args} {
     }
 
   }
-
-  log::log error "Unexpected unknown command invocation '$args'"
-  error "Unexpected unknown command invocation '$args'"
+  set errorMessage "Unexpected unknown command invocation '$args'"
+  log::log error $errorMessage
+  error $errorMessage
   # TODO?
   #uplevel ::tcl::unknown $args
 }
