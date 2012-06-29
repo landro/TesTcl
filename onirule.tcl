@@ -69,17 +69,16 @@ proc ::testcl::event {event_type} {
 #
 # Arguments:
 # irule the file containing the irule
-# rc return code
-# result string "rule <rulename>", where <rulename> is the actual name of the irule
+# rulename the name of the rule
 #
 # Side Effects:
-# rc and result variables are modified
+# none
 #
 # Results:
 # none
-proc ::testcl::run {irule rc result} {
+proc ::testcl::run {irule rulename} {
   log::log info "Running irule $irule"
-  upvar $rc rc_ref
-  upvar $result result_ref
-  set rc_ref [catch {source $irule} result_ref]
+  set rc [catch {source $irule} result]
+  testcl::assertNumberEquals 0 $rc
+  testcl::assertStringEquals "rule $rulename" $result
 }

@@ -12,7 +12,4 @@ on HTTP::uri return "/bar"
 
 endstate pool bar
 
-run simple_irule.tcl rc result
-
-assertStringEquals "rule irule" $result
-assertNumberEquals 0 $rc
+run simple_irule.tcl simple

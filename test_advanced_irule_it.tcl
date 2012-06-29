@@ -19,10 +19,7 @@ it "should handle admin request using pool admin when credentials are valid" {
 
   endstate pool pool_admin_application
 
-  run advanced_irule.tcl rc result
-
-  assertStringEquals "rule irule" $result
-  assertNumberEquals 0 $rc
+  run advanced_irule.tcl advanced
 
 }
 
@@ -37,10 +34,7 @@ it "should ask for credentials when admin request without correct credentials" {
 
   endstate HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
 
-  run advanced_irule.tcl rc result
-
-  assertStringEquals "rule irule" $result
-  assertNumberEquals 0 $rc
+  run advanced_irule.tcl advanced
 
 }
 
@@ -53,10 +47,7 @@ it "should block access to uri /blocked" {
 
   endstate HTTP::respond 403
 
-  run advanced_irule.tcl rc result
-
-  assertStringEquals "rule irule" $result
-  assertNumberEquals 0 $rc
+  run advanced_irule.tcl advanced
 
 }
 
@@ -71,10 +62,7 @@ it "should give apache http client a correct error code when app pool is down" {
 
   endstate HTTP::respond 503
 
-  run advanced_irule.tcl rc result
-
-  assertStringEquals "rule irule" $result
-  assertNumberEquals 0 $rc
+  run advanced_irule.tcl advanced
 
 }
 
@@ -89,10 +77,7 @@ it "should give other clients then apache http client redirect to fallback when 
 
   endstate HTTP::redirect "http://fallback.com"
 
-  run advanced_irule.tcl rc result
-
-  assertStringEquals "rule irule" $result
-  assertNumberEquals 0 $rc
+  run advanced_irule.tcl advanced
 
 }
 
@@ -107,10 +92,7 @@ it "should give handle app request using app pool when app pool is up" {
 
   endstate pool pool_application
 
-  run advanced_irule.tcl rc result
-
-  assertStringEquals "rule irule" $result
-  assertNumberEquals 0 $rc
+  run advanced_irule.tcl advanced
 
 }
 
@@ -123,9 +105,6 @@ it "should give 404 when request cannot be handled" {
 
   endstate HTTP:respond 404
 
-  run advanced_irule.tcl rc result
-
-  assertStringEquals "rule irule" $result
-  assertNumberEquals 0 $rc
+  run advanced_irule.tcl advanced
 
 }

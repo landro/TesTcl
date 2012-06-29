@@ -1,4 +1,4 @@
-rule irule {
+rule advanced {
 
   when HTTP_REQUEST {
 

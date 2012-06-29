@@ -1,4 +1,4 @@
-rule irule {
+rule simple {
 
   when HTTP_REQUEST {
     #starts_with "/foo" 

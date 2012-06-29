@@ -10,16 +10,13 @@ log::lvSuppressLE info 0
 it "should handle request using pool bar" {
 
   event HTTP_REQUEST
-  
+
   on HTTP::uri return "/bar"
-  
+
   endstate pool bar
-  
-  run simple_irule.tcl rc result
-  
-  assertStringEquals "rule irule" $result
-  assertNumberEquals 0 $rc
-  
+
+  run simple_irule.tcl simple
+
 }
 
 it "should handle request using pool foo" {
@@ -30,9 +27,6 @@ it "should handle request using pool foo" {
   
   endstate pool foo
   
-  run simple_irule.tcl rc result
-  
-  assertStringEquals "rule irule" $result
-  assertNumberEquals 0 $rc
-  
+  run simple_irule.tcl simple
+
 }
