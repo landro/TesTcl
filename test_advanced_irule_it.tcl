@@ -113,3 +113,19 @@ it "should give handle app request using app pool when app pool is up" {
   assertNumberEquals 0 $rc
 
 }
+
+it "should give 404 when request cannot be handled" {
+
+  event HTTP_REQUEST
+
+  on HTTP::header insert X-Forwarded-SSL true return ""
+  on HTTP::uri return "/cannot_be_handled"
+
+  endstate HTTP:respond 404
+
+  run advanced_irule.tcl rc result
+
+  assertStringEquals "rule irule" $result
+  assertNumberEquals 0 $rc
+
+}
