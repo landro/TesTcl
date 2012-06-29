@@ -8,3 +8,10 @@ This work is still undergoing quite some development - expect breaking changes
 ## Example
 
 Have a look at _test_advanced_irule_it.tcl_ 
+
+## Todos
+
+- Some kind of describe command
+- Dsocumentation
+- Implement tcl package
+- Implement irule extensions to Tcl (operators like starts_with etc)
