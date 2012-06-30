@@ -1,4 +1,4 @@
-# TesTcl
+# Introduction
 
 **TesTcl** is a Tcl framework for testing [iRules](https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx) which 
 are used when configuring [F5 BigIP](http://www.f5.com/products/big-ip/) devices.
@@ -13,6 +13,6 @@ Have a look at _test_advanced_irule_it.tcl_
 ## Todos
 
 - Some kind of describe command
-- Dsocumentation
-- Implement tcl package
+- Implement Tcl package
+- Documentation
 - Implement irule extensions to Tcl (operators like starts_with etc)
