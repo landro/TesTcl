@@ -17,7 +17,7 @@ In order to make your system perform the best it can, you need:
 
 ## The solution
 
-Most shops test iRules [manually(http://en.wikipedia.org/wiki/Manual_testing), the procedure typically being:
+Most shops test iRules [manually](http://en.wikipedia.org/wiki/Manual_testing), the procedure typically being:
 
 - Create/edit iRule
 - Push iRule to staging/qa environment
