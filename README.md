@@ -17,14 +17,14 @@ In order to make your system perform the best it can, you need:
 
 ## The solution
 
-Most shops test iRules manually, the procedure typically being:
+Most shops test iRules **[manually(http://en.wikipedia.org/wiki/Manual_testing)**, the procedure typically being:
 
 - Create/edit iRule
 - Push iRule to staging/qa environment
-- Bring backend servers up and down as required to test fallback scenarios
--- Inspect HTTP-traffic between a browser and your application, and verify everything works as expected
+- Bring backend servers up and down **manually** as required to test fallback scenarios
+    - Inspect HTTP-traffic between a browser and your application **manually**, and verify **manually** everything works as expected
 - Push iRule to production environment
--- Verify everything works as expected 
+    - Verify **manually** everything works as expected 
 
 ## Example
 
