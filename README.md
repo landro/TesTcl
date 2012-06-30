@@ -20,11 +20,27 @@ In order to make your system perform the best it can, you need:
 Most shops test iRules [manually](http://en.wikipedia.org/wiki/Manual_testing), the procedure typically being:
 
 - Create/edit iRule
-- Push iRule to staging/qa environment
+- Add log statements that show execution path
+- Push iRule to staging/QA environment
 - Bring backend servers up and down **manually** as required to test fallback scenarios
-    - Inspect HTTP-traffic between a browser and your application **manually**, and verify **manually** everything works as expected
+- Generate HTTP-traffic using a browser and verify **manually** everything works as expected
+- Verify log entries **manually**
+- Remove or disable log statements
 - Push iRule to production environment
-    - Verify **manually** everything works as expected 
+- Verify **manually** everything works as expected 
+
+There are lots of issues with this **manual** approach:
+
+- Using log statements for testing and debugging messes up your code, and you still have to look through the logs **manually**
+- Potentially using different iRules in QA and production make automated deployment procedures harder
+- Bringing servers up and down to test fallback scenarios can be quite tedious
+- **Manual** verification steps are prone to error
+- **Manual** testing takes a lot of time
+- Development roundtrip-time is forever, since deployment to BigIP sometimes can take several minutes
+
+Clearly, **manual** testing is not the way forward!
+
+
 
 ## Example
 
