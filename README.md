@@ -13,11 +13,11 @@ In order to make your system perform the best it can, you need:
 - In-depth knowledge about the BigIP system (typically requiring at least a [$1,995 3-day course](http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html))
 - In-depth knowledge about the web application being load balanced 
 - The Tcl language and the iRule extensions
-- And finally: _A way to test your iRule (knowing that a BigIP device costs big money)_
+- And finally: _A way to test your iRules_
 
-## The solution
+## Testing iRules
 
-Most shops test iRules [manually](http://en.wikipedia.org/wiki/Manual_testing), the procedure typically being:
+Most shops test iRules [manually](http://en.wikipedia.org/wiki/Manual_testing), the procedure typically being a variation of the following:
 
 - Create/edit iRule
 - Add log statements that show execution path
@@ -40,11 +40,16 @@ There are lots of issues with this **manual** approach:
 
 Clearly, **manual** testing is not the way forward!
 
-
+Enough said about manual testing. Let's talk about unit testing iRules using TesTcl!
 
 ## Example
 
-Have a look at _test_advanced_irule_it.tcl_ 
+If you're familiar with unit testing and [mocking](http://en.wikipedia.org/wiki/Mock_object) in particular,
+using TesTcl should't be to hard. I'll add thorough examples soon, but until then, have a look at
+
+ _test_advanced_irule_it.tcl_
+
+in the source repository.
 
 ## How stable is this code?
 This work is still undergoing quite some development so you can expect minor breaking changes.
