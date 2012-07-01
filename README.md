@@ -57,6 +57,7 @@ This work is still undergoing quite some development so you can expect minor bre
 ## Todos
 
 - Some kind of describe command to avoid code duplication
+- Some kind of setup / teardown to avoid code duplication
 - Implement Tcl package to make code easier to use
 - Documentation
 - Implement irule extensions to Tcl (operators like starts_with etc)
