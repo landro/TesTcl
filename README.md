@@ -46,9 +46,7 @@ Enough said about manual testing. Let's talk about unit testing iRules using Tes
 
 If you're familiar with unit testing and [mocking](http://en.wikipedia.org/wiki/Mock_object) in particular,
 using TesTcl should't be to hard. I'll add thorough examples soon, but until then, have a look at
-
- _test_advanced_irule_it.tcl_
-
+[test_advanced_irule_it.tcl](https://github.com/landro/TesTcl/blob/master/test_advanced_irule_it.tcl)
 in the source repository.
 
 ## How stable is this code?
