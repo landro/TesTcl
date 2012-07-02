@@ -26,12 +26,21 @@ proc ::testcl::reset_expectations { } {
 
 proc ::testcl::it {description body} {
 
-  ::testcl::reset_expectations
-  
   puts "\n**************************************************************************"
   puts "* it $description"
   puts "**************************************************************************"
+
+  ::testcl::reset_expectations
   
+  set setItUpList [info commands ::testcl::setItUp]
+
+  if { [llength $setItUpList] == 1 } {
+    log::log debug "Calling set it up"
+    ::testcl::setItUp
+  } else {
+    log::log debug "Nothing to set up"
+  }
+
   variable nbOfTestFailures
   set rc [catch $body result]
   

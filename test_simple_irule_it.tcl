@@ -7,9 +7,11 @@ namespace import ::testcl::*
 # Comment out to suppress logging
 log::lvSuppressLE info 0
 
-it "should handle request using pool bar" {
-
+proc testcl::setItUp {} {
   event HTTP_REQUEST
+}
+
+it "should handle request using pool bar" {
 
   on HTTP::uri return "/bar"
 
@@ -21,12 +23,10 @@ it "should handle request using pool bar" {
 
 it "should handle request using pool foo" {
 
-  event HTTP_REQUEST
-  
   on HTTP::uri return "/foo/admin"
-  
+
   endstate pool foo
-  
+
   run simple_irule.tcl simple
 
 }
