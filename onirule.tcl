@@ -9,8 +9,19 @@ namespace eval ::testcl {
   namespace export run
 }
 
-# Override of irule commands
-
+# testcl::rule --
+#
+# Override of the iRule rule command
+#
+# Arguments:
+# ruleName The name of the rule
+# body the body of the rule
+#
+# Side Effects:
+# None.
+#
+# Results:
+# None.
 proc ::testcl::rule {ruleName body} {
   log::log debug "rule $ruleName invoked"
   set rc [catch $body result]
@@ -24,6 +35,19 @@ proc ::testcl::rule {ruleName body} {
   
 }
 
+# testcl::when --
+#
+# Override of the iRule when command
+#
+# Arguments:
+# event Type of event, for instance HTTP_REQUEST
+# body the body of the when command
+#
+# Side Effects:
+# None.
+#
+# Results:
+# None.
 proc ::testcl::when {event body} {
 
   variable expectedEvent
@@ -50,9 +74,18 @@ proc ::testcl::when {event body} {
 
 }
 
-# Extensions
-
-# Command used to signal type of event
+# testcl::event --
+#
+# Proc to setup the kind of event to expect
+#
+# Arguments:
+# event_type The type of event, either HTTP_REQUEST or HTTP_RESPONSE
+#
+# Side Effects:
+# None.
+#
+# Results:
+# None.
 
 proc ::testcl::event {event_type} {
   variable expectedEvent

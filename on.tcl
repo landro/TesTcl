@@ -61,6 +61,20 @@ proc ::testcl::endstate {args} {
 
 rename unknown ::tcl::unknown
 
+# testcl::unknown --
+#
+# Override of the unknown proc used to provide mocking.
+# Values returned by this method have to be set up using
+# the on proc
+#
+# Arguments:
+# Any
+#
+# Side Effects:
+# None
+#
+# Results:
+# Whatever your expectation says
 proc ::testcl::unknown {args} {
 
   log::log debug "unknown called with args: $args"
