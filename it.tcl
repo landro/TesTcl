@@ -67,7 +67,9 @@ proc ::testcl::before {body} {
 # None.
 #
 # Results:
-# Writes -> Test OK if specification is met, -> Test failure otherwise
+# Prints description and either
+# -> Test OK if specification is met
+# -> Test failure otherwise
 proc ::testcl::it {description body} {
 
   puts "\n**************************************************************************"
