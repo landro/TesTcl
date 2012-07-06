@@ -88,7 +88,7 @@ Now, create a file called let's say *test_simple_irule.tcl* containing the follo
 
 Next, put testcl on your library path. If you use JTcl, you can add the directory containing all the 
 files found in this project (zip and tar.gz can be downloaded from this page) to 
-the (TCLLIBPATH)[http://jtcl.kenai.com/gettingstarted.html] environment variable.
+the [TCLLIBPATH](http://jtcl.kenai.com/gettingstarted.html) environment variable.
 
 In order to run this example, type in the following at the command-line:
 
@@ -121,7 +121,7 @@ This should give you the following output:
 This work is still undergoing quite some development so you can expect minor breaking changes.
 
 ## Gotchas
-- If you try testing irules that cantain iRule extensions to the Tcl language, this stuff wont work. I'm working on an extension to [JTcl](http://jtcl.kenai.com/) to make this work.
+- If you try testing irules that cantain iRule extensions to the Tcl language, this stuff won't work. I'm working on an extension to [JTcl](http://jtcl.kenai.com/) to make this work.
 
 ## Todos
 
