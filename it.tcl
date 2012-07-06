@@ -1,3 +1,4 @@
+package provide testcl 0.8
 package require log
 
 namespace eval ::testcl {
