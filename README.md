@@ -42,12 +42,14 @@ Clearly, **manual** testing is not the way forward!
 
 Enough said about manual testing. Let's talk about unit testing iRules using TesTcl!
 
-## Example
+## Examples
 
 If you're familiar with unit testing and [mocking](http://en.wikipedia.org/wiki/Mock_object) in particular,
-using TesTcl should't be to hard. 
+using TesTcl should't be to hard. Check out the examples below:
 
-Let's say you want to test the following simple iRule:
+### Simple example ###
+
+Let's say you want to test the following simple iRule found in *simple_irule.tcl*:
 
     rule simple {
 
@@ -62,6 +64,59 @@ Let's say you want to test the following simple iRule:
 
     }
 
+Now, create a file called let's say *test_simple_irule.tcl* containing the following lines
+
+    package require -exact testcl 0.8
+    namespace import ::testcl::*
+
+    # Comment out to suppress logging
+    log::lvSuppressLE info 0
+    
+    it "should handle request using pool bar" {
+      event HTTP_REQUEST
+      on HTTP::uri return "/bar"
+      endstate pool bar
+      run simple_irule.tcl simple
+    }
+
+    it "should handle request using pool foo" {
+      event HTTP_REQUEST
+      on HTTP::uri return "/foo/admin"
+      endstate pool foo
+      run simple_irule.tcl simple
+    }
+
+In order to run this example, type in the following at the command-line:
+
+    >jtcl test_simple_irule.tcl
+
+This should give you the following output:
+
+    **************************************************************************
+    * it should handle request using pool bar
+    **************************************************************************
+    -> Test ok
+
+    **************************************************************************
+    * it should handle request using pool foo
+    **************************************************************************
+    -> Test ok
+
+#### Explanations
+
+- Require the testcl package and import the commands and variables found in the testcl namespace to use it.
+- Enable or disable logging
+- Add the specification / tests
+  - Describe every _it_ statement as precisely as possible.  
+  - Add an _event_ . This is mandatory.
+  - Add _on_ statements to setup expectations/mocks. If you don't care about the return value, return "".
+  - Add an _endstate_. This could be a _pool_, _HTTP::respond_ or _HTTP::redirect_ call
+  - Add a _run_ statement in order to actually run the tcl script file containing your iRule.   
+
+####
+
+The out
+
 
 ## How stable is this code?
 This work is still undergoing quite some development so you can expect minor breaking changes.
@@ -71,3 +126,4 @@ This work is still undergoing quite some development so you can expect minor bre
 - Implement Tcl package to make code easier to use
 - Documentation
 - Implement irule extensions to Tcl (operators like starts_with etc)
+- Improve error handling
