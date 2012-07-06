@@ -126,6 +126,8 @@ This work is still undergoing quite some development so you can expect minor bre
 ## Todos
 
 - Implement irule extensions to Tcl (operators like *starts_with* etc)
-- Documentation
+- Add documentation to the code
+- Add before 
+- Add advanced example
 - Improve error handling / logging
 - Add support for *HTTP_RESPONSE*
