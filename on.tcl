@@ -9,6 +9,18 @@ namespace eval ::testcl {
   namespace export unknown
 }
 
+# testcl::on --
+#
+# Proc to setup expectations/mocks
+#
+# Arguments:
+# args Any number of arguments
+#
+# Side Effects:
+# Adds expectations to list of existing expectations
+#
+# Results:
+# None.
 proc ::testcl::on {args} {
   log::log debug "on called with the following [llength $args] arguments: $args"
   variable expectations
@@ -16,6 +28,18 @@ proc ::testcl::on {args} {
   
 }
 
+# testcl::endstate --
+#
+# Proc to setup endstate
+#
+# Arguments:
+# args  any number of arguments
+#
+# Side Effects:
+# Adds expectation about endstate.
+#
+# Results:
+# None.
 proc ::testcl::endstate {args} {
   log::log debug "endstate called with args: $args"
   variable expectedEndState
