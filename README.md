@@ -45,9 +45,23 @@ Enough said about manual testing. Let's talk about unit testing iRules using Tes
 ## Example
 
 If you're familiar with unit testing and [mocking](http://en.wikipedia.org/wiki/Mock_object) in particular,
-using TesTcl should't be to hard. I'll add thorough examples soon, but until then, have a look at
-[test_advanced_irule_it.tcl](https://github.com/landro/TesTcl/blob/master/test_advanced_irule_it.tcl)
-in the source repository.
+using TesTcl should't be to hard. 
+
+Let's say you want to test the following simple iRule:
+
+    rule simple {
+
+      when HTTP_REQUEST {
+        #starts_with "/foo" 
+        if { [regexp {^/foo} [HTTP::uri]] } {
+          pool foo
+        } else {
+          pool bar
+        }
+      }
+
+    }
+
 
 ## How stable is this code?
 This work is still undergoing quite some development so you can expect minor breaking changes.
