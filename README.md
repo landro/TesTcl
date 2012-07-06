@@ -69,8 +69,8 @@ Now, create a file called let's say *test_simple_irule.tcl* containing the follo
     package require -exact testcl 0.8
     namespace import ::testcl::*
 
-    # Comment out to suppress logging
-    log::lvSuppressLE info 0
+    # Comment in to enable logging
+    #log::lvSuppressLE info 0
     
     it "should handle request using pool bar" {
       event HTTP_REQUEST
