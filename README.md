@@ -86,6 +86,10 @@ Now, create a file called let's say *test_simple_irule.tcl* containing the follo
       run simple_irule.tcl simple
     }
 
+Next, put testcl on your library path. If you use JTcl, you can add the directory containing all the 
+files found in this project (zip and tar.gz can be downloaded from this page) to 
+the (TCLLIBPATH)[http://jtcl.kenai.com/gettingstarted.html] environment variable.
+
 In order to run this example, type in the following at the command-line:
 
     >jtcl test_simple_irule.tcl
@@ -109,21 +113,19 @@ This should give you the following output:
 - Add the specification / tests
   - Describe every _it_ statement as precisely as possible.  
   - Add an _event_ . This is mandatory.
-  - Add _on_ statements to setup expectations/mocks. If you don't care about the return value, return "".
-  - Add an _endstate_. This could be a _pool_, _HTTP::respond_ or _HTTP::redirect_ call
-  - Add a _run_ statement in order to actually run the tcl script file containing your iRule.   
-
-####
-
-The out
-
+  - Add one or several _on_ statements to setup expectations/mocks. If you don't care about the return value, return "".
+  - Add an _endstate_. This could be a _pool_, _HTTP::respond_ or _HTTP::redirect_ call. This is mandatory.
+  - Add a _run_ statement in order to actually run the tcl script file containing your iRule. This is mandatory.
 
 ## How stable is this code?
 This work is still undergoing quite some development so you can expect minor breaking changes.
 
+## Gotchas
+- If you try testing irules that cantain iRule extensions to the Tcl language, this stuff wont work. I'm working on an extension to [JTcl](http://jtcl.kenai.com/) to make this work.
+
 ## Todos
 
-- Implement Tcl package to make code easier to use
+- Implement irule extensions to Tcl (operators like *starts_with* etc)
 - Documentation
-- Implement irule extensions to Tcl (operators like starts_with etc)
-- Improve error handling
+- Improve error handling / logging
+- Add support for *HTTP_RESPONSE*
