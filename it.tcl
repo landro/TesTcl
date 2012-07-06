@@ -2,7 +2,9 @@ package require log
 
 namespace eval ::testcl {
   variable nbOfTestFailures 0
+  variable before
   namespace export it
+  namespace export before
 }
 
 proc ::testcl::reset_expectations { } {
@@ -23,6 +25,10 @@ proc ::testcl::reset_expectations { } {
   }
 }
 
+proc ::testcl::before {body} {
+  variable before
+  set before $body
+}
 
 proc ::testcl::it {description body} {
 
@@ -30,15 +36,14 @@ proc ::testcl::it {description body} {
   puts "* it $description"
   puts "**************************************************************************"
 
-  ::testcl::reset_expectations
-  
-  set setItUpList [info commands ::testcl::setItUp]
+  reset_expectations
 
-  if { [llength $setItUpList] == 1 } {
-    log::log debug "Calling set it up"
-    ::testcl::setItUp
+  variable before
+  if { [info exists before] } {
+    log::log debug "Calling before"
+    eval $before
   } else {
-    log::log debug "Nothing to set up"
+    log::log debug "No before proc"
   }
 
   variable nbOfTestFailures
