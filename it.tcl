@@ -8,6 +8,18 @@ namespace eval ::testcl {
   namespace export before
 }
 
+# testcl::reset_expectations --
+#
+# Resets the expectations between specifications
+#
+# Arguments:
+# None
+#
+# Side Effects:
+# Resets expectations
+#
+# Results:
+# None.
 proc ::testcl::reset_expectations { } {
   variable expectations
   if { [info exists expectations] } {
@@ -26,11 +38,36 @@ proc ::testcl::reset_expectations { } {
   }
 }
 
+# testcl::before --
+#
+#  that actual numeric value matches expected numeric value
+#
+# Arguments:
+# body Body containing statements to be run before the specifications
+#
+# Side Effects:
+# Sets before variable to contain body
+#
+# Results:
+# None
 proc ::testcl::before {body} {
   variable before
   set before $body
 }
 
+# testcl::it --
+#
+# Asserts that actual numeric value matches expected numeric value
+#
+# Arguments:
+# description Description describing the specificaiton
+# body Body containing statements to be run before running the iRule.
+#
+# Side Effects:
+# None.
+#
+# Results:
+# Writes -> Test OK if specification is met, -> Test failure otherwise
 proc ::testcl::it {description body} {
 
   puts "\n**************************************************************************"
