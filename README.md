@@ -181,7 +181,7 @@ Let's have a look at a more advanced iRule (advanced_irule.tcl):
             pool pool_application
           }
         } else {
-          HTTP:respond 404
+          HTTP::respond 404
         }
 
       }
@@ -250,7 +250,7 @@ The specs for this iRule would look like this:
 
     it "should give 404 when request cannot be handled" {
       on HTTP::uri return "/cannot_be_handled"
-      endstate HTTP:respond 404
+      endstate HTTP::respond 404
       run advanced_irule.tcl advanced
     }
 
@@ -273,5 +273,6 @@ This work is still undergoing quite some development so you can expect minor bre
   - and	Performs a logical "and" comparison between two values
   - not	Performs a logical "not" on a value
   - or	Performs a logical "or" comparison between two values
+- Disable certain commands
 - Improve error handling / logging
 - Add support for *HTTP_RESPONSE*
