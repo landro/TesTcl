@@ -122,7 +122,7 @@ This should give you the following output:
 In order to avoid code duplication, one can use the _before_ command.
 The argument passed to the _before_ command will be executed _before_ the following _it_ specifications.
 
-Using the _before_ command, the *test_simple_irule.tcl* can be rewritten as:
+Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
     package require -exact testcl 0.8
     namespace import ::testcl::*
@@ -146,6 +146,7 @@ Using the _before_ command, the *test_simple_irule.tcl* can be rewritten as:
       run simple_irule.tcl simple
     }
 
+On a side note, it's worth mentioning that there is no _after_ command, since we're always dealing with mocks.
 
 ## How stable is this code?
 This work is still undergoing quite some development so you can expect minor breaking changes.
