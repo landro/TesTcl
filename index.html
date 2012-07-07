@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="TesTcl : a Tcl library for testing iRules" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>TesTcl</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/landro/TesTcl">View on GitHub</a>
+
+          <h1 id="project_title">TesTcl</h1>
+          <h2 id="project_tagline">a Tcl library for testing iRules</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/landro/TesTcl/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/landro/TesTcl/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Introduction</h1>
+
+<p><strong>TesTcl</strong> is a <a href="http://en.wikipedia.org/wiki/Tcl">Tcl</a> library for unit testing
+<a href="https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx">iRules</a> which 
+are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BigIP</a> devices.
+The goal of this library is to make it easy to unit test iRules used when load balancing HTTP traffic.</p>
+
+<h2>The challenge</h2>
+
+<p>Configuring BigIP devices is no trivial task, and typically falls in under a DevOps kind of role.
+In order to make your system perform the best it can, you need:</p>
+
+<ul>
+<li>In-depth knowledge about the BigIP system (typically requiring at least a <a href="http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html">$1,995 3-day course</a>)</li>
+<li>In-depth knowledge about the web application being load balanced </li>
+<li>The Tcl language and the iRule extensions</li>
+<li>And finally: <em>A way to test your iRules</em>
+</li>
+</ul><h2>Testing iRules</h2>
+
+<p>Most shops test iRules <a href="http://en.wikipedia.org/wiki/Manual_testing">manually</a>, the procedure typically being a variation of the following:</p>
+
+<ul>
+<li>Create/edit iRule</li>
+<li>Add log statements that show execution path</li>
+<li>Push iRule to staging/QA environment</li>
+<li>Bring backend servers up and down <strong>manually</strong> as required to test fallback scenarios</li>
+<li>Generate HTTP-traffic using a browser and verify <strong>manually</strong> everything works as expected</li>
+<li>Verify log entries <strong>manually</strong>
+</li>
+<li>Remove or disable log statements</li>
+<li>Push iRule to production environment</li>
+<li>Verify <strong>manually</strong> everything works as expected </li>
+</ul><p>There are lots of issues with this <strong>manual</strong> approach:</p>
+
+<ul>
+<li>Using log statements for testing and debugging messes up your code, and you still have to look through the logs <strong>manually</strong>
+</li>
+<li>Potentially using different iRules in QA and production make automated deployment procedures harder</li>
+<li>Bringing servers up and down to test fallback scenarios can be quite tedious</li>
+<li>
+<strong>Manual</strong> verification steps are prone to error</li>
+<li>
+<strong>Manual</strong> testing takes a lot of time</li>
+<li>Development roundtrip-time is forever, since deployment to BigIP sometimes can take several minutes</li>
+</ul><p>Clearly, <strong>manual</strong> testing is not the way forward!</p>
+
+<p>Enough said about manual testing. Let's talk about unit testing iRules using TesTcl!</p>
+
+<h2>Getting started</h2>
+
+<p>If you're familiar with unit testing and <a href="http://en.wikipedia.org/wiki/Mock_object">mocking</a> in particular,
+using TesTcl should't be to hard. Check out the examples below:</p>
+
+<h3>Simple example</h3>
+
+<p>Let's say you want to test the following simple iRule found in <em>simple_irule.tcl</em>:</p>
+
+<pre><code>rule simple {
+
+  when HTTP_REQUEST {
+    #starts_with "/foo" 
+    if { [regexp {^/foo} [HTTP::uri]] } {
+      pool foo
+    } else {
+      pool bar
+    }
+  }
+
+}
+</code></pre>
+
+<p>Now, create a file called let's say <em>test_simple_irule.tcl</em> containing the following lines:</p>
+
+<pre><code>package require -exact testcl 0.8
+namespace import ::testcl::*
+
+# Comment in to enable logging
+#log::lvSuppressLE info 0
+
+it "should handle request using pool bar" {
+  event HTTP_REQUEST
+  on HTTP::uri return "/bar"
+  endstate pool bar
+  run simple_irule.tcl simple
+}
+
+it "should handle request using pool foo" {
+  event HTTP_REQUEST
+  on HTTP::uri return "/foo/admin"
+  endstate pool foo
+  run simple_irule.tcl simple
+}
+</code></pre>
+
+<p>Next, put testcl on your library path. If you use JTcl, you can add the directory containing all the 
+files found in this project (zip and tar.gz can be downloaded from this page) to 
+the <a href="http://jtcl.kenai.com/gettingstarted.html">TCLLIBPATH</a> environment variable.</p>
+
+<p>In order to run this example, type in the following at the command-line:</p>
+
+<pre><code>&gt;jtcl test_simple_irule.tcl
+</code></pre>
+
+<p>This should give you the following output:</p>
+
+<pre><code>**************************************************************************
+* it should handle request using pool bar
+**************************************************************************
+-&gt; Test ok
+
+**************************************************************************
+* it should handle request using pool foo
+**************************************************************************
+-&gt; Test ok
+</code></pre>
+
+<h4>Explanations</h4>
+
+<ul>
+<li>Require the <strong>testcl</strong> package and import the commands and variables found in the <strong>testcl</strong> namespace to use it.</li>
+<li>Enable or disable logging</li>
+<li>Add the specification tests
+
+<ul>
+<li>Describe every <em>it</em> statement as precisely as possible.<br>
+</li>
+<li>Add an <em>event</em> . This is mandatory.</li>
+<li>Add one or several <em>on</em> statements to setup expectations/mocks. If you don't care about the return value, return "".</li>
+<li>Add an <em>endstate</em>. This could be a <em>pool</em>, <em>HTTP::respond</em> or <em>HTTP::redirect</em> call . This is mandatory.</li>
+<li>Add a <em>run</em> statement in order to actually run the Tcl script file containing your iRule. This is mandatory.</li>
+</ul>
+</li>
+</ul><h4>Avoiding code duplication using the before command</h4>
+
+<p>In order to avoid code duplication, one can use the <em>before</em> command.
+The argument passed to the <em>before</em> command will be executed <em>before</em> the following <em>it</em> specifications.</p>
+
+<p>Using the <em>before</em> command, <em>test_simple_irule.tcl</em> can be rewritten as:</p>
+
+<pre><code>package require -exact testcl 0.8
+namespace import ::testcl::*
+
+# Comment in to enable logging
+#log::lvSuppressLE info 0
+
+before {
+  event HTTP_REQUEST
+}
+
+it "should handle request using pool bar" {
+  on HTTP::uri return "/bar"
+  endstate pool bar
+  run simple_irule.tcl simple
+}
+
+it "should handle request using pool foo" {
+  on HTTP::uri return "/foo/admin"
+  endstate pool foo
+  run simple_irule.tcl simple
+}
+</code></pre>
+
+<p>On a side note, it's worth mentioning that there is no <em>after</em> command, since we're always dealing with mocks.</p>
+
+<h3>Advanced example</h3>
+
+<p>Let's have a look at a more advanced iRule (advanced_irule.tcl):</p>
+
+<pre><code>rule advanced {
+
+  when HTTP_REQUEST {
+
+    HTTP::header insert X-Forwarded-SSL true
+
+    if { [HTTP::uri] eq "/admin" } {
+      if { ([HTTP::username] eq "admin") &amp;&amp; ([HTTP::password] eq "password") } {
+        set newuri [string map {/admin/ /} [HTTP::uri]]
+        HTTP::uri $newuri
+        pool pool_admin_application
+      } else {
+        HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
+      }
+    } elseif { [HTTP::uri] eq "/blocked" } {
+      HTTP::respond 403
+    } elseif { [HTTP::uri] eq "/app"} {
+      if { [active_members pool_application] == 0 } {
+        if { [HTTP::header User-Agent] eq "Apache HTTP Client" } {
+          HTTP::respond 503
+        } else {
+          HTTP::redirect "http://fallback.com"
+        }
+      } else {
+        set newuri [string map {/app/ /} [HTTP::uri]]
+        HTTP::uri $newuri
+        pool pool_application
+      }
+    } else {
+      HTTP::respond 404
+    }
+
+  }
+
+}
+</code></pre>
+
+<p>The specs for this iRule would look like this:</p>
+
+<pre><code>package require -exact testcl 0.8
+  namespace import ::testcl::*
+
+# Comment out to suppress logging
+#log::lvSuppressLE info 0
+
+before {
+  event HTTP_REQUEST
+  on HTTP::header insert X-Forwarded-SSL true return ""
+}
+
+it "should handle admin request using pool admin when credentials are valid" {
+  on HTTP::uri return "/admin"
+  on HTTP::username return "admin"
+  on HTTP::password return "password"
+  on HTTP::uri /admin return ""
+  endstate pool pool_admin_application
+  run advanced_irule.tcl advanced
+}
+
+it "should ask for credentials when admin request without correct credentials" {
+  on HTTP::uri return "/admin"
+  on HTTP::username return "not_admin"
+  on HTTP::password return "wrong_password"
+  endstate HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
+  run advanced_irule.tcl advanced
+}
+
+it "should block access to uri /blocked" {
+  on HTTP::uri return "/blocked"
+  endstate HTTP::respond 403
+  run advanced_irule.tcl advanced
+}
+
+it "should give apache http client a correct error code when app pool is down" {
+  on HTTP::uri return "/app"
+  on active_members pool_application return 0
+  on HTTP::header User-Agent return "Apache HTTP Client"
+  endstate HTTP::respond 503
+  run advanced_irule.tcl advanced
+}
+
+it "should give other clients then apache http client redirect to fallback when app pool is down" {
+  on HTTP::uri return "/app"
+  on active_members pool_application return 0
+  on HTTP::header User-Agent return "Firefox 13.0.1"
+  endstate HTTP::redirect "http://fallback.com"
+  run advanced_irule.tcl advanced
+}
+
+it "should give handle app request using app pool when app pool is up" {
+  on HTTP::uri return "/app"
+  on HTTP::uri /app return ""
+  on active_members pool_application return 2
+  endstate pool pool_application
+  run advanced_irule.tcl advanced
+}
+
+it "should give 404 when request cannot be handled" {
+  on HTTP::uri return "/cannot_be_handled"
+  endstate HTTP::respond 404
+  run advanced_irule.tcl advanced
+}
+</code></pre>
+
+<h2>How stable is this code?</h2>
+
+<p>This work is still undergoing quite some development so you can expect minor breaking changes.</p>
+
+<h2>Gotchas</h2>
+
+<ul>
+<li>If you try testing iRules that contain iRule extensions to the Tcl language, this stuff won't work. I'm working on an extension to <a href="http://jtcl.kenai.com/">JTcl</a> to make this work.
+
+<ul>
+<li>Operators like equals, starts_with etc</li>
+</ul>
+</li>
+</ul><h2>TODOs</h2>
+
+<ul>
+<li>Implement irule extensions to Tcl (operators like <em>starts_with</em> etc)
+
+<ul>
+<li>contains    Tests if one string contains another string</li>
+<li>ends_with   Tests if one string ends with another string</li>
+<li>equals  Tests if one string equals another string</li>
+<li>matches_glob    Implement glob style matching within a comparison</li>
+<li>matches_regex   Tests if one string matches a regular expression</li>
+<li>starts_with Tests if one string starts_with another string</li>
+<li>and Performs a logical "and" comparison between two values</li>
+<li>not Performs a logical "not" on a value</li>
+<li>or  Performs a logical "or" comparison between two values</li>
+</ul>
+</li>
+<li>Disable certain commands</li>
+<li>Improve error handling / logging</li>
+<li>Add support for <em>HTTP_RESPONSE</em>
+</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">TesTcl maintained by <a href="https://github.com/landro">landro</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33046216-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
