@@ -276,3 +276,7 @@ This work is still undergoing quite some development so you can expect minor bre
 - Disable certain commands
 - Improve error handling / logging
 - Add support for *HTTP_RESPONSE*
+
+## Please please please
+
+drop me a line if you use this library or have any issues with it.
