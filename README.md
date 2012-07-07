@@ -47,7 +47,7 @@ Enough said about manual testing. Let's talk about unit testing iRules using Tes
 If you're familiar with unit testing and [mocking](http://en.wikipedia.org/wiki/Mock_object) in particular,
 using TesTcl should't be to hard. Check out the examples below:
 
-### Simple example ###
+### Simple example
 
 Let's say you want to test the following simple iRule found in *simple_irule.tcl*:
 
@@ -148,6 +148,112 @@ Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
 On a side note, it's worth mentioning that there is no _after_ command, since we're always dealing with mocks.
 
+### Advanced example
+
+Let's have a look at a more advanced iRule (advanced_irule.tcl):
+
+    rule advanced {
+
+      when HTTP_REQUEST {
+
+        HTTP::header insert X-Forwarded-SSL true
+
+        if { [HTTP::uri] eq "/admin" } {
+          if { ([HTTP::username] eq "admin") && ([HTTP::password] eq "password") } {
+            set newuri [string map {/admin/ /} [HTTP::uri]]
+            HTTP::uri $newuri
+            pool pool_admin_application
+          } else {
+            HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
+          }
+        } elseif { [HTTP::uri] eq "/blocked" } {
+          HTTP::respond 403
+        } elseif { [HTTP::uri] eq "/app"} {
+          if { [active_members pool_application] == 0 } {
+            if { [HTTP::header User-Agent] eq "Apache HTTP Client" } {
+              HTTP::respond 503
+            } else {
+              HTTP::redirect "http://fallback.com"
+            }
+          } else {
+            set newuri [string map {/app/ /} [HTTP::uri]]
+            HTTP::uri $newuri
+            pool pool_application
+          }
+        } else {
+          HTTP:respond 404
+        }
+
+      }
+
+    }
+
+The specs for this iRule would look like this:
+
+    package require -exact testcl 0.8
+      namespace import ::testcl::*
+
+    # Comment out to suppress logging
+    #log::lvSuppressLE info 0
+
+    before {
+      event HTTP_REQUEST
+      on HTTP::header insert X-Forwarded-SSL true return ""
+    }
+
+    it "should handle admin request using pool admin when credentials are valid" {
+      on HTTP::uri return "/admin"
+      on HTTP::username return "admin"
+      on HTTP::password return "password"
+      on HTTP::uri /admin return ""
+      endstate pool pool_admin_application
+      run advanced_irule.tcl advanced
+    }
+
+    it "should ask for credentials when admin request without correct credentials" {
+      on HTTP::uri return "/admin"
+      on HTTP::username return "not_admin"
+      on HTTP::password return "wrong_password"
+      endstate HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
+      run advanced_irule.tcl advanced
+    }
+
+    it "should block access to uri /blocked" {
+      on HTTP::uri return "/blocked"
+      endstate HTTP::respond 403
+      run advanced_irule.tcl advanced
+    }
+
+    it "should give apache http client a correct error code when app pool is down" {
+      on HTTP::uri return "/app"
+      on active_members pool_application return 0
+      on HTTP::header User-Agent return "Apache HTTP Client"
+      endstate HTTP::respond 503
+      run advanced_irule.tcl advanced
+    }
+
+    it "should give other clients then apache http client redirect to fallback when app pool is down" {
+      on HTTP::uri return "/app"
+      on active_members pool_application return 0
+      on HTTP::header User-Agent return "Firefox 13.0.1"
+      endstate HTTP::redirect "http://fallback.com"
+      run advanced_irule.tcl advanced
+    }
+
+    it "should give handle app request using app pool when app pool is up" {
+      on HTTP::uri return "/app"
+      on HTTP::uri /app return ""
+      on active_members pool_application return 2
+      endstate pool pool_application
+      run advanced_irule.tcl advanced
+    }
+
+    it "should give 404 when request cannot be handled" {
+      on HTTP::uri return "/cannot_be_handled"
+      endstate HTTP:respond 404
+      run advanced_irule.tcl advanced
+    }
+
 ## How stable is this code?
 This work is still undergoing quite some development so you can expect minor breaking changes.
 
@@ -167,6 +273,5 @@ This work is still undergoing quite some development so you can expect minor bre
   - and	Performs a logical "and" comparison between two values
   - not	Performs a logical "not" on a value
   - or	Performs a logical "or" comparison between two values
-- Add advanced example
 - Improve error handling / logging
 - Add support for *HTTP_RESPONSE*
