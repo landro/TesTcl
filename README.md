@@ -17,7 +17,6 @@ Let's say you want to test the following simple iRule found in *simple_irule.tcl
     rule simple {
 
       when HTTP_REQUEST {
-        #starts_with "/foo" 
         if { [HTTP::uri] starts_with "/foo" } {
           pool foo
         } else {
