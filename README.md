@@ -59,6 +59,7 @@ Add the [jtcl-irule](http://landro.github.com/jtcl-irule/) extension to JTcl. If
 jar artifact from the [downloads](https://github.com/landro/TesTcl/downloads) section or you can use the direct [link](https://github.com/downloads/landro/TesTcl/jtcl-irule.jar)
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in _jtcl_ or _jtcl.bat_.
+Put the following line just above the last line in the script
 
     export CLASSPATH=$dir/jtcl-irule.jar:$CLASSPATH
 
