@@ -38,48 +38,6 @@
 are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BigIP</a> devices.
 The goal of this library is to make it easy to unit test iRules used when load balancing HTTP traffic.</p>
 
-<h2>The challenge</h2>
-
-<p>Configuring BigIP devices is no trivial task, and typically falls in under a DevOps kind of role.
-In order to make your system perform the best it can, you need:</p>
-
-<ul>
-<li>In-depth knowledge about the BigIP system (typically requiring at least a <a href="http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html">$1,995 3-day course</a>)</li>
-<li>In-depth knowledge about the web application being load balanced </li>
-<li>The Tcl language and the iRule extensions</li>
-<li>And finally: <em>A way to test your iRules</em>
-</li>
-</ul><h2>Testing iRules</h2>
-
-<p>Most shops test iRules <a href="http://en.wikipedia.org/wiki/Manual_testing">manually</a>, the procedure typically being a variation of the following:</p>
-
-<ul>
-<li>Create/edit iRule</li>
-<li>Add log statements that show execution path</li>
-<li>Push iRule to staging/QA environment</li>
-<li>Bring backend servers up and down <strong>manually</strong> as required to test fallback scenarios</li>
-<li>Generate HTTP-traffic using a browser and verify <strong>manually</strong> everything works as expected</li>
-<li>Verify log entries <strong>manually</strong>
-</li>
-<li>Remove or disable log statements</li>
-<li>Push iRule to production environment</li>
-<li>Verify <strong>manually</strong> everything works as expected </li>
-</ul><p>There are lots of issues with this <strong>manual</strong> approach:</p>
-
-<ul>
-<li>Using log statements for testing and debugging messes up your code, and you still have to look through the logs <strong>manually</strong>
-</li>
-<li>Potentially using different iRules in QA and production make automated deployment procedures harder</li>
-<li>Bringing servers up and down to test fallback scenarios can be quite tedious</li>
-<li>
-<strong>Manual</strong> verification steps are prone to error</li>
-<li>
-<strong>Manual</strong> testing takes a lot of time</li>
-<li>Development roundtrip-time is forever, since deployment to BigIP sometimes can take several minutes</li>
-</ul><p>Clearly, <strong>manual</strong> testing is not the way forward!</p>
-
-<p>Enough said about manual testing. Let's talk about unit testing iRules using TesTcl!</p>
-
 <h2>Getting started</h2>
 
 <p>If you're familiar with unit testing and <a href="http://en.wikipedia.org/wiki/Mock_object">mocking</a> in particular,
@@ -93,7 +51,7 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 
   when HTTP_REQUEST {
     #starts_with "/foo" 
-    if { [regexp {^/foo} [HTTP::uri]] } {
+    if { [HTTP::uri] starts_with "/foo" } {
       pool foo
     } else {
       pool bar
@@ -126,9 +84,45 @@ it "should handle request using pool foo" {
 }
 </code></pre>
 
-<p>Next, put testcl on your library path. If you use JTcl, you can add the directory containing all the 
-files found in this project (zip and tar.gz can be downloaded from this page) to 
-the <a href="http://jtcl.kenai.com/gettingstarted.html">TCLLIBPATH</a> environment variable.</p>
+<h4>Installing JTcl including jtcl-irule extensions</h4>
+
+<h5>Install JTcl</h5>
+
+<p>Download <a href="http://jtcl.kenai.com/">JTcl</a>, unzip it and add it to your path.</p>
+
+<h5>Add jtcl-irule to your JTcl installation</h5>
+
+<p>Add the (jtcl-irule)[<a href="http://landro.github.com/jtcl-irule/">http://landro.github.com/jtcl-irule/</a>] extension to JTcl. If you don't have the time to build it yourself, you can download the 
+jar artifact from the (downloads)[<a href="https://github.com/landro/TesTcl/downloads">https://github.com/landro/TesTcl/downloads</a>] section or you can use the direct (link)[<a href="https://github.com/downloads/landro/TesTcl/jtcl-irule.jar">https://github.com/downloads/landro/TesTcl/jtcl-irule.jar</a>]
+Next, copy the jar file into the directory where you installed JTcl.
+Add jtcl-irule to the classpath in <em>jtcl</em> or <em>jtcl.bat</em>.</p>
+
+<pre><code>export CLASSPATH=$dir/jtcl-irule.jar:$CLASSPATH
+</code></pre>
+
+<h5>Verify installation</h5>
+
+<p>Create a script file named <em>jtcl test_jtcl_irule.tcl</em> containing the following lines </p>
+
+<pre><code>if {"aa" starts_with "a"} {
+  puts "The jtcl-irule extension has successfully been installed"
+}
+</code></pre>
+
+<p>and execute it using </p>
+
+<pre><code>jtcl test_jtcl_irule.tcl
+</code></pre>
+
+<p>You should get a success message.</p>
+
+<h5>Add the testcl library to your library path</h5>
+
+<p>Download directory containing all the files found in this project (zip and tar.gz can be downloaded from this page)
+Unzip, and add unzipped directory to the <a href="http://jtcl.kenai.com/gettingstarted.html">TCLLIBPATH</a> environment variable:</p>
+
+<pre><code>export TCLLIBPATH=whereever/landro-TesTcl-b93b1b4
+</code></pre>
 
 <p>In order to run this example, type in the following at the command-line:</p>
 
@@ -240,7 +234,7 @@ it "should handle request using pool foo" {
 <p>The specs for this iRule would look like this:</p>
 
 <pre><code>package require -exact testcl 0.8
-  namespace import ::testcl::*
+namespace import ::testcl::*
 
 # Comment out to suppress logging
 #log::lvSuppressLE info 0
@@ -308,37 +302,66 @@ it "should give 404 when request cannot be handled" {
 
 <p>This work is still undergoing quite some development so you can expect minor breaking changes.</p>
 
-<h2>Gotchas</h2>
+<h2>TODOs</h2>
 
 <ul>
-<li>If you try testing iRules that contain iRule extensions to the Tcl language, this stuff won't work. I'm working on an extension to <a href="http://jtcl.kenai.com/">JTcl</a> to make this work.
+<li>Implement irule extensions to Tcl, check out <a href="http://landro.github.com/jtcl-irule/">JTcl-irule</a>
 
 <ul>
-<li>Operators like equals, starts_with etc</li>
-</ul>
-</li>
-</ul><h2>TODOs</h2>
-
-<ul>
-<li>Implement irule extensions to Tcl (operators like <em>starts_with</em> etc)
-
-<ul>
-<li>contains    Tests if one string contains another string</li>
-<li>ends_with   Tests if one string ends with another string</li>
-<li>equals  Tests if one string equals another string</li>
-<li>matches_glob    Implement glob style matching within a comparison</li>
-<li>matches_regex   Tests if one string matches a regular expression</li>
-<li>starts_with Tests if one string starts_with another string</li>
 <li>and Performs a logical "and" comparison between two values</li>
 <li>not Performs a logical "not" on a value</li>
 <li>or  Performs a logical "or" comparison between two values</li>
 </ul>
 </li>
-<li>Disable certain commands</li>
+<li>Disable certain commands from irules </li>
 <li>Improve error handling / logging</li>
 <li>Add support for <em>HTTP_RESPONSE</em>
 </li>
-</ul>
+</ul><h2>Why I created this project</h2>
+
+<p>Configuring BigIP devices is no trivial task, and typically falls in under a DevOps kind of role.
+In order to make your system perform the best it can, you need:</p>
+
+<ul>
+<li>In-depth knowledge about the BigIP system (typically requiring at least a <a href="http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html">$1,995 3-day course</a>)</li>
+<li>In-depth knowledge about the web application being load balanced </li>
+<li>The Tcl language and the iRule extensions</li>
+<li>And finally: <em>A way to test your iRules</em>
+</li>
+</ul><p>Most shops test iRules <a href="http://en.wikipedia.org/wiki/Manual_testing">manually</a>, the procedure typically being a variation of the following:</p>
+
+<ul>
+<li>Create/edit iRule</li>
+<li>Add log statements that show execution path</li>
+<li>Push iRule to staging/QA environment</li>
+<li>Bring backend servers up and down <strong>manually</strong> as required to test fallback scenarios</li>
+<li>Generate HTTP-traffic using a browser and verify <strong>manually</strong> everything works as expected</li>
+<li>Verify log entries <strong>manually</strong>
+</li>
+<li>Remove or disable log statements</li>
+<li>Push iRule to production environment</li>
+<li>Verify <strong>manually</strong> everything works as expected </li>
+</ul><p>There are lots of issues with this <strong>manual</strong> approach:</p>
+
+<ul>
+<li>Using log statements for testing and debugging messes up your code, and you still have to look through the logs <strong>manually</strong>
+</li>
+<li>Potentially using different iRules in QA and production make automated deployment procedures harder</li>
+<li>Bringing servers up and down to test fallback scenarios can be quite tedious</li>
+<li>
+<strong>Manual</strong> verification steps are prone to error</li>
+<li>
+<strong>Manual</strong> testing takes a lot of time</li>
+<li>Development roundtrip-time is forever, since deployment to BigIP sometimes can take several minutes</li>
+</ul><p>Clearly, <strong>manual</strong> testing is not the way forward!</p>
+
+<h2>License</h2>
+
+<p>Just like JTcl, TesTcl is licensed under a BSD-style license.</p>
+
+<h2>Please please please</h2>
+
+<p>drop me a line if you use this library or have any issues with it.</p>
       </section>
     </div>
 
