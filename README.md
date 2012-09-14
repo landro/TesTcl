@@ -55,8 +55,8 @@ Now, create a file called let's say *test_simple_irule.tcl* containing the follo
 Download [JTcl](http://jtcl.kenai.com/), unzip it and add it to your path.
 
 ##### Add jtcl-irule to your JTcl installation
-Add the (jtcl-irule)[http://landro.github.com/jtcl-irule/] extension to JTcl. If you don't have the time to build it yourself, you can download the 
-jar artifact from the (downloads)[https://github.com/landro/TesTcl/downloads] section or you can use the direct (link)[https://github.com/downloads/landro/TesTcl/jtcl-irule.jar]
+Add the [jtcl-irule](http://landro.github.com/jtcl-irule/) extension to JTcl. If you don't have the time to build it yourself, you can download the 
+jar artifact from the [downloads](https://github.com/landro/TesTcl/downloads) section or you can use the direct [link](https://github.com/downloads/landro/TesTcl/jtcl-irule.jar)
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in _jtcl_ or _jtcl.bat_.
 
