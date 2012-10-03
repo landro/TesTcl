@@ -26,7 +26,7 @@ Let's say you want to test the following simple iRule found in *simple_irule.tcl
 
     }
 
-Now, create a file called let's say *test_simple_irule.tcl* containing the following lines:
+Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
     package require -exact testcl 0.8
     namespace import ::testcl::*
@@ -55,7 +55,7 @@ Download [JTcl](http://jtcl.kenai.com/), unzip it and add it to your path.
 
 ##### Add jtcl-irule to your JTcl installation
 Add the [jtcl-irule](http://landro.github.com/jtcl-irule/) extension to JTcl. If you don't have the time to build it yourself, you can download the 
-jar artifact from the [downloads](https://github.com/landro/TesTcl/downloads) section or you can use the direct [link](https://github.com/downloads/landro/TesTcl/jtcl-irule.jar)
+jar artifact from the [downloads](https://github.com/landro/TesTcl/downloads) section or you can use the direct [link](https://github.com/downloads/landro/TesTcl/jtcl-irule.jar).
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in _jtcl_ or _jtcl.bat_.
 Put the following line just above the last line in the script
@@ -247,17 +247,7 @@ The specs for this iRule would look like this:
     }
 
 ## How stable is this code?
-This work is still undergoing quite some development so you can expect minor breaking changes.
-
-## TODOs
-
-- Implement irule extensions to Tcl, check out [JTcl-irule] (http://landro.github.com/jtcl-irule/)
-  - and	Performs a logical "and" comparison between two values
-  - not	Performs a logical "not" on a value
-  - or	Performs a logical "or" comparison between two values
-- Disable certain commands from irules 
-- Improve error handling / logging
-- Add support for *HTTP_RESPONSE*
+This work is quite stable, but you can expect minor breaking changes.
 
 ## Why I created this project
 
@@ -298,4 +288,4 @@ Just like JTcl, TesTcl is licensed under a BSD-style license.
 
 ## Please please please
 
-drop me a line if you use this library or have any issues with it.
+drop me a line if you use this library or have any issues with it: stefan.landro **you know what** gmail.com
