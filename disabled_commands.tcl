@@ -3,6 +3,8 @@
 
 # after (enabled in 10.x)
 # auto_execok
+rename auto_execok ::tcl::auto_execok
+
 # auto_import
 # auto_load
 # auto_mkindex
