@@ -28,7 +28,7 @@ Let's say you want to test the following simple iRule found in *simple_irule.tcl
 
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
-    package require -exact testcl 0.8
+    package require -exact testcl 0.8.1
     namespace import ::testcl::*
 
     # Comment in to enable logging
@@ -116,7 +116,7 @@ The argument passed to the _before_ command will be executed _before_ the follow
 
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
-    package require -exact testcl 0.8
+    package require -exact testcl 0.8.1
     namespace import ::testcl::*
 
     # Comment in to enable logging
@@ -182,7 +182,7 @@ Let's have a look at a more advanced iRule (advanced_irule.tcl):
 
 The specs for this iRule would look like this:
 
-    package require -exact testcl 0.8
+    package require -exact testcl 0.8.1
     namespace import ::testcl::*
 
     # Comment out to suppress logging
