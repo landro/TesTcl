@@ -56,17 +56,35 @@ proc ::testcl::when {event body} {
     log::log debug "when invoked with expected event '$event'"
     set rc [catch $body result]
     log::log info "when invoked with expected event $event finished, return code: $rc  result: $result"
-    
-    if {$rc != 1000} {
-      error "Expected end state with return code 1000, got $rc"
+
+    variable expectedEvent
+
+    if {$expectedEvent eq "HTTP_REQUEST"} {
+
+      if {$rc != 1000} {
+        error "Expected end state with return code 1000, got $rc"
+      }
+
+      variable expectedEndState
+
+      if {$result ne $expectedEndState} {
+        error "Expected end state $expectedEndState, got $result"
+      }
+
+      return -code 2000 "when $event"
+
+    } elseif {$expectedEvent eq "HTTP_RESPONSE"} {
+
+      if {$rc != 0} {
+        error "Expected return code 0, got $rc"
+      }
+
+      return -code 2000 "when $event"
+
     }
-    
-    variable expectedEndState
-    
-    if {$result ne $expectedEndState} {
-      error "Expected end state $expectedEndState, got $result"
-    }
-    return -code 2000 "when $event"
+
+  } elseif {[info exists expectedEvent] && $event ne $expectedEvent} {
+    log::log debug "when not invoked due to non-matching event type"
   } else {
     log::log error "when not invoked due to missing expected event"
     error "when not invoked due to missing expected event"
