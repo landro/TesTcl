@@ -50,7 +50,6 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 <pre><code>rule simple {
 
   when HTTP_REQUEST {
-    #starts_with "/foo" 
     if { [HTTP::uri] starts_with "/foo" } {
       pool foo
     } else {
@@ -61,9 +60,9 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 }
 </code></pre>
 
-<p>Now, create a file called let's say <em>test_simple_irule.tcl</em> containing the following lines:</p>
+<p>Now, create a file called <em>test_simple_irule.tcl</em> containing the following lines:</p>
 
-<pre><code>package require -exact testcl 0.8.1
+<pre><code>package require -exact testcl 0.8.2
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -93,7 +92,7 @@ it "should handle request using pool foo" {
 <h5>Add jtcl-irule to your JTcl installation</h5>
 
 <p>Add the <a href="http://landro.github.com/jtcl-irule/">jtcl-irule</a> extension to JTcl. If you don't have the time to build it yourself, you can download the 
-jar artifact from the <a href="https://github.com/landro/TesTcl/downloads">downloads</a> section or you can use the direct <a href="https://github.com/downloads/landro/TesTcl/jtcl-irule.jar">link</a>
+jar artifact from the <a href="https://github.com/landro/TesTcl/downloads">downloads</a> section or you can use the direct <a href="https://github.com/downloads/landro/TesTcl/jtcl-irule.jar">link</a>.
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in <em>jtcl</em> or <em>jtcl.bat</em>.
 Put the following line just above the last line in the script</p>
@@ -166,7 +165,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>Using the <em>before</em> command, <em>test_simple_irule.tcl</em> can be rewritten as:</p>
 
-<pre><code>package require -exact testcl 0.8.1
+<pre><code>package require -exact testcl 0.8.2
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -234,7 +233,7 @@ it "should handle request using pool foo" {
 
 <p>The specs for this iRule would look like this:</p>
 
-<pre><code>package require -exact testcl 0.8.1
+<pre><code>package require -exact testcl 0.8.2
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -301,7 +300,7 @@ it "should give 404 when request cannot be handled" {
 
 <h2>How stable is this code?</h2>
 
-<p>This work is still undergoing quite some development so you can expect minor breaking changes.</p>
+<p>This work is quite stable, but you can expect minor breaking changes.</p>
 
 <h2>Why I created this project</h2>
 
@@ -347,7 +346,7 @@ In order to make your system perform the best it can, you need:</p>
 
 <h2>Please please please</h2>
 
-<p>drop me a line if you use this library or have any issues with it.</p>
+<p>drop me a line if you use this library or have any issues with it: stefan.landro <strong>you know what</strong> gmail.com</p>
       </section>
     </div>
 
