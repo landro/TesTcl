@@ -11,4 +11,4 @@
 package ifneeded testcl 0.8.2 [list source [file join $dir assert.tcl]]\n[list source [file join $dir it.tcl]]\n[list source [file join $dir on.tcl]]\n[list source [file join $dir onirule.tcl]]
 
 # Disable certain Tcl commands from iRules
-source [file join $dir disabled_commands.tcl]
+#source [file join $dir disabled_commands.tcl]
