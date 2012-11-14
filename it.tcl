@@ -6,6 +6,7 @@ namespace eval ::testcl {
   variable before
   namespace export it
   namespace export before
+  namespace export stats
 }
 
 # testcl::reset_expectations --
@@ -98,4 +99,12 @@ proc ::testcl::it {description body} {
     puts "-> Test ok"
   }
   
+}
+
+proc ::testcl::stats	 {} {
+  variable nbOfTestFailures
+  puts "\n\n\n"
+  puts "========================================================="
+  puts "  Total number of test failures: $nbOfTestFailures"
+  puts "========================================================="
 }
