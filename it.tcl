@@ -93,7 +93,7 @@ proc ::testcl::it {description body} {
     puts "-> Test failure!!"
     puts "-> -> $result"
     log::log error $result 
-    incr $nbOfTestFailures
+    incr nbOfTestFailures
   } else {
     puts "-> Test ok"
   }
