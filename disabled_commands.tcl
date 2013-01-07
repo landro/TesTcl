@@ -36,6 +36,11 @@
 #rename unknown ::tcl::unknown
 #rename rename ::tcl::rename
 
+# Commands used by log package
+################################################
+
+#rename flush ::tcl::flush
+
 # Disabled commands
 ################################################
 
@@ -54,7 +59,6 @@ rename fblocked ::tcl::fblocked
 rename fconfigure ::tcl::fconfigure
 rename fcopy ::tcl::fcopy
 rename fileevent ::tcl::fileevent
-rename flush ::tcl::flush
 rename gets ::tcl::gets
 rename glob ::tcl::glob
 rename lrepeat ::tcl::lrepeat
