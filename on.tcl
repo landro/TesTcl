@@ -111,7 +111,13 @@ proc ::testcl::unknown {args} {
 
   }
   set errorMessage "Unexpected unknown command invocation '$args'"
-  log::log error $errorMessage
+  puts "\n$errorMessage\n"
+  puts "Maybe you should add an \"on\" statement similar to the one below to your \"it\" block?\n"
+  puts "    it \"your description\" \{"
+  puts "      ..."
+  puts "      on $args return \"your return value\""
+  puts "      ..."
+  puts "    \}\n"
   error $errorMessage
   # TODO?
   #uplevel ::tcl::unknown $args
