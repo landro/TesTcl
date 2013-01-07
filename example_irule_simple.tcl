@@ -1,4 +1,4 @@
-package require -exact testcl 0.8.2
+package require -exact testcl 0.9
 namespace import ::testcl::*
 
 # Comment out to suppress logging
