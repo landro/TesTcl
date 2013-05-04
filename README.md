@@ -295,6 +295,6 @@ Just like JTcl, TesTcl is licensed under a BSD-style license.
 
 Drop me a line if you use this library and find it useful: stefan.landro **you know what** gmail.com
 
-<a href="http://no.linkedin.com/in/landro">
-	<img src="http://www.linkedin.com/img/webpromo/btn_profile_greytxt_80x15.png" width="80" height="15" border="0" alt="View Stefan Magnus Landrø's profile on LinkedIn">
+<a href="http://no.linkedin.com/in/landro" style="text-decoration:none;">
+  <span style="font: 80% Arial,sans-serif; color:#0783B6;"><img src="http://www.linkedin.com/img/webpromo/btn_in_20x15.png" width="20" height="15" alt="View Stefan Magnus Landrø's LinkedIn profile" style="vertical-align:middle" border="0">View Stefan Magnus Landrø's profile</span>
 </a>
