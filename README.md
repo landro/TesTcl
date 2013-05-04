@@ -284,7 +284,7 @@ Clearly, **manual** testing is not the way forward!
 
 ## Getting help
 
-Post questions to the group at [TesTcl user group](https://groups.google.com/forum/?fromgroups#!forum/testcl-user)
+Post questions to the group at [TesTcl user group](https://groups.google.com/forum/?fromgroups#!forum/testcl-user)  
 File bugs over at [github](https://github.com/landro/TesTcl)
 
 ## License
