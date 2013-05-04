@@ -282,14 +282,14 @@ There are lots of issues with this **manual** approach:
 
 Clearly, **manual** testing is not the way forward!
 
-## License
-
-Just like JTcl, TesTcl is licensed under a BSD-style license. 
-
 ## Getting help
 
 Post questions to the group at [TesTcl user group](https://groups.google.com/forum/?fromgroups#!forum/testcl-user)
 File bugs over at [github](https://github.com/landro/TesTcl)
+
+## License
+
+Just like JTcl, TesTcl is licensed under a BSD-style license. 
 
 ## Please please please
 

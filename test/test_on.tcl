@@ -1,5 +1,5 @@
-source on.tcl
-source assert.tcl
+source src/on.tcl
+source src/assert.tcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging

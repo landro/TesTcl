@@ -100,8 +100,19 @@ proc ::testcl::it {description body} {
   }
   
 }
-
-proc ::testcl::stats	 {} {
+# testcl::stats --
+#
+# Prints the number of test failures you have.
+# Method call should be added at end of test file (after the it statements)
+#
+# Arguments:
+# None
+# Side Effects:
+# None.
+#
+# Results:
+# Prints test failure statistics
+proc ::testcl::stats {} {
   variable nbOfTestFailures
   puts "\n\n\n"
   puts "========================================================="

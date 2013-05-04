@@ -1,6 +1,6 @@
-source on.tcl
-source assert.tcl
-source onirule.tcl
+source src/on.tcl
+source src/assert.tcl
+source src/onirule.tcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -11,4 +11,4 @@ event HTTP_RESPONSE
 on HTTP::header remove "Vary" return ""
 on HTTP::header insert Vary "Accept-Encoding" return ""
 
-run simple_irule.tcl simple
+run irules/simple_irule.tcl simple

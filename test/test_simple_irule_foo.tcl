@@ -1,6 +1,6 @@
-source on.tcl
-source assert.tcl
-source onirule.tcl
+source src/on.tcl
+source src/assert.tcl
+source src/onirule.tcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -12,4 +12,4 @@ on HTTP::uri return "/foo/admin"
 
 endstate pool foo
 
-run simple_irule.tcl simple
+run irules/simple_irule.tcl simple
