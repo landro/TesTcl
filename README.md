@@ -295,6 +295,4 @@ Just like JTcl, TesTcl is licensed under a BSD-style license.
 
 Drop me a line if you use this library and find it useful: stefan.landro **you know what** gmail.com
 
-<a href="http://no.linkedin.com/in/landro">
-  <img src="http://www.linkedin.com/img/webpromo/btn_myprofile_160x33.png" style="width: 160px;height: 33px;" alt="View Stefan Magnus Landrø's profile on LinkedIn">
-</a>
+You can also check out [my LinkedIn profile](http://no.linkedin.com/in/landro)
