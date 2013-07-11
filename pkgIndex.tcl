@@ -8,7 +8,7 @@
 # script is sourced, the variable $dir must contain the
 # full path name of this file's directory.
 
-package ifneeded testcl 0.9 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]
+package ifneeded testcl 0.9 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]\n[list source [file join $dir src/irulehttp.tcl]]
 
 # Disable certain Tcl commands from iRules
 source [file join $dir src/disabled_commands.tcl]
