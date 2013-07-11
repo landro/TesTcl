@@ -58,14 +58,20 @@ proc ::testcl::when {event body} {
     log::log info "when invoked with expected event $event finished, return code: $rc  result: $result"
 
     variable expectedEvent
+    variable expectedEndState
+    if { ![info exist expectedEndState] } {
+      log::log debug "endstate verification skept - undefined in current \"it\" statement"
+      if {$rc != 0} {
+        error "Expected return code 0, got $rc"
+      }
+      return -code 2000 "when $event"
+    }
 
     if {$expectedEvent eq "HTTP_REQUEST"} {
 
       if {$rc != 1000} {
         error "Expected end state with return code 1000, got $rc"
       }
-
-      variable expectedEndState
 
       if {$result ne $expectedEndState} {
         error "Expected end state $expectedEndState, got $result"
