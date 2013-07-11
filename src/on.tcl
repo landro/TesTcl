@@ -4,8 +4,10 @@ package require log
 namespace eval ::testcl {
   variable expectations {}
   variable expectedEndState
+  variable verifications {}
   namespace export on
   namespace export endstate
+  namespace export verify
   namespace export unknown
 }
 
@@ -25,7 +27,6 @@ proc ::testcl::on {args} {
   log::log debug "on called with the following [llength $args] arguments: $args"
   variable expectations
   lappend expectations $args
-  
 }
 
 # testcl::endstate --
@@ -57,6 +58,63 @@ proc ::testcl::endstate {args} {
     error $errorMessage
   }
   set expectedEndState $args
+}
+
+# testcl::verify --
+#
+# Proc to setup verification required after iRule evaluation
+#
+# Arguments:
+# description Description of verification
+# result Result to compare with outcome from verification body evaluation
+# condition Comparison operator
+# body Verification code to evaluate
+#
+# Side Effects:
+# None.
+#
+# Results:
+# None.
+proc ::testcl::verify {description result condition body} {
+  log::log debug "verify called with args: $description $result $condition $body"
+  variable verifications
+  lappend verifications [list $description $result $condition $body]
+}
+
+# testcl::verifyEvaluate --
+#
+# Proc to evaluate all registered verifications after iRule execution
+# for intenal usage in tectcl package (excluded from namespace export)
+#
+# Arguments:
+# None.
+#
+# Side Effects:
+# None.
+#
+# Results:
+# Error message on verification failure.
+proc ::testcl::verifyEvaluate {} {
+  log::log debug "verify evaluate called"
+  variable verifications
+  foreach verification $verifications {
+    log::log debug "verification of '$verification'"
+    lassign $verification description result condition body
+    set rc [catch $body res]
+    if {$rc != 0} {
+      set errorMessage "Unexpected error during invocation of \"verify '$description'\": rc=$rc, res=$res"
+      puts "\n$errorMessage\n"
+      puts "You should fix a body of an \"verify\" statement in your \"it\" block:\n"
+      puts "\{\n"
+      puts "$body"
+      puts "\}\n"
+      error $errorMessage
+    }
+    if { ![expr "{$result} $condition {$res}"] } {
+      return "Verification '$description' failed - expression: {$result} $condition {$res}"
+    }
+	puts "verification of '$description' done."
+  }
 }
 
 rename unknown ::tcl::unknown
@@ -122,4 +180,3 @@ proc ::testcl::unknown {args} {
   # TODO?
   #uplevel ::tcl::unknown $args
 }
-
