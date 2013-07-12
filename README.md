@@ -24,6 +24,11 @@ Let's say you want to test the following simple iRule found in *simple_irule.tcl
         }
       }
 
+      when HTTP_RESPONSE {
+        HTTP::header remove "Vary"
+        HTTP::header insert Vary "Accept-Encoding"
+      }
+
     }
 
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
@@ -46,6 +51,15 @@ Now, create a file called *test_simple_irule.tcl* containing the following lines
       on HTTP::uri return "/foo/admin"
       endstate pool foo
       run simple_irule.tcl simple
+    }
+
+    it "should replace existing Vary http response headers with Accept-Encoding value" {
+      event HTTP_RESPONSE
+      verify "there should be only one Vary header" 1 == {HTTP::header count vary}
+      verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
+      HTTP::header insert Vary "dummy value"
+      HTTP::header insert Vary "another dummy value"
+      run irules/simple_irule.tcl simple
     }
 
 #### Installing JTcl including jtcl-irule extensions
@@ -98,21 +112,46 @@ This should give you the following output:
     **************************************************************************
     -> Test ok
 
+    **************************************************************************
+    * it should replace existing Vary http response headers with Accept-Encoding value
+    **************************************************************************
+    verification of 'there should be only one Vary header' done.
+    verification of 'there should be Accept-Encoding value in Vary header' done.
+    -> Test ok
+
 #### Explanations
 
 - Require the **testcl** package and import the commands and variables found in the **testcl** namespace to use it.
 - Enable or disable logging
 - Add the specification tests
-  - Describe every _it_ statement as precisely as possible.  
+  - Describe every _it_ statement as precisely as possible.
   - Add an _event_ . This is mandatory.
   - Add one or several _on_ statements to setup expectations/mocks. If you don't care about the return value, return "".
-  - Add an _endstate_. This could be a _pool_, _HTTP::respond_ or _HTTP::redirect_ call . This is mandatory.
+  - Add an _endstate_. This could be a _pool_, _HTTP::respond_ or _HTTP::redirect_ call.
+  - Add an _verify_. This is condition to evaluate after iRule execution. Describe every verification as precisely as possible, add as many verification as needed in particular test scenario.
+  - Add an HTTP::header initialization if you are testing modification of HTTP headers.
   - Add a _run_ statement in order to actually run the Tcl script file containing your iRule. This is mandatory.
+
+_it_ statement has two arguments, description and code to execute as test case.
+_event_ statement has single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.
+_on_ statement has following syntax: _on_ ... (return|error) result
+_endstate_ statement accepts 2 to 5 arguments which are matched with command to stop processing iRule with success in test case evaluation.
+_verify_ statement four arguments. Syntax: _verify_ "DESCRIPTION" value _CONDITION_ {verification code}
+    - _description_ is displayed during verification execution
+    - _value_ is expected result of verification code
+    - _condition_ is operator used during comparison of _value_ with code result (ex. ==, !=, eq).
+    - _verification_code_ is code to evaluate after iRule execution
+_run_ statement has two arguments, file name of iRule source and name of iRule to execute
+
+There is ready to use _HTTP::header_ mockup implementation, which simulates behavior of original F5 implementation (as described at [link](https://devcentral.f5.com/wiki/irules.HTTP__header.ashx)). However _insert_modssl_fields_ subcommand is not supported in current version.
+
 
 #### Avoiding code duplication using the before command
 
 In order to avoid code duplication, one can use the _before_ command.
 The argument passed to the _before_ command will be executed _before_ the following _it_ specifications.
+
+NB! Be carefull with using _on_ commands in _before_. If there will be another definition of the same expectation in _it_ statement, only first one will be in use (this one set in _before_).
 
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
@@ -136,6 +175,17 @@ Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
       on HTTP::uri return "/foo/admin"
       endstate pool foo
       run simple_irule.tcl simple
+    }
+
+    it "should replace existing Vary http response headers with Accept-Encoding value" {
+      # NB! override event type set in before
+      event HTTP_RESPONSE
+
+      verify "there should be only one Vary header" 1 == {HTTP::header count vary}
+      verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
+      HTTP::header insert Vary "dummy value"
+      HTTP::header insert Vary "another dummy value"
+      run irules/simple_irule.tcl simple
     }
 
 On a side note, it's worth mentioning that there is no _after_ command, since we're always dealing with mocks.
@@ -244,6 +294,68 @@ The specs for this iRule would look like this:
       on HTTP::uri return "/cannot_be_handled"
       endstate HTTP::respond 404
       run advanced_irule.tcl advanced
+    }
+
+
+### Modification of HTTP headers example
+
+Let's have a look at a another iRule (headers_irule.tcl):
+    
+    rule headers {
+    
+      #notify backend about SSL using X-Forwarded-SSL http header
+      #if there is client certificate put common name into X-Common-Name-SSL http header
+      #if not make sure X-Common-Name-SSL header is not set
+      when HTTP_REQUEST {
+        HTTP::header insert X-Forwarded-SSL true
+        HTTP::header remove X-Common-Name-SSL
+        
+        if { [SSL::cert count] > 0 } {
+          set ssl_cert [SSL::cert 0]
+          set subject [X509::subject $ssl_cert]
+          set cn ""
+          foreach { label value } [split $subject ",="] {
+            set label [string toupper [string trim $label]]
+            set value [string trim $value]
+            
+            if { $label == "CN" } {
+              set cn "$value"
+              break
+            }
+          }
+        
+          HTTP::header insert X-Common-Name-SSL "$cn"
+        }
+      }
+    
+    }
+
+The example specs for this iRule would look like this:
+
+    package require -exact testcl 0.9
+    namespace import ::testcl::*
+
+    # Comment out to suppress logging
+    #log::lvSuppressLE info 0
+
+    before {
+      event HTTP_REQUEST
+      verify "There should be always set HTTP header X-Forwarded-SSL to true" true eq {HTTP::header X-Forwarded-SSL}
+    }
+
+    it "should remove X-Common-Name-SSL header from request if there was no client SSL certificate" {
+      HTTP::header insert X-Common-Name-SSL "testCommonName"
+      on SSL::cert count return 0
+      verify "There should be no X-Common-Name-SSL" 0 == {HTTP::header exists X-Common-Name-SSL}
+      run irules/headers_irule.tcl headers
+    }
+
+    it "should add X-Common-Name-SSL with Common Name from client SSL certificate if it was available" {
+      on SSL::cert count return 1
+      on SSL::cert 0 return {}
+      on X509::subject [SSL::cert 0] return "CN=testCommonName,DN=abc.de.fg"
+      verify "X-Common-Name-SSL HTTP header value is the same as CN" "testCommonName" eq {HTTP::header X-Common-Name-SSL}
+      run irules/headers_irule.tcl headers
     }
 
 ## How stable is this code?

@@ -17,7 +17,7 @@ namespace eval ::testcl {
 # None
 #
 # Side Effects:
-# Resets expectations
+# Resets expectations, end state, verifications and headers
 #
 # Results:
 # None.
@@ -37,6 +37,13 @@ proc ::testcl::reset_expectations { } {
     log::log debug "Reset expected event"
     unset expectedEvent
   }
+  variable verifications
+  if { [info exists verifications] } {
+    log::log debug "Reset expected verifications"
+	set verifications {}
+  }
+  log::log debug "Reset HTTP headers"
+  HTTP::header remove
 }
 
 # testcl::before --
@@ -89,6 +96,13 @@ proc ::testcl::it {description body} {
 
   variable nbOfTestFailures
   set rc [catch $body result]
+  
+  if {$rc == 0} {
+    set result [::testcl::verifyEvaluate]
+	if {$result ne ""} {
+	  set rc 1
+	}
+  }
   
   if {$rc != 0 } {
     puts "-> Test failure!!"
