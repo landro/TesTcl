@@ -31,19 +31,22 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h1>Introduction</h1>
+        <h1>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
 
 <p><strong>TesTcl</strong> is a <a href="http://en.wikipedia.org/wiki/Tcl">Tcl</a> library for unit testing
 <a href="https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx">iRules</a> which 
 are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BigIP</a> devices.
 The goal of this library is to make it easy to unit test iRules used when load balancing HTTP traffic.</p>
 
-<h2>Getting started</h2>
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting started</h2>
 
 <p>If you're familiar with unit testing and <a href="http://en.wikipedia.org/wiki/Mock_object">mocking</a> in particular,
 using TesTcl should't be to hard. Check out the examples below:</p>
 
-<h3>Simple example</h3>
+<h3>
+<a name="simple-example" class="anchor" href="#simple-example"><span class="octicon octicon-link"></span></a>Simple example</h3>
 
 <p>Let's say you want to test the following simple iRule found in <em>simple_irule.tcl</em>:</p>
 
@@ -55,6 +58,11 @@ using TesTcl should't be to hard. Check out the examples below:</p>
     } else {
       pool bar
     }
+  }
+
+  when HTTP_RESPONSE {
+    HTTP::header remove "Vary"
+    HTTP::header insert Vary "Accept-Encoding"
   }
 
 }
@@ -81,15 +89,27 @@ it "should handle request using pool foo" {
   endstate pool foo
   run simple_irule.tcl simple
 }
+
+it "should replace existing Vary http response headers with Accept-Encoding value" {
+  event HTTP_RESPONSE
+  verify "there should be only one Vary header" 1 == {HTTP::header count vary}
+  verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
+  HTTP::header insert Vary "dummy value"
+  HTTP::header insert Vary "another dummy value"
+  run irules/simple_irule.tcl simple
+}
 </code></pre>
 
-<h4>Installing JTcl including jtcl-irule extensions</h4>
+<h4>
+<a name="installing-jtcl-including-jtcl-irule-extensions" class="anchor" href="#installing-jtcl-including-jtcl-irule-extensions"><span class="octicon octicon-link"></span></a>Installing JTcl including jtcl-irule extensions</h4>
 
-<h5>Install JTcl</h5>
+<h5>
+<a name="install-jtcl" class="anchor" href="#install-jtcl"><span class="octicon octicon-link"></span></a>Install JTcl</h5>
 
 <p>Download <a href="http://jtcl.kenai.com/">JTcl</a>, unzip it and add it to your path.</p>
 
-<h5>Add jtcl-irule to your JTcl installation</h5>
+<h5>
+<a name="add-jtcl-irule-to-your-jtcl-installation" class="anchor" href="#add-jtcl-irule-to-your-jtcl-installation"><span class="octicon octicon-link"></span></a>Add jtcl-irule to your JTcl installation</h5>
 
 <p>Add the <a href="http://landro.github.com/jtcl-irule/">jtcl-irule</a> extension to JTcl. If you don't have the time to build it yourself, you can download the 
 jar artifact from the <a href="https://github.com/landro/TesTcl/downloads">downloads</a> section or you can use the direct <a href="https://github.com/downloads/landro/TesTcl/jtcl-irule.jar">link</a>.
@@ -100,7 +120,8 @@ Put the following line just above the last line in the script</p>
 <pre><code>export CLASSPATH=$dir/jtcl-irule.jar:$CLASSPATH
 </code></pre>
 
-<h5>Verify installation</h5>
+<h5>
+<a name="verify-installation" class="anchor" href="#verify-installation"><span class="octicon octicon-link"></span></a>Verify installation</h5>
 
 <p>Create a script file named <em>jtcl test_jtcl_irule.tcl</em> containing the following lines </p>
 
@@ -116,7 +137,8 @@ Put the following line just above the last line in the script</p>
 
 <p>You should get a success message.</p>
 
-<h5>Add the testcl library to your library path</h5>
+<h5>
+<a name="add-the-testcl-library-to-your-library-path" class="anchor" href="#add-the-testcl-library-to-your-library-path"><span class="octicon octicon-link"></span></a>Add the testcl library to your library path</h5>
 
 <p>Download directory containing all the files found in this project (zip and tar.gz can be downloaded from this page)
 Unzip, and add unzipped directory to the <a href="http://jtcl.kenai.com/gettingstarted.html">TCLLIBPATH</a> environment variable:</p>
@@ -140,9 +162,17 @@ Unzip, and add unzipped directory to the <a href="http://jtcl.kenai.com/gettings
 * it should handle request using pool foo
 **************************************************************************
 -&gt; Test ok
+
+**************************************************************************
+* it should replace existing Vary http response headers with Accept-Encoding value
+**************************************************************************
+verification of 'there should be only one Vary header' done.
+verification of 'there should be Accept-Encoding value in Vary header' done.
+-&gt; Test ok
 </code></pre>
 
-<h4>Explanations</h4>
+<h4>
+<a name="explanations" class="anchor" href="#explanations"><span class="octicon octicon-link"></span></a>Explanations</h4>
 
 <ul>
 <li>Require the <strong>testcl</strong> package and import the commands and variables found in the <strong>testcl</strong> namespace to use it.</li>
@@ -150,18 +180,35 @@ Unzip, and add unzipped directory to the <a href="http://jtcl.kenai.com/gettings
 <li>Add the specification tests
 
 <ul>
-<li>Describe every <em>it</em> statement as precisely as possible.<br>
-</li>
+<li>Describe every <em>it</em> statement as precisely as possible.</li>
 <li>Add an <em>event</em> . This is mandatory.</li>
 <li>Add one or several <em>on</em> statements to setup expectations/mocks. If you don't care about the return value, return "".</li>
-<li>Add an <em>endstate</em>. This could be a <em>pool</em>, <em>HTTP::respond</em> or <em>HTTP::redirect</em> call . This is mandatory.</li>
+<li>Add an <em>endstate</em>. This could be a <em>pool</em>, <em>HTTP::respond</em> or <em>HTTP::redirect</em> call.</li>
+<li>Add an <em>verify</em>. This is condition to evaluate after iRule execution. Describe every verification as precisely as possible, add as many verification as needed in particular test scenario.</li>
+<li>Add an HTTP::header initialization if you are testing modification of HTTP headers.</li>
 <li>Add a <em>run</em> statement in order to actually run the Tcl script file containing your iRule. This is mandatory.</li>
 </ul>
 </li>
-</ul><h4>Avoiding code duplication using the before command</h4>
+</ul><p><em>it</em> statement has two arguments, description and code to execute as test case.
+<em>event</em> statement has single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.
+<em>on</em> statement has following syntax: <em>on</em> ... (return|error) result
+<em>endstate</em> statement accepts 2 to 5 arguments which are matched with command to stop processing iRule with success in test case evaluation.
+<em>verify</em> statement four arguments. Syntax: <em>verify</em> "DESCRIPTION" value <em>CONDITION</em> {verification code}
+    - <em>description</em> is displayed during verification execution
+    - <em>value</em> is expected result of verification code
+    - <em>condition</em> is operator used during comparison of <em>value</em> with code result (ex. ==, !=, eq).
+    - <em>verification_code</em> is code to evaluate after iRule execution
+<em>run</em> statement has two arguments, file name of iRule source and name of iRule to execute</p>
+
+<p>There is ready to use <em>HTTP::header</em> mockup implementation, which simulates behavior of original F5 implementation (as described at <a href="https://devcentral.f5.com/wiki/irules.HTTP__header.ashx">link</a>). However <em>insert_modssl_fields</em> subcommand is not supported in current version.</p>
+
+<h4>
+<a name="avoiding-code-duplication-using-the-before-command" class="anchor" href="#avoiding-code-duplication-using-the-before-command"><span class="octicon octicon-link"></span></a>Avoiding code duplication using the before command</h4>
 
 <p>In order to avoid code duplication, one can use the <em>before</em> command.
 The argument passed to the <em>before</em> command will be executed <em>before</em> the following <em>it</em> specifications.</p>
+
+<p>NB! Be carefull with using <em>on</em> commands in <em>before</em>. If there will be another definition of the same expectation in <em>it</em> statement, only first one will be in use (this one set in <em>before</em>).</p>
 
 <p>Using the <em>before</em> command, <em>test_simple_irule.tcl</em> can be rewritten as:</p>
 
@@ -186,11 +233,23 @@ it "should handle request using pool foo" {
   endstate pool foo
   run simple_irule.tcl simple
 }
+
+it "should replace existing Vary http response headers with Accept-Encoding value" {
+  # NB! override event type set in before
+  event HTTP_RESPONSE
+
+  verify "there should be only one Vary header" 1 == {HTTP::header count vary}
+  verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
+  HTTP::header insert Vary "dummy value"
+  HTTP::header insert Vary "another dummy value"
+  run irules/simple_irule.tcl simple
+}
 </code></pre>
 
 <p>On a side note, it's worth mentioning that there is no <em>after</em> command, since we're always dealing with mocks.</p>
 
-<h3>Advanced example</h3>
+<h3>
+<a name="advanced-example" class="anchor" href="#advanced-example"><span class="octicon octicon-link"></span></a>Advanced example</h3>
 
 <p>Let's have a look at a more advanced iRule (advanced_irule.tcl):</p>
 
@@ -241,7 +300,7 @@ namespace import ::testcl::*
 
 before {
   event HTTP_REQUEST
-  on HTTP::header insert X-Forwarded-SSL true return ""
+  HTTP::header insert X-Forwarded-SSL true
 }
 
 it "should handle admin request using pool admin when credentials are valid" {
@@ -270,7 +329,7 @@ it "should block access to uri /blocked" {
 it "should give apache http client a correct error code when app pool is down" {
   on HTTP::uri return "/app"
   on active_members pool_application return 0
-  on HTTP::header User-Agent return "Apache HTTP Client"
+  HTTP::header insert User-Agent "Apache HTTP Client"
   endstate HTTP::respond 503
   run advanced_irule.tcl advanced
 }
@@ -278,7 +337,7 @@ it "should give apache http client a correct error code when app pool is down" {
 it "should give other clients then apache http client redirect to fallback when app pool is down" {
   on HTTP::uri return "/app"
   on active_members pool_application return 0
-  on HTTP::header User-Agent return "Firefox 13.0.1"
+  HTTP::header insert User-Agent "Firefox 13.0.1"
   endstate HTTP::redirect "http://fallback.com"
   run advanced_irule.tcl advanced
 }
@@ -296,13 +355,81 @@ it "should give 404 when request cannot be handled" {
   endstate HTTP::respond 404
   run advanced_irule.tcl advanced
 }
+
+stats
 </code></pre>
 
-<h2>How stable is this code?</h2>
+<h3>
+<a name="modification-of-http-headers-example" class="anchor" href="#modification-of-http-headers-example"><span class="octicon octicon-link"></span></a>Modification of HTTP headers example</h3>
+
+<p>Let's have a look at a another iRule (headers_irule.tcl):</p>
+
+<pre><code>rule headers {
+
+  #notify backend about SSL using X-Forwarded-SSL http header
+  #if there is client certificate put common name into X-Common-Name-SSL http header
+  #if not make sure X-Common-Name-SSL header is not set
+  when HTTP_REQUEST {
+    HTTP::header insert X-Forwarded-SSL true
+    HTTP::header remove X-Common-Name-SSL
+
+    if { [SSL::cert count] &gt; 0 } {
+      set ssl_cert [SSL::cert 0]
+      set subject [X509::subject $ssl_cert]
+      set cn ""
+      foreach { label value } [split $subject ",="] {
+        set label [string toupper [string trim $label]]
+        set value [string trim $value]
+
+        if { $label == "CN" } {
+          set cn "$value"
+          break
+        }
+      }
+
+      HTTP::header insert X-Common-Name-SSL "$cn"
+    }
+  }
+
+}
+</code></pre>
+
+<p>The example specs for this iRule would look like this:</p>
+
+<pre><code>package require -exact testcl 0.9
+namespace import ::testcl::*
+
+# Comment out to suppress logging
+#log::lvSuppressLE info 0
+
+before {
+  event HTTP_REQUEST
+  verify "There should be always set HTTP header X-Forwarded-SSL to true" true eq {HTTP::header X-Forwarded-SSL}
+}
+
+it "should remove X-Common-Name-SSL header from request if there was no client SSL certificate" {
+  HTTP::header insert X-Common-Name-SSL "testCommonName"
+  on SSL::cert count return 0
+  verify "There should be no X-Common-Name-SSL" 0 == {HTTP::header exists X-Common-Name-SSL}
+  run irules/headers_irule.tcl headers
+}
+
+it "should add X-Common-Name-SSL with Common Name from client SSL certificate if it was available" {
+  on SSL::cert count return 1
+  on SSL::cert 0 return {}
+  on X509::subject [SSL::cert 0] return "CN=testCommonName,DN=abc.de.fg"
+  verify "X-Common-Name-SSL HTTP header value is the same as CN" "testCommonName" eq {HTTP::header X-Common-Name-SSL}
+  run irules/headers_irule.tcl headers
+}
+</code></pre>
+
+<h2>
+<a name="how-stable-is-this-code" class="anchor" href="#how-stable-is-this-code"><span class="octicon octicon-link"></span></a>How stable is this code?</h2>
 
 <p>This work is quite stable, but you can expect minor breaking changes.</p>
 
-<h2>Why I created this project</h2>
+<h2>
+<a name="why-i-created-this-project" class="anchor" href="#why-i-created-this-project"><span class="octicon octicon-link"></span></a>Why I created this project</h2>
 
 <p>Configuring BigIP devices is no trivial task, and typically falls in under a DevOps kind of role.
 In order to make your system perform the best it can, you need:</p>
@@ -340,16 +467,19 @@ In order to make your system perform the best it can, you need:</p>
 <li>Development roundtrip-time is forever, since deployment to BigIP sometimes can take several minutes</li>
 </ul><p>Clearly, <strong>manual</strong> testing is not the way forward!</p>
 
-<h2>Getting help</h2>
+<h2>
+<a name="getting-help" class="anchor" href="#getting-help"><span class="octicon octicon-link"></span></a>Getting help</h2>
 
 <p>Post questions to the group at <a href="https://groups.google.com/forum/?fromgroups#!forum/testcl-user">TesTcl user group</a><br>
 File bugs over at <a href="https://github.com/landro/TesTcl">github</a></p>
 
-<h2>License</h2>
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>Just like JTcl, TesTcl is licensed under a BSD-style license. </p>
 
-<h2>Please please please</h2>
+<h2>
+<a name="please-please-please" class="anchor" href="#please-please-please"><span class="octicon octicon-link"></span></a>Please please please</h2>
 
 <p>Drop me a line if you use this library and find it useful: stefan.landro <strong>you know what</strong> gmail.com</p>
 
