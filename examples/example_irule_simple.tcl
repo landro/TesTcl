@@ -39,16 +39,16 @@ it "should handle request using pool foo" {
 }
 
 it "should replace existing Vary http response headers with Accept-Encoding value" {
-	#override event type set in before
-	event HTTP_RESPONSE
-	#define verifications
-	verify "there should be only one Vary header" 1 == {HTTP::header count vary}
-	verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
-	#initialize HTTP headers
-	HTTP::header insert Vary "dummy value"
-	HTTP::header insert Vary "another dummy value"
-	#execute iRule
-	run irules/simple_irule.tcl simple
+  #override event type set in before
+  event HTTP_RESPONSE
+  #define verifications
+  verify "there should be only one Vary header" 1 == {HTTP::header count vary}
+  verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
+  #initialize HTTP headers
+  HTTP::header insert Vary "dummy value"
+  HTTP::header insert Vary "another dummy value"
+  #execute iRule
+  run irules/simple_irule.tcl simple
 }
 
 stats
