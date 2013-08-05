@@ -60,7 +60,7 @@ proc ::testcl::when {event body} {
     variable expectedEvent
     variable expectedEndState
     if { ![info exist expectedEndState] } {
-      log::log debug "endstate verification skept - undefined in current \"it\" statement"
+      log::log debug "endstate verification skipped - undefined in current \"it\" context"
       if {$rc != 0} {
         error "Expected return code 0, got $rc"
       }
