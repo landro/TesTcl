@@ -1,6 +1,7 @@
 source src/on.tcl
 source src/assert.tcl
 source src/onirule.tcl
+source src/irulehttp.tcl
 source src/it.tcl
 namespace import ::testcl::*
 
@@ -9,8 +10,8 @@ namespace import ::testcl::*
 
 it "should modify response" {
   event HTTP_RESPONSE
-  on HTTP::header remove "Vary" return ""
-  on HTTP::header insert Vary "Accept-Encoding" return ""
+  HTTP::header remove "Vary"
+  HTTP::header insert Vary "Accept-Encoding"
   run irules/simple_irule.tcl simple
 }
 

@@ -1,6 +1,7 @@
 source src/on.tcl
 source src/assert.tcl
 source src/onirule.tcl
+source src/irulehttp.tcl
 source src/it.tcl
 namespace import ::testcl::*
 

@@ -1,6 +1,7 @@
 source src/on.tcl
 source src/assert.tcl
 source src/onirule.tcl
+source src/irulehttp.tcl
 source src/it.tcl
 namespace import ::testcl::*
 
@@ -9,7 +10,6 @@ namespace import ::testcl::*
 
 before {
   event HTTP_REQUEST
-  on HTTP::header insert X-Forwarded-SSL true return ""
 }
 
 it "should handle admin request using pool admin when credentials are valid" {
@@ -38,7 +38,7 @@ it "should block access to uri /blocked" {
 it "should give apache http client a correct error code when app pool is down" {
   on HTTP::uri return "/app"
   on active_members pool_application return 0
-  on HTTP::header User-Agent return "Apache HTTP Client"
+  HTTP::header insert User-Agent "Apache HTTP Client"
   endstate HTTP::respond 503
   run irules/advanced_irule.tcl advanced
 }
@@ -46,7 +46,7 @@ it "should give apache http client a correct error code when app pool is down" {
 it "should give other clients then apache http client redirect to fallback when app pool is down" {
   on HTTP::uri return "/app"
   on active_members pool_application return 0
-  on HTTP::header User-Agent return "Firefox 13.0.1"
+  HTTP::header insert User-Agent "Firefox 13.0.1"
   endstate HTTP::redirect "http://fallback.com"
   run irules/advanced_irule.tcl advanced
 }

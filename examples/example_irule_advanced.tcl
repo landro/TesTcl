@@ -20,7 +20,6 @@ namespace import ::testcl::*
 
 before {
   event HTTP_REQUEST
-  on HTTP::header insert X-Forwarded-SSL true return ""
 }
 
 it "should handle admin request using pool admin when credentials are valid" {
