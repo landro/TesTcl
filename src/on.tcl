@@ -9,6 +9,7 @@ namespace eval ::testcl {
   namespace export endstate
   namespace export verify
   namespace export unknown
+  namespace export expected
 }
 
 # testcl::on --
@@ -136,6 +137,40 @@ rename unknown ::tcl::unknown
 proc ::testcl::unknown {args} {
 
   log::log debug "unknown called with args: $args"
+
+  set rc [catch { return [::testcl::expected {*}$args] } res]
+  if {$rc != 1100} {
+    return $res
+  }
+  
+  set errorMessage "Unexpected unknown command invocation '$args'"
+  puts "\n$errorMessage\n"
+  puts "Maybe you should add an \"on\" statement similar to the one below to your \"it\" block?\n"
+  puts "    it \"your description\" \{"
+  puts "      ..."
+  puts "      on $args return \"your return value\""
+  puts "      ..."
+  puts "    \}\n"
+  error $errorMessage
+  # TODO?
+  #uplevel ::tcl::unknown $args
+}
+
+# testcl::expected --
+#
+# verify if there is mock available for command
+#
+# Arguments:
+# Any
+#
+# Side Effects:
+# None
+#
+# Results:
+# Whatever your expectation says - 1100 return code if there is no expectation found
+proc ::testcl::expected {args} {
+
+  log::log debug "expected called with args: $args"
   variable expectations
 
   if { [llength $expectations] > 0 } {
@@ -168,15 +203,5 @@ proc ::testcl::unknown {args} {
     }
 
   }
-  set errorMessage "Unexpected unknown command invocation '$args'"
-  puts "\n$errorMessage\n"
-  puts "Maybe you should add an \"on\" statement similar to the one below to your \"it\" block?\n"
-  puts "    it \"your description\" \{"
-  puts "      ..."
-  puts "      on $args return \"your return value\""
-  puts "      ..."
-  puts "    \}\n"
-  error $errorMessage
-  # TODO?
-  #uplevel ::tcl::unknown $args
+  return -code 1100 "expectation not found"
 }
