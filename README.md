@@ -240,7 +240,7 @@ The specs for this iRule would look like this:
 
     before {
       event HTTP_REQUEST
-      on HTTP::header insert X-Forwarded-SSL true return ""
+      HTTP::header insert X-Forwarded-SSL true
     }
 
     it "should handle admin request using pool admin when credentials are valid" {
@@ -269,7 +269,7 @@ The specs for this iRule would look like this:
     it "should give apache http client a correct error code when app pool is down" {
       on HTTP::uri return "/app"
       on active_members pool_application return 0
-      on HTTP::header User-Agent return "Apache HTTP Client"
+      HTTP::header insert User-Agent "Apache HTTP Client"
       endstate HTTP::respond 503
       run advanced_irule.tcl advanced
     }
@@ -277,7 +277,7 @@ The specs for this iRule would look like this:
     it "should give other clients then apache http client redirect to fallback when app pool is down" {
       on HTTP::uri return "/app"
       on active_members pool_application return 0
-      on HTTP::header User-Agent return "Firefox 13.0.1"
+      HTTP::header insert User-Agent "Firefox 13.0.1"
       endstate HTTP::redirect "http://fallback.com"
       run advanced_irule.tcl advanced
     }
@@ -295,6 +295,8 @@ The specs for this iRule would look like this:
       endstate HTTP::respond 404
       run advanced_irule.tcl advanced
     }
+    
+    stats
 
 
 ### Modification of HTTP headers example
