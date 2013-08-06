@@ -40,10 +40,15 @@ proc ::testcl::reset_expectations { } {
   variable verifications
   if { [info exists verifications] } {
     log::log debug "Reset expected verifications"
-	set verifications {}
+    set verifications {}
   }
-  log::log debug "Reset HTTP headers"
-  HTTP::header remove
+  variable headers
+  if { [info exists headers] } {
+    log::log debug "Reset HTTP headers"
+    array unset headers
+    variable lws
+    set lws 0
+  }
 }
 
 # testcl::before --
