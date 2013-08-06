@@ -140,6 +140,10 @@ proc ::testcl::unknown {args} {
 
   set rc [catch { return [::testcl::expected {*}$args] } res]
   if {$rc != 1100} {
+    log::log debug "rc from expected: $rc"
+    if {$rc == 1000} {
+      return -code 1000 $res
+    }
     return $res
   }
   
@@ -167,7 +171,7 @@ proc ::testcl::unknown {args} {
 # None
 #
 # Results:
-# Whatever your expectation says - 1100 return code if there is no expectation found
+# Whatever your expectation says
 proc ::testcl::expected {args} {
 
   log::log debug "expected called with args: $args"
