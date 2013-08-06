@@ -138,7 +138,8 @@ proc ::testcl::unknown {args} {
 
   log::log debug "unknown called with args: $args"
 
-  set rc [catch { return [::testcl::expected {*}$args] } res]
+  #set rc [catch { return [::testcl::expected {*}$args] } res]
+  set rc [catch { return [eval ::testcl::expected $args] } res]
   if {$rc != 1100} {
     log::log debug "rc from expected: $rc"
     if {$rc == 1000} {
