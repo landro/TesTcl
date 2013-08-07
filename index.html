@@ -70,7 +70,7 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 
 <p>Now, create a file called <em>test_simple_irule.tcl</em> containing the following lines:</p>
 
-<pre><code>package require -exact testcl 0.9
+<pre><code>package require -exact testcl 1.0
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -183,7 +183,7 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 <li>Describe every <em>it</em> statement as precisely as possible.</li>
 <li>Add an <em>event</em> . This is mandatory.</li>
 <li>Add one or several <em>on</em> statements to setup expectations/mocks. If you don't care about the return value, return "".</li>
-<li>Add an <em>endstate</em>. This could be a <em>pool</em>, <em>HTTP::respond</em> or <em>HTTP::redirect</em> call.</li>
+<li>Add an <em>endstate</em>. This could be a <em>pool</em>, <em>HTTP::respond</em>, <em>HTTP::redirect</em> or any other function call (see <a href="https://devcentral.f5.com/tech-tips/articles/-the101-irules-101-routing#.UW0OwoLfeN4">link</a>).</li>
 <li>Add an <em>verify</em>. This is condition to evaluate after iRule execution. Describe every verification as precisely as possible, add as many verification as needed in particular test scenario.</li>
 <li>Add an HTTP::header initialization if you are testing modification of HTTP headers.</li>
 <li>Add a <em>run</em> statement in order to actually run the Tcl script file containing your iRule. This is mandatory.</li>
@@ -212,7 +212,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>Using the <em>before</em> command, <em>test_simple_irule.tcl</em> can be rewritten as:</p>
 
-<pre><code>package require -exact testcl 0.9
+<pre><code>package require -exact testcl 1.0
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -292,7 +292,7 @@ it "should replace existing Vary http response headers with Accept-Encoding valu
 
 <p>The specs for this iRule would look like this:</p>
 
-<pre><code>package require -exact testcl 0.9
+<pre><code>package require -exact testcl 1.0
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -396,7 +396,7 @@ stats
 
 <p>The example specs for this iRule would look like this:</p>
 
-<pre><code>package require -exact testcl 0.9
+<pre><code>package require -exact testcl 1.0
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -468,12 +468,53 @@ In order to make your system perform the best it can, you need:</p>
 </ul><p>Clearly, <strong>manual</strong> testing is not the way forward!</p>
 
 <h2>
+<a name="test-matrix-and-compatibility" class="anchor" href="#test-matrix-and-compatibility"><span class="octicon octicon-link"></span></a>Test matrix and compatibility</h2>
+
+<table>
+<thead><tr>
+<th></th>
+<th>Mac Os X</th>
+<th>Windows</th>
+<th>Cygwin</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>JTcl  2.6.0</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes*</td>
+</tr>
+<tr>
+<td>Tclsh 8.6</td>
+<td>?</td>
+<td>yes*</td>
+<td></td>
+</tr>
+</tbody>
+</table><p>The * indicates support only for standard Tcl commands</p>
+
+<h2>
 <a name="getting-help" class="anchor" href="#getting-help"><span class="octicon octicon-link"></span></a>Getting help</h2>
 
 <p>Post questions to the group at <a href="https://groups.google.com/forum/?fromgroups#!forum/testcl-user">TesTcl user group</a><br>
 File bugs over at <a href="https://github.com/landro/TesTcl">github</a></p>
 
 <h2>
+<a name="contributing-code" class="anchor" href="#contributing-code"><span class="octicon octicon-link"></span></a>Contributing code</h2>
+
+<p>Contributions are very welcomed. There are just a few things to remember:</p>
+
+<ul>
+<li>Run tests against JTcl since the custom iRule extensions have only been implemented to that Tcl implementations
+
+<ul>
+<li>Run <em>examples.sh</em> and <em>tests.sh</em> or their Windows equivalents, and verify output</li>
+</ul>
+</li>
+<li>Please follow existing coding style and indentation (2 spaces for tabs)</li>
+<li>Add new example or test if appropriate</li>
+<li>Add or update documentation when necessary and make sure it is correct (as in test it)</li>
+</ul><h2>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>Just like JTcl, TesTcl is licensed under a BSD-style license. </p>
