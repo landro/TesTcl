@@ -396,6 +396,15 @@ There are lots of issues with this **manual** approach:
 
 Clearly, **manual** testing is not the way forward!
 
+## Test matrix and compatibility
+
+|               | Mac Os X      | Windows| Cygwin |
+| ------------- |---------------|--------|--------|
+| JTcl  2.6.0   | yes           | yes    | yes*   |
+| Tclsh 8.6     | ?             | yes*   |        |
+
+The * indicates support only for standard Tcl commands
+
 ## Getting help
 
 Post questions to the group at [TesTcl user group](https://groups.google.com/forum/?fromgroups#!forum/testcl-user)  
