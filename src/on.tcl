@@ -38,26 +38,13 @@ proc ::testcl::on {args} {
 # args  any number of arguments
 #
 # Side Effects:
-# Adds expectation about endstate.
+# None.
 #
 # Results:
 # None.
 proc ::testcl::endstate {args} {
   log::log debug "endstate called with args: $args"
   variable expectedEndState
-  if { [llength $args] == 2 } {
-    on [lindex $args 0] [lindex $args 1] end endstate
-  } elseif { [llength $args] == 3 } {
-    on [lindex $args 0] [lindex $args 1] [lindex $args 2] end endstate
-  } elseif { [llength $args] == 4 } {
-    on [lindex $args 0] [lindex $args 1] [lindex $args 2] [lindex $args 3] end endstate
-  } elseif { [llength $args] == 5 } {
-    on [lindex $args 0] [lindex $args 1] [lindex $args 2] [lindex $args 3] [lindex $args 4] end endstate
-  } else {
-    set errorMessage "Too many ([llength $args]) arguments for edstate: '$args'"
-    log::log error $errorMessage
-    error $errorMessage
-  }
   set expectedEndState $args
 }
 
@@ -163,7 +150,7 @@ proc ::testcl::unknown {args} {
 
 # testcl::expected --
 #
-# verify if there is mock available for command
+# verify if there is mock or end state available for command
 #
 # Arguments:
 # Any
@@ -176,7 +163,17 @@ proc ::testcl::unknown {args} {
 proc ::testcl::expected {args} {
 
   log::log debug "expected called with args: $args"
+
+  variable expectedEndState
+  log::log debug "verify expected end state if available"
+
+  if { [info exists expectedEndState] && ( $expectedEndState == $args ) } {
+    log::log info "Hitting end state '$args'"
+    return -code 1000 $args
+  }
+
   variable expectations
+  log::log debug "verify expectations ([llength $expectations] defined)"
 
   if { [llength $expectations] > 0 } {
 
@@ -194,10 +191,6 @@ proc ::testcl::expected {args} {
           {^error$} {
             log::log info "Generate error '$procresult' for procedure call'$proccall'"
             error $procresult
-          }
-          {^end$} {
-            log::log info "Hitting end state '$proccall'"
-            return -code 1000 $proccall
           }
           default {
             error "Invalid expectation - expected one of return, error or end."
