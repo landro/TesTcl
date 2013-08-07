@@ -401,6 +401,16 @@ Clearly, **manual** testing is not the way forward!
 Post questions to the group at [TesTcl user group](https://groups.google.com/forum/?fromgroups#!forum/testcl-user)  
 File bugs over at [github](https://github.com/landro/TesTcl)
 
+## Contributing code
+
+Contributions are very welcomed. There are just a few things to remember:
+
+ - Run tests against JTcl since the custom iRule extensions have only been implemented to that Tcl implementations
+    - Run _examples.sh_ and _tests.sh_ or their Windows equivalents, and verify output
+ - Please follow existing coding style and indentation (2 spaces for tabs)
+ - Add new example or test if appropriate
+ - Add or update documentation when necessary and make sure it is correct (as in test it)
+
 ## License
 
 Just like JTcl, TesTcl is licensed under a BSD-style license. 
