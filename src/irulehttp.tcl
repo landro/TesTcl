@@ -42,6 +42,14 @@ namespace eval ::testcl::HTTP {
 #
 proc ::testcl::HTTP::header {cmd args} {
   log::log debug "HTTP::header $cmd $args invoked"
+
+  set cmdargs [concat HTTP::header $cmd $args]
+  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
+  if {$rc != 1100} {
+    log::log debug "skipping header methods evaluation - expectation found for $cmdargs"
+    return $res
+  }
   
   variable headers
   if { ![array exists headers] } {
