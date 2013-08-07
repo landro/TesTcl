@@ -49,6 +49,11 @@ proc ::testcl::reset_expectations { } {
     variable lws
     set lws 0
   }
+  variable uri
+  if { [info exists uri] } {
+    log::log debug "Reset HTTP uri"
+    unset uri
+  }
 }
 
 # testcl::before --
