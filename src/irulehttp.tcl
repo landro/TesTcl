@@ -4,12 +4,44 @@ package require log
 namespace eval ::testcl::HTTP {
   variable headers
   variable lws
+  variable uri
+  #variable version
+  #variable method
+  #variable user
+  #variable password
+  #variable status
+
+  #namespace export class
+  #namespace export close
+  #namespace export collect
+  #namespace export cookie
+  #namespace export disable
+  #namespace export enable
+  #namespace export fallback
   namespace export header
+  #namespace export host
+  #namespace export is_keepalive
+  #namespace export is_redirect
+  #namespace export method
+  #namespace export password
+  namespace export path
+  #namespace export payload
+  #namespace export query
+  #namespace export redirect
+  #namespace export release
+  #namespace export request
+  #namespace export request_num
+  #namespace export respond
+  #namespace export retry
+  #namespace export status
+  namespace export uri
+  #namespace export username
+  #namespace export version
 }
 
 # testcl::HTTP::header --
 #
-# Override of the iRule HTTP structure
+# stub for the iRule HTTP::header
 #
 # Arguments:
 # cmd The command to execute on header or name of header to read
@@ -47,7 +79,7 @@ proc ::testcl::HTTP::header {cmd args} {
   #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
   set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
   if {$rc != 1100} {
-    log::log debug "skipping header methods evaluation - expectation found for $cmdargs"
+    log::log debug "skipping HTTP::header method evaluation - expectation found for $cmdargs"
     return $res
   }
   
@@ -204,5 +236,103 @@ proc ::testcl::HTTP::header {cmd args} {
       }
       return [lindex $headers($name) end]
     }
+  }
+}
+
+# testcl::HTTP::uri --
+#
+# stub for the iRule HTTP::uri
+#
+# Arguments:
+# optional new uri string
+#
+# Side Effects:
+# None.
+#
+# Results:
+# current uri string
+#
+# Usage syntax:
+# HTTP::uri [<string>]
+#
+proc ::testcl::HTTP::uri {args} {
+  log::log debug "HTTP::uri $args invoked"
+
+  set cmdargs [concat HTTP::uri $args]
+  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
+  if {$rc != 1100} {
+    log::log debug "skipping HTTP::uri method evaluation - expectation found for $cmdargs"
+    return $res
+  }
+  
+  variable uri
+  if { ![info exists uri] } {
+    set uri /
+  }
+
+  if { [llength $args] == 0 } {
+    log::log debug "return HTTP::uri $uri"
+    return $uri
+  }
+  if { [llength $args] == 1 } {
+    set uri [lindex $args 0]
+    log::log debug "HTTP::uri set: $uri"
+  } else {
+    error "incorrect number of arguments for HTTP::uri : [llength $args]"
+  }
+}
+
+# testcl::HTTP::path --
+#
+# stub for the iRule HTTP::path
+#
+# Arguments:
+# optional new path string
+#
+# Side Effects:
+# None.
+#
+# Results:
+# current path string
+#
+# Usage syntax:
+# HTTP::path [<string>]
+#
+proc ::testcl::HTTP::path {args} {
+  log::log debug "HTTP::path $args invoked"
+
+  set cmdargs [concat HTTP::path $args]
+  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
+  if {$rc != 1100} {
+    log::log debug "skipping HTTP::path method evaluation - expectation found for $cmdargs"
+    return $res
+  }
+  
+  variable uri
+  if { ![info exists uri] } {
+    set uri /
+  }
+
+  if { ![regexp {^([A-z]+://[^/]+)(.*)} $uri match host pathquery] } {
+    set host ""
+    set pathquery $uri
+  }
+  if { ![regexp {^([^?]*)(.*)} $pathquery match path query] } {
+    set path $pathquery
+    set query ""
+  }
+
+  if { [llength $args] == 0 } {
+    log::log debug "return HTTP::path $path"
+    return $path
+  }
+  if { [llength $args] == 1 } {
+    set path [lindex $args 0]
+    set uri "$host$path$query"
+    log::log debug "HTTP::path set: $path, uri after update: $uri"
+  } else {
+    error "incorrect number of arguments for HTTP::path : [llength $args]"
   }
 }
