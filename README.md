@@ -127,7 +127,7 @@ This should give you the following output:
   - Describe every _it_ statement as precisely as possible.
   - Add an _event_ . This is mandatory.
   - Add one or several _on_ statements to setup expectations/mocks. If you don't care about the return value, return "".
-  - Add an _endstate_. This could be a _pool_, _HTTP::respond_ or _HTTP::redirect_ call.
+  - Add an _endstate_. This could be a _pool_, _HTTP::respond_, _HTTP::redirect_ or any other function call (see [link](https://devcentral.f5.com/tech-tips/articles/-the101-irules-101-routing#.UW0OwoLfeN4)).
   - Add an _verify_. This is condition to evaluate after iRule execution. Describe every verification as precisely as possible, add as many verification as needed in particular test scenario.
   - Add an HTTP::header initialization if you are testing modification of HTTP headers.
   - Add a _run_ statement in order to actually run the Tcl script file containing your iRule. This is mandatory.
