@@ -33,7 +33,7 @@ Let's say you want to test the following simple iRule found in *simple_irule.tcl
 
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
-    package require -exact testcl 0.9
+    package require -exact testcl 1.0
     namespace import ::testcl::*
 
     # Comment in to enable logging
@@ -155,7 +155,7 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
-    package require -exact testcl 0.9
+    package require -exact testcl 1.0
     namespace import ::testcl::*
 
     # Comment in to enable logging
@@ -232,7 +232,7 @@ Let's have a look at a more advanced iRule (advanced_irule.tcl):
 
 The specs for this iRule would look like this:
 
-    package require -exact testcl 0.9
+    package require -exact testcl 1.0
     namespace import ::testcl::*
 
     # Comment out to suppress logging
@@ -334,7 +334,7 @@ Let's have a look at a another iRule (headers_irule.tcl):
 
 The example specs for this iRule would look like this:
 
-    package require -exact testcl 0.9
+    package require -exact testcl 1.0
     namespace import ::testcl::*
 
     # Comment out to suppress logging
