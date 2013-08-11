@@ -1,4 +1,4 @@
-package provide testcl 1.0
+package provide testcl 1.0.1
 package require log
 
 namespace eval ::testcl::HTTP {
