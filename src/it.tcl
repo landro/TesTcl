@@ -109,9 +109,9 @@ proc ::testcl::it {description body} {
   
   if {$rc == 0} {
     set result [::testcl::verifyEvaluate]
-	if {$result ne ""} {
-	  set rc 1
-	}
+    if {$result ne ""} {
+      set rc 1
+    }
   }
   
   if {$rc != 0 } {
