@@ -240,7 +240,6 @@ The specs for this iRule would look like this:
 
     before {
       event HTTP_REQUEST
-      HTTP::header insert X-Forwarded-SSL true
     }
 
     it "should handle admin request using pool admin when credentials are valid" {
