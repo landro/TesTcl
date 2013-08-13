@@ -6,26 +6,35 @@ source src/it.tcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
-#log::lvSuppressLE info 0
+log::lvSuppressLE info 0
 
 before {
   event HTTP_REQUEST
+HTTP::debug
 }
 
 it "should handle admin request using pool admin when credentials are valid" {
-  on HTTP::uri return "/admin"
+  HTTP::uri "/admin"
   on HTTP::username return "admin"
   on HTTP::password return "password"
-  on HTTP::uri /admin return ""
   endstate pool pool_admin_application
   run irules/advanced_irule.tcl advanced
 }
 
-it "should ask for credentials when admin request without correct credentials" {
-  on HTTP::uri return "/admin"
-  on HTTP::username return "not_admin"
-  on HTTP::password return "wrong_password"
-  endstate HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
+it "should ask for credentials when admin request with incorrect credentials" {
+  HTTP::uri "/admin"
+  HTTP::header insert Authorization "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
+  verify "user Aladdin" "Aladdin" eq {HTTP::username}
+  verify "password 'open sesame'" "open sesame" eq {HTTP::password}
+  verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
+  verify "response status code is 401" 401 eq {HTTP::status}
+  run irules/advanced_irule.tcl advanced
+}
+
+it "should ask for credentials when admin request without credentials" {
+  HTTP::uri "/admin"
+  verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
+  verify "response status code is 401" 401 eq {HTTP::status}
   run irules/advanced_irule.tcl advanced
 }
 
@@ -61,8 +70,10 @@ it "should give handle app request using app pool when app pool is up" {
 
 it "should give 404 when request cannot be handled" {
   on HTTP::uri return "/cannot_be_handled"
-  endstate HTTP:respond 404
+  endstate HTTP::respond 404
+HTTP::debug
   run irules/advanced_irule.tcl advanced
+HTTP::debug
 }
 
 stats
