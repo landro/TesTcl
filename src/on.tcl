@@ -127,12 +127,9 @@ proc ::testcl::unknown {args} {
 
   #set rc [catch { return [::testcl::expected {*}$args] } res]
   set rc [catch { return [eval ::testcl::expected $args] } res]
-  if {$rc != 1100} {
+  if {$rc >= 1000} {
     log::log debug "rc from expected: $rc"
-    if {$rc == 1000} {
-      return -code 1000 $res
-    }
-    return $res
+    return -code $rc $res
   }
   
   set errorMessage "Unexpected unknown command invocation '$args'"
@@ -169,7 +166,7 @@ proc ::testcl::expected {args} {
 
   if { [info exists expectedEndState] && ( $expectedEndState == $args ) } {
     log::log info "Hitting end state '$args'"
-    return -code 1000 $args
+    return -code 1500 $args
   }
 
   variable expectations
@@ -186,7 +183,7 @@ proc ::testcl::expected {args} {
         switch -regexp [lindex $expectation end-1] {
           {^return$} {
             log::log info "Returning value '$procresult' for procedure call '$proccall'"
-            return $procresult
+            return -code 1000 $procresult
           }
           {^error$} {
             log::log info "Generate error '$procresult' for procedure call'$proccall'"
@@ -201,5 +198,11 @@ proc ::testcl::expected {args} {
     }
 
   }
-  return -code 1100 "expectation not found"
+  #code 2 (TCL_RETURN) is used to signal there was no result
+  return -code 2 "expectation not found"
 }
+
+#code >= 1000
+#2 not found - nie powoduje zwracania błędu przy funkcjach, które mają standardową obsługę
+#1000 end state - powoduje przerwanie przetwarzania funkcji, które trafią na endstate i jest wyłapytane przez it jako znak poprawnego zakończenia przy oczekiwanym end state
+#1500 expectation found - powoduje przerwanie przetwarzania funkcji, które mają standardową obsługę i użycie wartości z expecation, nie jest interpretowane jako zakończenie przetwarzania

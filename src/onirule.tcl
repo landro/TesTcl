@@ -61,33 +61,21 @@ proc ::testcl::when {event body} {
     variable expectedEndState
     if { ![info exist expectedEndState] } {
       log::log debug "endstate verification skipped - undefined in current \"it\" context"
-      if {$rc != 0} {
-        error "Expected return code 0, got $rc"
+      if {$rc != 0 && $rc != 1000} {
+        error "Expected return code 0 or 1000, got $rc"
       }
       return -code 2000 "when $event"
     }
 
-    if {$expectedEvent eq "HTTP_REQUEST"} {
-
-      if {$rc != 1000} {
-        error "Expected end state with return code 1000, got $rc"
-      }
-
-      if {$result ne $expectedEndState} {
-        error "Expected end state $expectedEndState, got $result"
-      }
-
-      return -code 2000 "when $event"
-
-    } elseif {$expectedEvent eq "HTTP_RESPONSE"} {
-
-      if {$rc != 0} {
-        error "Expected return code 0, got $rc"
-      }
-
-      return -code 2000 "when $event"
-
+    if {$rc != 1500} {
+      error "Expected end state with return code 1500, got $rc"
     }
+
+    if {$result ne $expectedEndState} {
+      error "Expected end state $expectedEndState, got $result"
+    }
+
+    return -code 2000 "when $event"
 
   } elseif {[info exists expectedEvent] && $event ne $expectedEvent} {
     log::log debug "when not invoked due to non-matching event type"
