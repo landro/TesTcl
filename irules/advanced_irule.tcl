@@ -27,7 +27,7 @@ rule advanced {
         pool pool_application
       }
     } else {
-      HTTP:respond 404
+      HTTP::respond 404
     }
   }
 
