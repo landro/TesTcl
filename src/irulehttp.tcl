@@ -83,10 +83,13 @@ proc ::testcl::HTTP::cookie {args} {
   log::log debug "HTTP::cookie $args invoked"
 
   set cmdargs [concat HTTP::cookie $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::cookie method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
   error "HTTP::cookie command is not implemented - use on HTTP::cookie..."
@@ -129,17 +132,17 @@ proc ::testcl::HTTP::cookie {args} {
 #
 proc ::testcl::HTTP::header {cmd args} {
   log::log debug "HTTP::header $cmd $args invoked"
-::testcl::HTTP::debug
 
   set cmdargs [concat HTTP::header $cmd $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  log::log debug "HTTP::header $cmd expected return code : $rc, result: $res"
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::header method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
-::testcl::HTTP::debug
 
   variable headers
   if { ![array exists headers] } {
@@ -152,15 +155,20 @@ proc ::testcl::HTTP::header {cmd args} {
     value {
       # HTTP::header [value] <name>
       if { ![info exists headers($name)] } {
+        log::log debug "there is no value for header: $name"
         return {}
       }
-      return [lindex $headers($name) end]
+      set v [lindex $headers($name) end]
+      log::log debug "header '$name' last value is: $v"
+      return $v
     }
     values {
       # HTTP::header values <name>
       if { ![info exists headers($name)] } {
+        log::log debug "there is no value for header: $name"
         return {}
       }
+      log::log debug "header '$name' values are: $headers($name)"
       return $headers($name)
     }
     names {
@@ -169,6 +177,7 @@ proc ::testcl::HTTP::header {cmd args} {
       foreach l [array names headers] {
         lappend res [lrepeat [llength $headers($l)] $l]
       }
+      log::log debug "header names: $res"
       return $res
     }
     count {
@@ -179,13 +188,16 @@ proc ::testcl::HTTP::header {cmd args} {
         foreach l [array names headers] {
           incr res [llength $headers($l)]
         }
+        log::log debug "number of all headers: $res"
         return $res
       }
       if { ![info exists headers($name)] } {
+        log::log debug "number of headers with name '$name': 0"
         return 0
       }
-      #return number of headers with given name
-      return [llength $headers($name)]
+      set cnt [llength $headers($name)]
+      log::log debug "number of headers with name '$name': $cnt"
+      return $cnt
     }
     at {
       # HTTP::header at <index>
@@ -193,18 +205,23 @@ proc ::testcl::HTTP::header {cmd args} {
       #validate index
       incr index 0
       set cnt 0
-      foreach l [array names headers] {
+      foreach n [array names headers] {
         set oldcnt $cnt
-        incr cnt [llength $headers($l)]
+        incr cnt [llength $headers($n)]
         if { $index < $cnt } {
-          return [lindex $headers($l) [expr $index - $oldcnt]]
+          set res [lindex $headers($n) [expr $index - $oldcnt]]
+          log::log debug "header at index $index: '$n: $res'"
+          return "$n: $res"
         }
       }
+      log::log debug "header at index $index not found"
       return {}
     }
     exists {
       # HTTP::header exists <name>
-      return [info exists headers($name)]
+      set res [info exists headers($name)]
+      log::log debug "header '$name' exists: $res"
+      return $res
     }
     insert {
       # HTTP::header insert ["lws"] [<name> <value>]+
@@ -219,6 +236,7 @@ proc ::testcl::HTTP::header {cmd args} {
       }
       foreach {n v} $args {
         set n [string tolower $n]
+        log::log debug "appending header '$n' value: $v"
         lappend headers($n) $v
       }
     }
@@ -228,15 +246,15 @@ proc ::testcl::HTTP::header {cmd args} {
       if { [info exists lws] } {
         return $lws
       }
-      return 0;
+      return 0
     }
     is_keepalive {
       # HTTP::header is_keepalive
-      return [::testcl::HTTP::is_keepalive]
+      return [testcl::HTTP::is_keepalive]
     }
     is_redirect {
       # HTTP::header is_redirect
-      return [::testcl::HTTP::is_redirect]
+      return [testcl::HTTP::is_redirect]
     }
     replace {
       # HTTP::header replace <name> [<string>]
@@ -244,10 +262,13 @@ proc ::testcl::HTTP::header {cmd args} {
       if { [info exists sent] } {
         error "response to client was already sent - HTTP::header replace call not allowed"
       }
+      set v [lindex $args 1]
       if { [info exists headers($name)] } {
-        set headers($name) [lreplace $headers($name)[set headers($name) {}] end end [lindex $args 1]]
+        log::log debug "replace header '$name' with value: $v"
+        set headers($name) [lreplace $headers($name)[set headers($name) {}] end end $v]
       } else {
-        lappend headers($name) [lindex $args 1]
+        log::log debug "append header '$name' with value: $v"
+        lappend headers($name) $v
       }
     }
     remove {
@@ -260,8 +281,10 @@ proc ::testcl::HTTP::header {cmd args} {
         array unset headers
         variable lws
         set lws 0
+        log::log debug "all headers removed"
       } else {
         array unset headers $name
+        log::log debug "removed header '$name'"
       }
     }
     insert_modssl_fields {
@@ -309,11 +332,15 @@ proc ::testcl::HTTP::header {cmd args} {
       #without command name
       set name [string tolower $cmd]
       if { ![info exists headers($name)] } {
+        log::log debug "there is no value for header: $name"
         return {}
       }
-      return [lindex $headers($name) end]
+      set v [lindex $headers($name) end]
+      log::log debug "header '$name' last value is: $v"
+      return $v
     }
   }
+  return {}
 }
 
 
@@ -337,10 +364,13 @@ proc ::testcl::HTTP::host {args} {
   log::log debug "HTTP::host $args invoked"
 
   set cmdargs [concat HTTP::host $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::host method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
 
@@ -380,10 +410,13 @@ proc ::testcl::HTTP::is_keepalive {args} {
   log::log debug "HTTP::is_keepalive $args invoked"
 
   set cmdargs [concat HTTP::is_keepalive $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::is_keepalive method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
 
@@ -408,7 +441,7 @@ proc ::testcl::HTTP::is_keepalive {args} {
   }
   #there was no Connection header in request
   log::log debug "there was no Connection header in request, use default for protocol version"
-  set v [::testcl::HTTP::version]
+  set v [testcl::HTTP::version]
   if { $v < 1.1 } {
     log::log debug "protocol version older than 1.1 : $v"
     return 0
@@ -438,10 +471,13 @@ proc ::testcl::HTTP::is_redirect {args} {
   log::log debug "HTTP::is_redirect $args invoked"
 
   set cmdargs [concat HTTP::is_redirect $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::is_redirect method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
 
@@ -491,10 +527,13 @@ proc ::testcl::HTTP::method {args} {
   log::log debug "HTTP::method $args invoked"
 
   set cmdargs [concat HTTP::method $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::method method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
   if { [llength $args] > 0 } {
@@ -525,10 +564,13 @@ proc ::testcl::HTTP::password {args} {
   log::log debug "HTTP::password $args invoked"
 
   set cmdargs [concat HTTP::password $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::password method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
 
@@ -546,8 +588,8 @@ proc ::testcl::HTTP::password {args} {
     return {}
   }
   set auth [lindex $headers(authorization) end]
-  log::log debug "HTTP Authorization header value: $l"
-  if { [string equal -length 6 $auth "Basic "] } {
+  log::log debug "HTTP Authorization header value: $auth"
+  if { ![string equal -length 6 $auth "Basic "] } {
     log::log debug "it is not Basic authorization scheme"
     return {}
   }
@@ -560,7 +602,7 @@ proc ::testcl::HTTP::password {args} {
     log::log debug "there is no ':' separator in credentials"
     return {}
   }
-  set pswd [string range $auth $colon end]
+  set pswd [string range $auth [expr $colon + 1] end]
   log::log debug "password from credentials: $pswd"
   return $pswd
 }
@@ -586,10 +628,13 @@ proc ::testcl::HTTP::path {args} {
   log::log debug "HTTP::path $args invoked"
 
   set cmdargs [concat HTTP::path $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::path method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
   
@@ -618,6 +663,7 @@ proc ::testcl::HTTP::path {args} {
   } else {
     error "incorrect number of arguments for HTTP::path : [llength $args]"
   }
+  return {}
 }
 
 
@@ -649,10 +695,13 @@ proc ::testcl::HTTP::payload {args} {
   log::log debug "HTTP::payload $args invoked"
 
   set cmdargs [concat HTTP::payload $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::payload method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
   variable payload
@@ -679,14 +728,21 @@ proc ::testcl::HTTP::payload {args} {
       if { [llength $args] < 4 } {
         error "incorrect number of arguments for HTTP::payload replace: [llength $args]"
       }
-      log::log debug "HTTP::payload replace executed"
-      set offset [lindex $args 1]
-      set len [lindex $args 2]
+      log::log debug "HTTP::payload replace - before: $payload"
       set replacement [lindex $args 3]
-      set first $offset
-      set last [expr $offset + $len]
-      set payload [string replace $payload $first $last $replacement]
-      ::testcl::HTTP::header replace "Content-Length" [string bytelength $payload]
+      if {[string length $payload] == 0} {
+        set payload $replacement
+      } else {
+        set offset [lindex $args 1]
+        set len [lindex $args 2]
+        set first $offset
+        set last [expr $offset + $len - 1]
+        set payload [string replace $payload $first $last $replacement]
+        log::log debug "HTTP::payload replace - offset: $offset, length: $len, first: $first, last: $last, replacements: $replacement"
+      }
+      log::log debug "HTTP::payload replace - after: $payload"
+      testcl::HTTP::header replace "Content-Length" [string bytelength $payload]
+      log::log debug "HTTP::payload replace executed"
       return {}
     }
     default {
@@ -736,10 +792,13 @@ proc ::testcl::HTTP::query {args} {
   log::log debug "HTTP::query $args invoked"
 
   set cmdargs [concat HTTP::query $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::query method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
 
@@ -757,10 +816,10 @@ proc ::testcl::HTTP::query {args} {
   if { ![regexp {^([A-z]+://[^/]+)(.*)} $uri match host pathquery] } {
     set pathquery $uri
   }
-  regexp {^([^?]*)(.*)} $pathquery match path query
+  regexp {^([^?]*)\?(.*)} $pathquery match path query
 
   log::log debug "return HTTP::query $query"
-  return $path
+  return $query
 }
 
 
@@ -792,10 +851,13 @@ proc ::testcl::HTTP::redirect {args} {
   set sent 1
   
   set cmdargs [concat HTTP::redirect $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::redirect method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
   
@@ -819,6 +881,7 @@ proc ::testcl::HTTP::redirect {args} {
   } else {
     lappend headers(location) $loc
   }
+  return {}
 }
 
 
@@ -842,10 +905,13 @@ proc ::testcl::HTTP::request {args} {
   log::log debug "HTTP::request $args invoked"
 
   set cmdargs [concat HTTP::request $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::request method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
   if { [llength $args] > 0 } {
@@ -899,10 +965,13 @@ proc ::testcl::HTTP::respond {args} {
   set sent 1
   
   set cmdargs [concat HTTP::respond $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::respond method evaluation - expectation found for $cmdargs - return code: $rc"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
   
@@ -915,7 +984,8 @@ proc ::testcl::HTTP::respond {args} {
   variable status_code
   set status_code $code
   #remove status code from args
-  set $args [lreplace $args [set args 0] 0]
+  set args [lreplace $args [set args 0] 0]
+  log::log debug "args after removal of status code: $args"
 
   #prepare default values
   variable headers
@@ -937,7 +1007,7 @@ proc ::testcl::HTTP::respond {args} {
           log::log debug "version set to $v"
           set version $v
           #remove version param and value from args
-          set $args [lreplace $args [set args 0] 1]
+          set args [lreplace $args [set args 0] 1]
         } else {
           error "HTTP::respond - incorrect protocol version param (allowed values 1.0 or 1.1): $v"
         }
@@ -946,6 +1016,7 @@ proc ::testcl::HTTP::respond {args} {
       }
     }
   }
+  log::log debug "args after processing -version flag: $args"
 
   #process content param
   set content ""
@@ -958,12 +1029,13 @@ proc ::testcl::HTTP::respond {args} {
         set content_length [string bytelength $content]
         log::log debug "content set - content length: content_length"
         #remove content param and value from args
-        set $args [lreplace $args [set args 0] 1]
+        set args [lreplace $args [set args 0] 1]
       } else {
         error "HTTP::respond - incorrect syntax - no value for content parameter"
       }
     }
   }
+  log::log debug "args after processing of content params: $args"
 
   #process noserver param
   set noserver 0
@@ -972,9 +1044,10 @@ proc ::testcl::HTTP::respond {args} {
     if { $arg eq "noserver" } {
       set noserver 1
       #remove noserver param from args
-      set $args [lreplace $args [set args 0] 0]
+      set args [lreplace $args [set args 0] 0]
     }
   }
+  log::log debug "args after processing of noserver param: $args"
 
   #process headers
   foreach {hn hv} $args {
@@ -998,6 +1071,7 @@ proc ::testcl::HTTP::respond {args} {
       lappend headers(server) "BIG-IP"
     }
   }
+  return {}
 }
 
 
@@ -1021,10 +1095,13 @@ proc ::testcl::HTTP::status {args} {
   log::log debug "HTTP::status $args invoked"
 
   set cmdargs [concat HTTP::status $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::status method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
 
@@ -1060,10 +1137,13 @@ proc ::testcl::HTTP::uri {args} {
   log::log debug "HTTP::uri $args invoked"
 
   set cmdargs [concat HTTP::uri $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::uri method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
   
@@ -1082,6 +1162,7 @@ proc ::testcl::HTTP::uri {args} {
   } else {
     error "incorrect number of arguments for HTTP::uri : [llength $args]"
   }
+  return {}
 }
 
 
@@ -1105,10 +1186,13 @@ proc ::testcl::HTTP::username {args} {
   log::log debug "HTTP::username $args invoked"
 
   set cmdargs [concat HTTP::username $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::username method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
 
@@ -1126,8 +1210,8 @@ proc ::testcl::HTTP::username {args} {
     return {}
   }
   set auth [lindex $headers(authorization) end]
-  log::log debug "HTTP Authorization header value: $l"
-  if { [string equal -length 6 $auth "Basic "] } {
+  log::log debug "HTTP Authorization header value: $auth"
+  if { ![string equal -length 6 $auth "Basic "] } {
     log::log debug "it is not Basic authorization scheme"
     return {}
   }
@@ -1140,7 +1224,7 @@ proc ::testcl::HTTP::username {args} {
     log::log debug "there is no ':' separator in credentials"
     return {}
   }
-  set username [string range $auth 0 $colon]
+  set username [string range $auth 0 [expr $colon - 1]]
   log::log debug "user name from credentials: $username"
   return $username
 }
@@ -1166,10 +1250,13 @@ proc ::testcl::HTTP::version {args} {
   log::log debug "HTTP::version $args invoked"
 
   set cmdargs [concat HTTP::version $args]
-  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-  if {$rc >= 1000} {
+  #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
+  set rc [catch { return [eval testcl::expected $cmdargs] } res]
+  if {$rc != 1500} {
     log::log debug "skipping HTTP::version method evaluation - expectation found for $cmdargs"
+    if {$rc < 1000} {
+      return $res
+    }
     return -code $rc $res
   }
   variable version
@@ -1196,60 +1283,31 @@ proc ::testcl::HTTP::version {args} {
   } else {
     error "incorrect number of arguments for HTTP::version : [llength $args]"
   }
+  return {}
 }
 
-
-# #######################
-# testcl::HTTP::?? --
-#
-# stub for the iRule HTTP::?? - 
-#
-# Arguments:
-# optional ??
-#
-# Side Effects:
-# None.
-#
-# Results:
-# ??
-#
-# Usage syntax:
-# HTTP::?? [<string>]
-#
-#proc ::testcl::HTTP::?? {args} {
-#  log::log debug "HTTP::?? $args invoked"
-#
-#  set cmdargs [concat HTTP::?? $args]
-#  #set rc [catch { return [::testcl::expected {*}$cmdargs] } res]
-#  set rc [catch { return [eval ::testcl::expected $cmdargs] } res]
-#  if {$rc >= 1000} {
-#    log::log debug "skipping HTTP::?? method evaluation - expectation found for $cmdargs"
-#    return -code $rc $res
-#  }
-#  error "HTTP::?? command is not implemented - use on HTTP::??..."
-#}
 
 # ######################################## #
 # DEBUG dump of all http package variables #
 # ######################################## #
-proc ::testcl::HTTP::debug {} {
-  variable sent
-  if { [info exists sent] } { puts "sent: $sent" } else { puts "sent not set" }
-  variable headers
-  if { [info exists headers] } {
-    puts "headers:"
-    foreach h [array names headers] {
-      puts "$h -> $headers($h)"
-    }
-  } else { puts "headers not set" }
-  variable lws
-  if { [info exists lws] } { puts "lws: $lws" } else { puts "lws not set" }
-  variable uri
-  if { [info exists uri] } { puts "uri: $uri" } else { puts "uri not set" }
-  variable status_code
-  if { [info exists status_code] } { puts "status_code: $status_code" } else { puts "status_code not set" }
-  variable version
-  if { [info exists version] } { puts "version: $version" } else { puts "version not set" }
-  variable payload
-  if { [info exists payload] } { puts "payload: $payload" } else { puts "payload not set" }
-}
+# proc ::testcl::HTTP::debug {} {
+  # variable sent
+  # if { [info exists sent] } { puts "sent: $sent" } else { puts "sent not set" }
+  # variable headers
+  # if { [info exists headers] } {
+    # puts "headers:"
+    # foreach h [array names headers] {
+      # puts "$h -> $headers($h)"
+    # }
+  # } else { puts "headers not set" }
+  # variable lws
+  # if { [info exists lws] } { puts "lws: $lws" } else { puts "lws not set" }
+  # variable uri
+  # if { [info exists uri] } { puts "uri: $uri" } else { puts "uri not set" }
+  # variable status_code
+  # if { [info exists status_code] } { puts "status_code: $status_code" } else { puts "status_code not set" }
+  # variable version
+  # if { [info exists version] } { puts "version: $version" } else { puts "version not set" }
+  # variable payload
+  # if { [info exists payload] } { puts "payload: $payload" } else { puts "payload not set" }
+# }

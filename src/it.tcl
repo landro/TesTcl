@@ -128,7 +128,7 @@ proc ::testcl::it {description body} {
   set rc [catch $body result]
   
   if {$rc == 0} {
-    set result [::testcl::verifyEvaluate]
+    set result [testcl::verifyEvaluate]
     if {$result ne ""} {
       set rc 1
     }

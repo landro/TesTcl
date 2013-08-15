@@ -101,7 +101,7 @@ proc ::testcl::verifyEvaluate {} {
     if { ![expr "{$result} $condition {$res}"] } {
       return "Verification '$description' failed - expression: {$result} $condition {$res}"
     }
-	puts "verification of '$description' done."
+    puts "verification of '$description' done."
   }
 }
 
@@ -125,24 +125,28 @@ proc ::testcl::unknown {args} {
 
   log::log debug "unknown called with args: $args"
 
-  #set rc [catch { return [::testcl::expected {*}$args] } res]
-  set rc [catch { return [eval ::testcl::expected $args] } res]
-  if {$rc >= 1000} {
-    log::log debug "rc from expected: $rc"
-    return -code $rc $res
+  #set rc [catch { return [testcl::expected {*}$args] } res]
+  set rc [catch { return [eval testcl::expected $args] } res]
+  log::log debug "rc from expected: $rc"
+
+  if {$rc == 1500} {
+    #expectation and end state not found
+    set errorMessage "Unexpected unknown command invocation '$args'"
+    puts "\n$errorMessage\n"
+    puts "Maybe you should add an \"on\" statement similar to the one below to your \"it\" block?\n"
+    puts "    it \"your description\" \{"
+    puts "      ..."
+    puts "      on $args return \"your return value\""
+    puts "      ..."
+    puts "    \}\n"
+    error $errorMessage
+    # TODO?
+    #uplevel ::tcl::unknown $args
   }
-  
-  set errorMessage "Unexpected unknown command invocation '$args'"
-  puts "\n$errorMessage\n"
-  puts "Maybe you should add an \"on\" statement similar to the one below to your \"it\" block?\n"
-  puts "    it \"your description\" \{"
-  puts "      ..."
-  puts "      on $args return \"your return value\""
-  puts "      ..."
-  puts "    \}\n"
-  error $errorMessage
-  # TODO?
-  #uplevel ::tcl::unknown $args
+  if {$rc < 1000} {
+    return $res
+  }
+  return -code $rc $res
 }
 
 # testcl::expected --
@@ -166,7 +170,7 @@ proc ::testcl::expected {args} {
 
   if { [info exists expectedEndState] && ( $expectedEndState == $args ) } {
     log::log info "Hitting end state '$args'"
-    return -code 1500 $args
+    return -code 1000 $args
   }
 
   variable expectations
@@ -183,7 +187,7 @@ proc ::testcl::expected {args} {
         switch -regexp [lindex $expectation end-1] {
           {^return$} {
             log::log info "Returning value '$procresult' for procedure call '$proccall'"
-            return -code 1000 $procresult
+            return $procresult
           }
           {^error$} {
             log::log info "Generate error '$procresult' for procedure call'$proccall'"
@@ -198,11 +202,6 @@ proc ::testcl::expected {args} {
     }
 
   }
-  #code 2 (TCL_RETURN) is used to signal there was no result
-  return -code 2 "expectation not found"
+  log::log debug "expectation not found for $args (return code 1500)"
+  return -code 1500 "expectation not found"
 }
-
-#code >= 1000
-#2 not found - nie powoduje zwracania błędu przy funkcjach, które mają standardową obsługę
-#1000 end state - powoduje przerwanie przetwarzania funkcji, które trafią na endstate i jest wyłapytane przez it jako znak poprawnego zakończenia przy oczekiwanym end state
-#1500 expectation found - powoduje przerwanie przetwarzania funkcji, które mają standardową obsługę i użycie wartości z expecation, nie jest interpretowane jako zakończenie przetwarzania
