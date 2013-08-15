@@ -6,7 +6,7 @@ source src/irulehttp.tcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
-log::lvSuppressLE info 0
+#log::lvSuppressLE info 0
 
 before {
   event HTTP_REQUEST
@@ -54,6 +54,19 @@ it "should set uri and update path part with stub" {
   verify "HTTP::uri value has updated path" "http://www.example.com:8080/secondary/index.jsp?user=test&login=check" eq {HTTP::uri}
   verify "HTTP::path value is updated" "/secondary/index.jsp" eq {HTTP::path}
   endstate pool bar
+  run irules/simple_irule.tcl simple
+}
+
+it "should verify dummy payload modification" {
+  HTTP::payload replace 0 0 "test http request body payload"
+  HTTP::payload length
+  HTTP::payload replace 5 4 "'HTTP'"
+  HTTP::payload length
+  verify "HTTP::payload starts with 'test'" "test" eq {HTTP::payload 4}
+  verify "HTTP::payload 6 chars from index 5 are 'HTTP'" "'HTTP'" eq {HTTP::payload 5 6}
+
+  #just to make test case processing
+  on pool bar return ""
   run irules/simple_irule.tcl simple
 }
 

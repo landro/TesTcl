@@ -6,11 +6,10 @@ source src/it.tcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
-log::lvSuppressLE info 0
+#log::lvSuppressLE info 0
 
 before {
   event HTTP_REQUEST
-HTTP::debug
 }
 
 it "should handle admin request using pool admin when credentials are valid" {
@@ -39,13 +38,13 @@ it "should ask for credentials when admin request without credentials" {
 }
 
 it "should block access to uri /blocked" {
-  on HTTP::uri return "/blocked"
+  HTTP::uri "/blocked"
   endstate HTTP::respond 403
   run irules/advanced_irule.tcl advanced
 }
 
 it "should give apache http client a correct error code when app pool is down" {
-  on HTTP::uri return "/app"
+  HTTP::uri "/app"
   on active_members pool_application return 0
   HTTP::header insert User-Agent "Apache HTTP Client"
   endstate HTTP::respond 503
@@ -53,27 +52,28 @@ it "should give apache http client a correct error code when app pool is down" {
 }
 
 it "should give other clients then apache http client redirect to fallback when app pool is down" {
-  on HTTP::uri return "/app"
+  HTTP::uri "/app"
   on active_members pool_application return 0
   HTTP::header insert User-Agent "Firefox 13.0.1"
-  endstate HTTP::redirect "http://fallback.com"
+  verify "response status code is 302" 302 eq {HTTP::status}
+  verify "Location header is 'http://fallback.com'" "http://fallback.com" eq {HTTP::header Location}
   run irules/advanced_irule.tcl advanced
 }
 
 it "should give handle app request using app pool when app pool is up" {
-  on HTTP::uri return "/app"
-  on HTTP::uri /app return ""
+  HTTP::uri "/app/form?test=query"
   on active_members pool_application return 2
   endstate pool pool_application
+  verify "result uri is /form?test=query" "/form?test=query" eq {HTTP::uri}
+  verify "result path is /form" "/form" eq {HTTP::path}
+  verify "result query is test=query" "test=query" eq {HTTP::query}
   run irules/advanced_irule.tcl advanced
 }
 
 it "should give 404 when request cannot be handled" {
-  on HTTP::uri return "/cannot_be_handled"
+  HTTP::uri "/cannot_be_handled"
   endstate HTTP::respond 404
-HTTP::debug
   run irules/advanced_irule.tcl advanced
-HTTP::debug
 }
 
 stats
