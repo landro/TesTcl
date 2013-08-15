@@ -5,7 +5,7 @@ source src/irulehttp.tcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
-log::lvSuppressLE info 0
+#log::lvSuppressLE info 0
 
 event HTTP_RESPONSE
 
