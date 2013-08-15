@@ -40,7 +40,7 @@ namespace eval ::testcl::HTTP {
   namespace export version
 
 #DEBUG
-  namespace export debug
+  #namespace export debug
 }
 
 
