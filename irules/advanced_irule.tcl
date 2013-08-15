@@ -14,7 +14,7 @@ rule advanced {
       }
     } elseif { [HTTP::uri] eq "/blocked" } {
       HTTP::respond 403
-    } elseif { [HTTP::uri] eq "/app"} {
+    } elseif { [HTTP::uri] starts_with "/app" } {
       if { [active_members pool_application] == 0 } {
         if { [HTTP::header User-Agent] eq "Apache HTTP Client" } {
           HTTP::respond 503
