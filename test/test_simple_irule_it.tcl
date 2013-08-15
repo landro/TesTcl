@@ -14,12 +14,14 @@ before {
 
 it "should handle request using pool bar" {
   on HTTP::uri return "/bar"
+  on pool foo return ""
   endstate pool bar
   run irules/simple_irule.tcl simple
 }
 
 it "should handle request using pool foo" {
   on HTTP::uri return "/foo/admin"
+  on pool bar return ""
   endstate pool foo
   run irules/simple_irule.tcl simple
 }
