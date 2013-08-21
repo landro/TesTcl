@@ -5,9 +5,9 @@ set dir=%~dp0
 set lib=%dir:\=/%
 set lib=%lib:~0,-1%
 if "%TCLLIBPATH%" == "" (
-  set TCLLIBPATH=%lib% %TCLLIBPATH%
-) else (
   set TCLLIBPATH=%lib%
+) else (
+  set TCLLIBPATH=%lib% %TCLLIBPATH%
 )
 
 Rem execute all test scripts
