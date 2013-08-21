@@ -33,7 +33,7 @@ Let's say you want to test the following simple iRule found in *simple_irule.tcl
 
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
-    package require -exact testcl 0.9
+    package require -exact testcl 1.0.1
     namespace import ::testcl::*
 
     # Comment in to enable logging
@@ -155,7 +155,7 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
-    package require -exact testcl 0.9
+    package require -exact testcl 1.0.1
     namespace import ::testcl::*
 
     # Comment in to enable logging
@@ -232,7 +232,7 @@ Let's have a look at a more advanced iRule (advanced_irule.tcl):
 
 The specs for this iRule would look like this:
 
-    package require -exact testcl 0.9
+    package require -exact testcl 1.0.1
     namespace import ::testcl::*
 
     # Comment out to suppress logging
@@ -344,7 +344,7 @@ Let's have a look at a another iRule (headers_irule.tcl):
 
 The example specs for this iRule would look like this:
 
-    package require -exact testcl 0.9
+    package require -exact testcl 1.0.1
     namespace import ::testcl::*
 
     # Comment out to suppress logging
@@ -406,10 +406,29 @@ There are lots of issues with this **manual** approach:
 
 Clearly, **manual** testing is not the way forward!
 
+## Test matrix and compatibility
+
+|               | Mac Os X      | Windows| Cygwin |
+| ------------- |---------------|--------|--------|
+| JTcl  2.6.0   | yes           | yes    | yes*   |
+| Tclsh 8.6     | ?             | yes*   |        |
+
+The * indicates support only for standard Tcl commands
+
 ## Getting help
 
 Post questions to the group at [TesTcl user group](https://groups.google.com/forum/?fromgroups#!forum/testcl-user)  
 File bugs over at [github](https://github.com/landro/TesTcl)
+
+## Contributing code
+
+Contributions are very welcomed. There are just a few things to remember:
+
+ - Run tests against JTcl since the custom iRule extensions have only been implemented to that Tcl implementations
+    - Run _examples.sh_ and _tests.sh_ or their Windows equivalents, and verify output
+ - Please follow existing coding style and indentation (2 spaces for tabs)
+ - Add new example or test if appropriate
+ - Add or update documentation when necessary and make sure it is correct (as in test it)
 
 ## License
 
