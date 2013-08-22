@@ -1,7 +1,6 @@
 package provide testcl 1.0.1
 package require log
 
-package ifneeded Trf 2.0 { error "force base64 without loading Trf package" }
 package require base64
 
 namespace eval ::testcl::HTTP {
