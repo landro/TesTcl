@@ -408,10 +408,12 @@ Clearly, **manual** testing is not the way forward!
 
 ## Test matrix and compatibility
 
-|               | Mac Os X      | Windows| Cygwin |
-| ------------- |---------------|--------|--------|
-| JTcl  2.6.0   | yes           | yes    | yes*   |
-| Tclsh 8.6     | ?             | yes*   |        |
+|               | Mac Os X | Windows| Cygwin |
+| ------------- |----------|--------|--------|
+| JTcl  2.4.0   | yes      | yes    | yes*   |
+| JTcl  2.5.0   | yes      | yes    | yes*   |
+| JTcl  2.6.0   | yes      | yes    | yes*   |
+| Tclsh 8.6     | ?        | yes*   |        |
 
 The * indicates support only for standard Tcl commands
 
