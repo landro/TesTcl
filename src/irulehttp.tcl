@@ -1,4 +1,4 @@
-package provide testcl 1.0.1
+package provide testcl 1.0.2
 package require log
 
 package require base64

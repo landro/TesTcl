@@ -13,7 +13,7 @@ if  {[namespace exists ::testcl]} {
   return
 }
 
-package ifneeded testcl 1.0.1 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]\n[list source [file join $dir src/irulehttp.tcl]]
+package ifneeded testcl 1.0.2 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]\n[list source [file join $dir src/irulehttp.tcl]]
 
 # Disable certain Tcl commands from iRules
 source [file join $dir src/disabled_commands.tcl]
