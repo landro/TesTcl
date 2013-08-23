@@ -101,7 +101,7 @@ proc ::testcl::verifyEvaluate {} {
     if { ![expr "{$result} $condition {$res}"] } {
       return "Verification '$description' failed - expression: {$result} $condition {$res}"
     }
-	puts "verification of '$description' done."
+    puts "verification of '$description' done."
   }
 }
 
@@ -125,27 +125,28 @@ proc ::testcl::unknown {args} {
 
   log::log debug "unknown called with args: $args"
 
-  #set rc [catch { return [::testcl::expected {*}$args] } res]
-  set rc [catch { return [eval ::testcl::expected $args] } res]
-  if {$rc != 1100} {
-    log::log debug "rc from expected: $rc"
-    if {$rc == 1000} {
-      return -code 1000 $res
-    }
+  #set rc [catch { return [testcl::expected {*}$args] } res]
+  set rc [catch { return [eval testcl::expected $args] } res]
+  log::log debug "rc from expected: $rc"
+
+  if {$rc == 1500} {
+    #expectation and end state not found
+    set errorMessage "Unexpected unknown command invocation '$args'"
+    puts "\n$errorMessage\n"
+    puts "Maybe you should add an \"on\" statement similar to the one below to your \"it\" block?\n"
+    puts "    it \"your description\" \{"
+    puts "      ..."
+    puts "      on $args return \"your return value\""
+    puts "      ..."
+    puts "    \}\n"
+    error $errorMessage
+    # TODO?
+    #uplevel ::tcl::unknown $args
+  }
+  if {$rc < 1000} {
     return $res
   }
-  
-  set errorMessage "Unexpected unknown command invocation '$args'"
-  puts "\n$errorMessage\n"
-  puts "Maybe you should add an \"on\" statement similar to the one below to your \"it\" block?\n"
-  puts "    it \"your description\" \{"
-  puts "      ..."
-  puts "      on $args return \"your return value\""
-  puts "      ..."
-  puts "    \}\n"
-  error $errorMessage
-  # TODO?
-  #uplevel ::tcl::unknown $args
+  return -code $rc $res
 }
 
 # testcl::expected --
@@ -201,5 +202,6 @@ proc ::testcl::expected {args} {
     }
 
   }
-  return -code 1100 "expectation not found"
+  log::log debug "expectation not found for $args (return code 1500)"
+  return -code 1500 "expectation not found"
 }

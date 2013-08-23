@@ -42,17 +42,37 @@ proc ::testcl::reset_expectations { } {
     log::log debug "Reset expected verifications"
     set verifications {}
   }
-  variable headers
-  if { [info exists headers] } {
-    log::log debug "Reset HTTP headers"
-    array unset headers
-    variable lws
-    set lws 0
+  variable HTTP::sent
+  if { [info exists HTTP::sent] } {
+    log::log debug "Reset HTTP sent"
+    unset HTTP::sent
   }
-  variable uri
-  if { [info exists uri] } {
+  variable HTTP::headers
+  if { [info exists HTTP::headers] } {
+    log::log debug "Reset HTTP headers"
+    array unset HTTP::headers
+    variable HTTP::lws
+    set HTTP::lws 0
+  }
+  variable HTTP::uri
+  if { [info exists HTTP::uri] } {
     log::log debug "Reset HTTP uri"
-    unset uri
+    unset HTTP::uri
+  }
+  variable HTTP::status_code
+  if { [info exists HTTP::status_code] } {
+    log::log debug "Reset HTTP status_code"
+    unset HTTP::status_code
+  }
+  variable HTTP::version
+  if { [info exists HTTP::version] } {
+    log::log debug "Reset HTTP version"
+    unset HTTP::version
+  }
+  variable HTTP::payload
+  if { [info exists HTTP::payload] } {
+    log::log debug "Reset HTTP payload"
+    unset HTTP::payload
   }
 }
 
@@ -108,10 +128,10 @@ proc ::testcl::it {description body} {
   set rc [catch $body result]
   
   if {$rc == 0} {
-    set result [::testcl::verifyEvaluate]
-	if {$result ne ""} {
-	  set rc 1
-	}
+    set result [testcl::verifyEvaluate]
+    if {$result ne ""} {
+      set rc 1
+    }
   }
   
   if {$rc != 0 } {

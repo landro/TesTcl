@@ -13,30 +13,38 @@ before {
 }
 
 it "should handle admin request using pool admin when credentials are valid" {
-  on HTTP::uri return "/admin"
+  HTTP::uri "/admin"
   on HTTP::username return "admin"
   on HTTP::password return "password"
-  on HTTP::uri /admin return ""
   endstate pool pool_admin_application
   run irules/advanced_irule.tcl advanced
 }
 
-it "should ask for credentials when admin request without correct credentials" {
-  on HTTP::uri return "/admin"
-  on HTTP::username return "not_admin"
-  on HTTP::password return "wrong_password"
-  endstate HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
+it "should ask for credentials when admin request with incorrect credentials" {
+  HTTP::uri "/admin"
+  HTTP::header insert Authorization "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
+  verify "user Aladdin" "Aladdin" eq {HTTP::username}
+  verify "password 'open sesame'" "open sesame" eq {HTTP::password}
+  verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
+  verify "response status code is 401" 401 eq {HTTP::status}
+  run irules/advanced_irule.tcl advanced
+}
+
+it "should ask for credentials when admin request without credentials" {
+  HTTP::uri "/admin"
+  verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
+  verify "response status code is 401" 401 eq {HTTP::status}
   run irules/advanced_irule.tcl advanced
 }
 
 it "should block access to uri /blocked" {
-  on HTTP::uri return "/blocked"
+  HTTP::uri "/blocked"
   endstate HTTP::respond 403
   run irules/advanced_irule.tcl advanced
 }
 
 it "should give apache http client a correct error code when app pool is down" {
-  on HTTP::uri return "/app"
+  HTTP::uri "/app"
   on active_members pool_application return 0
   HTTP::header insert User-Agent "Apache HTTP Client"
   endstate HTTP::respond 503
@@ -44,24 +52,27 @@ it "should give apache http client a correct error code when app pool is down" {
 }
 
 it "should give other clients then apache http client redirect to fallback when app pool is down" {
-  on HTTP::uri return "/app"
+  HTTP::uri "/app"
   on active_members pool_application return 0
   HTTP::header insert User-Agent "Firefox 13.0.1"
-  endstate HTTP::redirect "http://fallback.com"
+  verify "response status code is 302" 302 eq {HTTP::status}
+  verify "Location header is 'http://fallback.com'" "http://fallback.com" eq {HTTP::header Location}
   run irules/advanced_irule.tcl advanced
 }
 
 it "should give handle app request using app pool when app pool is up" {
-  on HTTP::uri return "/app"
-  on HTTP::uri /app return ""
+  HTTP::uri "/app/form?test=query"
   on active_members pool_application return 2
   endstate pool pool_application
+  verify "result uri is /form?test=query" "/form?test=query" eq {HTTP::uri}
+  verify "result path is /form" "/form" eq {HTTP::path}
+  verify "result query is test=query" "test=query" eq {HTTP::query}
   run irules/advanced_irule.tcl advanced
 }
 
 it "should give 404 when request cannot be handled" {
-  on HTTP::uri return "/cannot_be_handled"
-  endstate HTTP:respond 404
+  HTTP::uri "/cannot_be_handled"
+  endstate HTTP::respond 404
   run irules/advanced_irule.tcl advanced
 }
 

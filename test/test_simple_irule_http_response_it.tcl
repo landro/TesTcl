@@ -10,8 +10,7 @@ namespace import ::testcl::*
 
 it "should modify response" {
   event HTTP_RESPONSE
-  HTTP::header remove "Vary"
-  HTTP::header insert Vary "Accept-Encoding"
+  verify "Vary HTTP header value should be set to Accept-Encoding" "Accept-Encoding" eq {HTTP::header Vary}
   run irules/simple_irule.tcl simple
 }
 
