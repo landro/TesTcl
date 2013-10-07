@@ -36,8 +36,7 @@
 
 <p><strong>TesTcl</strong> is a <a href="http://en.wikipedia.org/wiki/Tcl">Tcl</a> library for unit testing
 <a href="https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx">iRules</a> which 
-are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BigIP</a> devices.
-The goal of this library is to make it easy to unit test iRules used when load balancing HTTP traffic.</p>
+are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BigIP</a> devices.</p>
 
 <h2>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting started</h2>
@@ -123,7 +122,7 @@ Put the following line just above the last line in the script</p>
 <h5>
 <a name="verify-installation" class="anchor" href="#verify-installation"><span class="octicon octicon-link"></span></a>Verify installation</h5>
 
-<p>Create a script file named <em>jtcl test_jtcl_irule.tcl</em> containing the following lines </p>
+<p>Create a script file named <em>test_jtcl_irule.tcl</em> containing the following lines </p>
 
 <pre><code>if {"aa" starts_with "a"} {
   puts "The jtcl-irule extension has successfully been installed"
@@ -140,10 +139,10 @@ Put the following line just above the last line in the script</p>
 <h5>
 <a name="add-the-testcl-library-to-your-library-path" class="anchor" href="#add-the-testcl-library-to-your-library-path"><span class="octicon octicon-link"></span></a>Add the testcl library to your library path</h5>
 
-<p>Download directory containing all the files found in this project (zip and tar.gz can be downloaded from this page)
+<p>Download latest <a href="https://github.com/landro/TesTcl/releases">TesTcl distribution</a> from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the <a href="http://jtcl.kenai.com/gettingstarted.html">TCLLIBPATH</a> environment variable:</p>
 
-<pre><code>export TCLLIBPATH=whereever/landro-TesTcl-b93b1b4
+<pre><code>export TCLLIBPATH=whereever/TesTcl-1.0.2
 </code></pre>
 
 <p>In order to run this example, type in the following at the command-line:</p>
@@ -180,27 +179,52 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 <li>Add the specification tests
 
 <ul>
-<li>Describe every <em>it</em> statement as precisely as possible.</li>
-<li>Add an <em>event</em> . This is mandatory.</li>
+<li>Describe every <em>it</em> statement as precisely as possible. It serves as documentation.</li>
+<li>Add an <em>event</em> . <strong>This is mandatory.</strong>
+</li>
 <li>Add one or several <em>on</em> statements to setup expectations/mocks. If you don't care about the return value, return "".</li>
 <li>Add an <em>endstate</em>. This could be a <em>pool</em>, <em>HTTP::respond</em>, <em>HTTP::redirect</em> or any other function call (see <a href="https://devcentral.f5.com/tech-tips/articles/-the101-irules-101-routing#.UW0OwoLfeN4">link</a>).</li>
-<li>Add an <em>verify</em>. This is condition to evaluate after iRule execution. Describe every verification as precisely as possible, add as many verification as needed in particular test scenario.</li>
-<li>Add an HTTP::header initialization if you are testing modification of HTTP headers.</li>
-<li>Add a <em>run</em> statement in order to actually run the Tcl script file containing your iRule. This is mandatory.</li>
+<li>Add a <em>verify</em>. The verifications will be run immediately after the iRule execution. Describe every verification as precisely as possible, add as many <em>verification</em>s as needed in your particular test scenario.</li>
+<li>Add an HTTP::header initialization if you are testing modification of HTTP headers (stubs/mocks are provided for all commands in HTTP namespace).</li>
+<li>Add a <em>run</em> statement in order to actually run the Tcl script file containing your iRule. <strong>This is mandatory.</strong>
+</li>
 </ul>
 </li>
-</ul><p><em>it</em> statement has two arguments, description and code to execute as test case.
-<em>event</em> statement has single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.
-<em>on</em> statement has following syntax: <em>on</em> ... (return|error) result
-<em>endstate</em> statement accepts 2 to 5 arguments which are matched with command to stop processing iRule with success in test case evaluation.
-<em>verify</em> statement four arguments. Syntax: <em>verify</em> "DESCRIPTION" value <em>CONDITION</em> {verification code}
-    - <em>description</em> is displayed during verification execution
-    - <em>value</em> is expected result of verification code
-    - <em>condition</em> is operator used during comparison of <em>value</em> with code result (ex. ==, !=, eq).
-    - <em>verification_code</em> is code to evaluate after iRule execution
-<em>run</em> statement has two arguments, file name of iRule source and name of iRule to execute</p>
+</ul><h5>
+<a name="a-word-on-the-testcl-commands" class="anchor" href="#a-word-on-the-testcl-commands"><span class="octicon octicon-link"></span></a>A word on the TesTcl commands</h5>
 
-<p>There is ready to use <em>HTTP::header</em> mockup implementation, which simulates behavior of original F5 implementation (as described at <a href="https://devcentral.f5.com/wiki/irules.HTTP__header.ashx">link</a>). However <em>insert_modssl_fields</em> subcommand is not supported in current version.</p>
+<ul>
+<li>
+<em>it</em> statement takes two arguments, description and code block to execute as test case.</li>
+<li>
+<em>event</em> statement takes a single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.</li>
+<li>
+<em>on</em> statement has the following syntax: <em>on</em> ... (return|error) result</li>
+<li>
+<em>endstate</em> statement accepts 2 to 5 arguments which are matched with command to stop processing iRule with success in test case evaluation.</li>
+<li>
+<em>verify</em> statement takes four arguments. Syntax: <em>verify</em> "DESCRIPTION" value <em>CONDITION</em> {verification code}
+
+<ul>
+<li>
+<em>description</em> is displayed during verification execution</li>
+<li>
+<em>value</em> is expected result of verification code</li>
+<li>
+<em>condition</em> is operator used during comparison of <em>value</em> with code result (ex. ==, !=, eq).</li>
+<li>
+<em>verification</em>code_ is code to evaluate after iRule execution</li>
+</ul>
+</li>
+<li>
+<em>run</em> statement takes two arguments, file name of iRule source and name of iRule to execute</li>
+</ul><h5>
+<a name="a-word-on-stubsmocks-you-choose-what-to-call-em" class="anchor" href="#a-word-on-stubsmocks-you-choose-what-to-call-em"><span class="octicon octicon-link"></span></a>A word on stubs/mocks (you choose what to call 'em)</h5>
+
+<p>There is a ready to use <em>HTTP::header</em> mockup implementation, which simulates behavior of original F5 implementation (as described at <a href="https://devcentral.f5.com/wiki/irules.HTTP__header.ashx">link</a>). 
+However <em>insert</em>modssl_fields_ subcommand is not supported in current version.
+In addition, most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
+you wonder what is going on in the mocks.</p>
 
 <h4>
 <a name="avoiding-code-duplication-using-the-before-command" class="anchor" href="#avoiding-code-duplication-using-the-before-command"><span class="octicon octicon-link"></span></a>Avoiding code duplication using the before command</h4>
@@ -515,6 +539,8 @@ In order to make your system perform the best it can, you need:</p>
 </tbody>
 </table><p>The * indicates support only for standard Tcl commands</p>
 
+<p>If you use TesTcl on a different platform, please let us know</p>
+
 <h2>
 <a name="getting-help" class="anchor" href="#getting-help"><span class="octicon octicon-link"></span></a>Getting help</h2>
 
@@ -534,7 +560,7 @@ File bugs over at <a href="https://github.com/landro/TesTcl">github</a></p>
 </ul>
 </li>
 <li>Please follow existing coding style and indentation (2 spaces for tabs)</li>
-<li>Add new example or test if appropriate</li>
+<li>Add new example or test when appropriate</li>
 <li>Add or update documentation when necessary and make sure it is correct (as in test it)</li>
 </ul><h2>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
