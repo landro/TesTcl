@@ -446,4 +446,6 @@ Just like JTcl, TesTcl is licensed under a BSD-style license.
 
 Drop me a line if you use this library and find it useful: stefan.landro **you know what** gmail.com
 
-You can also check out [my LinkedIn profile](http://no.linkedin.com/in/landro)
+You can also check out [my LinkedIn profile](http://no.linkedin.com/in/landro) or 
+[my Google+ profile](https://plus.google.com/114497086993236232709?rel=author), or 
+even [my twitter account - follow it for TesTcl releases](https://twitter.com/landro)
