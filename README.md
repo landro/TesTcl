@@ -3,7 +3,6 @@
 **TesTcl** is a [Tcl](http://en.wikipedia.org/wiki/Tcl) library for unit testing
 [iRules](https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx) which 
 are used when configuring [F5 BigIP](http://www.f5.com/products/big-ip/) devices.
-The goal of this library is to make it easy to unit test iRules used when load balancing HTTP traffic.
 
 ## Getting started
 
@@ -78,7 +77,7 @@ Put the following line just above the last line in the script
 
 ##### Verify installation
 
-Create a script file named *jtcl test_jtcl_irule.tcl* containing the following lines 
+Create a script file named *test_jtcl_irule.tcl* containing the following lines 
 
     if {"aa" starts_with "a"} {
       puts "The jtcl-irule extension has successfully been installed"
@@ -91,10 +90,10 @@ and execute it using
 You should get a success message.
 
 ##### Add the testcl library to your library path
-Download directory containing all the files found in this project (zip and tar.gz can be downloaded from this page)
+Download latest [TesTcl distribution](https://github.com/landro/TesTcl/releases) from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the [TCLLIBPATH](http://jtcl.kenai.com/gettingstarted.html) environment variable:
 
-    export TCLLIBPATH=whereever/landro-TesTcl-b93b1b4
+    export TCLLIBPATH=whereever/TesTcl-1.0.2
 
 In order to run this example, type in the following at the command-line:
 
@@ -124,27 +123,30 @@ This should give you the following output:
 - Require the **testcl** package and import the commands and variables found in the **testcl** namespace to use it.
 - Enable or disable logging
 - Add the specification tests
-  - Describe every _it_ statement as precisely as possible.
-  - Add an _event_ . This is mandatory.
+  - Describe every _it_ statement as precisely as possible. It serves as documentation.
+  - Add an _event_ . **This is mandatory.**
   - Add one or several _on_ statements to setup expectations/mocks. If you don't care about the return value, return "".
   - Add an _endstate_. This could be a _pool_, _HTTP::respond_, _HTTP::redirect_ or any other function call (see [link](https://devcentral.f5.com/tech-tips/articles/-the101-irules-101-routing#.UW0OwoLfeN4)).
-  - Add an _verify_. This is condition to evaluate after iRule execution. Describe every verification as precisely as possible, add as many verification as needed in particular test scenario.
-  - Add an HTTP::header initialization if you are testing modification of HTTP headers.
-  - Add a _run_ statement in order to actually run the Tcl script file containing your iRule. This is mandatory.
+  - Add a _verify_. The verifications will be run immediately after the iRule execution. Describe every verification as precisely as possible, add as many *verification*s as needed in your particular test scenario.
+  - Add an HTTP::header initialization if you are testing modification of HTTP headers (stubs/mocks are provided for all commands in HTTP namespace).
+  - Add a _run_ statement in order to actually run the Tcl script file containing your iRule. **This is mandatory.**
 
-_it_ statement has two arguments, description and code to execute as test case.
-_event_ statement has single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.
-_on_ statement has following syntax: _on_ ... (return|error) result
+_it_ statement takes two arguments, description and code block to execute as test case.
+_event_ statement takes a single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.
+_on_ statement has the following syntax: _on_ ... (return|error) result
 _endstate_ statement accepts 2 to 5 arguments which are matched with command to stop processing iRule with success in test case evaluation.
-_verify_ statement four arguments. Syntax: _verify_ "DESCRIPTION" value _CONDITION_ {verification code}
+_verify_ statement takes four arguments. Syntax: _verify_ "DESCRIPTION" value _CONDITION_ {verification code}
     - _description_ is displayed during verification execution
     - _value_ is expected result of verification code
     - _condition_ is operator used during comparison of _value_ with code result (ex. ==, !=, eq).
     - _verification_code_ is code to evaluate after iRule execution
-_run_ statement has two arguments, file name of iRule source and name of iRule to execute
+_run_ statement takes two arguments, file name of iRule source and name of iRule to execute
 
-There is ready to use _HTTP::header_ mockup implementation, which simulates behavior of original F5 implementation (as described at [link](https://devcentral.f5.com/wiki/irules.HTTP__header.ashx)). However _insert_modssl_fields_ subcommand is not supported in current version.
-
+##### A word on stubs/mocks (you choose what to call 'em)#####
+There is a ready to use _HTTP::header_ mockup implementation, which simulates behavior of original F5 implementation (as described at [link](https://devcentral.f5.com/wiki/irules.HTTP__header.ashx)). 
+However _insert_modssl_fields_ subcommand is not supported in current version.
+In addition, most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
+you wonder what is going on in the mocks.
 
 #### Avoiding code duplication using the before command
 
@@ -417,6 +419,8 @@ Clearly, **manual** testing is not the way forward!
 
 The * indicates support only for standard Tcl commands
 
+If you use TesTcl on a different platform, please let us know
+
 ## Getting help
 
 Post questions to the group at [TesTcl user group](https://groups.google.com/forum/?fromgroups#!forum/testcl-user)  
@@ -429,7 +433,7 @@ Contributions are very welcomed. There are just a few things to remember:
  - Run tests against JTcl since the custom iRule extensions have only been implemented to that Tcl implementations
     - Run _examples.sh_ and _tests.sh_ or their Windows equivalents, and verify output
  - Please follow existing coding style and indentation (2 spaces for tabs)
- - Add new example or test if appropriate
+ - Add new example or test when appropriate
  - Add or update documentation when necessary and make sure it is correct (as in test it)
 
 ## License
