@@ -131,16 +131,18 @@ This should give you the following output:
   - Add an HTTP::header initialization if you are testing modification of HTTP headers (stubs/mocks are provided for all commands in HTTP namespace).
   - Add a _run_ statement in order to actually run the Tcl script file containing your iRule. **This is mandatory.**
 
-_it_ statement takes two arguments, description and code block to execute as test case.
-_event_ statement takes a single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.
-_on_ statement has the following syntax: _on_ ... (return|error) result
-_endstate_ statement accepts 2 to 5 arguments which are matched with command to stop processing iRule with success in test case evaluation.
-_verify_ statement takes four arguments. Syntax: _verify_ "DESCRIPTION" value _CONDITION_ {verification code}
-    - _description_ is displayed during verification execution
-    - _value_ is expected result of verification code
-    - _condition_ is operator used during comparison of _value_ with code result (ex. ==, !=, eq).
-    - _verification_code_ is code to evaluate after iRule execution
-_run_ statement takes two arguments, file name of iRule source and name of iRule to execute
+##### A word on the TesTcl commands #####
+
+- _it_ statement takes two arguments, description and code block to execute as test case.
+- _event_ statement takes a single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.
+- _on_ statement has the following syntax: _on_ ... (return|error) result
+- _endstate_ statement accepts 2 to 5 arguments which are matched with command to stop processing iRule with success in test case evaluation.
+- _verify_ statement takes four arguments. Syntax: _verify_ "DESCRIPTION" value _CONDITION_ {verification code}
+  - _description_ is displayed during verification execution
+  - _value_ is expected result of verification code
+  - _condition_ is operator used during comparison of _value_ with code result (ex. ==, !=, eq).
+  - _verification_code_ is code to evaluate after iRule execution
+- _run_ statement takes two arguments, file name of iRule source and name of iRule to execute
 
 ##### A word on stubs/mocks (you choose what to call 'em)#####
 There is a ready to use _HTTP::header_ mockup implementation, which simulates behavior of original F5 implementation (as described at [link](https://devcentral.f5.com/wiki/irules.HTTP__header.ashx)). 
