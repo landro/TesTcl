@@ -114,7 +114,8 @@ it "should replace existing Vary http response headers with Accept-Encoding valu
 jar artifact from the <a href="https://github.com/landro/TesTcl/downloads">downloads</a> section or you can use the direct <a href="https://github.com/downloads/landro/TesTcl/jtcl-irule.jar">link</a>.
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in <em>jtcl</em> or <em>jtcl.bat</em>.
-Put the following line just above the last line in the script</p>
+<strong>IMPORTANT!</strong> Make sure you place the <em>jtcl-irule.jar</em> on the classpath <strong>before</strong> the standard jtcl-.jar
+On MacOs X and Linux, this can be achieved by putting the following line just above the last line in the jtcl shell script</p>
 
 <pre><code>export CLASSPATH=$dir/jtcl-irule.jar:$CLASSPATH
 </code></pre>
