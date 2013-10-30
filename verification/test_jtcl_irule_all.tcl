@@ -6,3 +6,14 @@ if {"aa" starts_with "a"} {
 if {"a" equals "a"} {
   puts "equals works as expected"
 }
+if { not false } {
+  puts "not works as expected"
+}
+if { 1 and 1} {
+  puts "and works as expected"
+}
+if { 1 or 0} {
+  puts "or works as expected"
+}
+
+
