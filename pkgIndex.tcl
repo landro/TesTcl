@@ -11,6 +11,19 @@
 if  {[namespace exists ::testcl]} {
   #already loaded
   return
+} else {
+
+  # Verify jtcl-irule extension
+  if { [catch { expr {"abc" starts_with "a"} } errormsg ] } {
+    puts stderr "WARNING"	  
+    puts stderr "WARNING It seems like the jtcl-irule extension isn't properly loaded"
+    puts stderr "WARNING None of the custom iRule operator extensions to Tcl will work"
+    puts stderr "WARNING Please check your JTcl classpath - see TesTcl documentation"
+    puts stderr "WARNING"		  
+    puts stderr "WARNING Exact error message: $errormsg"
+    puts stderr "WARNING"
+  }
+		
 }
 
 package ifneeded testcl 1.0.2 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]\n[list source [file join $dir src/irulehttp.tcl]]
