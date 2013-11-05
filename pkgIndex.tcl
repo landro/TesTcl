@@ -20,8 +20,6 @@ if  {[namespace exists ::testcl]} {
     puts stderr "WARNING None of the custom iRule operator extensions to Tcl will work"
     puts stderr "WARNING Please check your JTcl classpath - see TesTcl documentation"
     puts stderr "WARNING"		  
-    puts stderr "WARNING Exact error message: $errormsg"
-    puts stderr "WARNING"
   }
 		
 }
