@@ -7,8 +7,6 @@ if {"abcdefg" matches_glob "ab*efg"} { puts "matches_glob works as expected" }
 if {"abcdefg" matches_regex "a.cde.*"} { puts "matches_regex works as expected" }
 
 if {"abcdefg" equals "abcdefg"} { puts "equals works as expected" }
-if { 1 and 1} { puts "and works as expected" }
-if { 1 or 0} { puts "or works as expected" }
+if { 1 and 1 } { puts "and works as expected" }
+if { 1 or 0 } { puts "or works as expected" }
 if { not false } { puts "not works as expected" }
-
-
