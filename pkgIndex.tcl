@@ -60,7 +60,7 @@ package ifneeded testcl 1.0.2 [list source [file join $dir src/assert.tcl]]\n[li
 
 # Disable certain Tcl commands from iRules
 if { $::tcl_platform(platform) eq "java" } {
-  source [file join $dir src/disabled_commands.tcl]
+  source [file join $dir src/disabled_commands_jtcl.tcl]
 } else {
-  #TODO add disabled commands for tclsh
+  source [file join $dir src/disabled_commands_tclsh.tcl]
 }
