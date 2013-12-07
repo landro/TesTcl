@@ -13,22 +13,24 @@ using TesTcl should't be to hard. Check out the examples below:
 
 Let's say you want to test the following simple iRule found in *simple_irule.tcl*:
 
-    rule simple {
+```tcl
+rule simple {
 
-      when HTTP_REQUEST {
-        if { [HTTP::uri] starts_with "/foo" } {
-          pool foo
-        } else {
-          pool bar
-        }
-      }
-
-      when HTTP_RESPONSE {
-        HTTP::header remove "Vary"
-        HTTP::header insert Vary "Accept-Encoding"
-      }
-
+  when HTTP_REQUEST {
+    if { [HTTP::uri] starts_with "/foo" } {
+      pool foo
+    } else {
+      pool bar
     }
+  }
+
+  when HTTP_RESPONSE {
+    HTTP::header remove "Vary"
+    HTTP::header insert Vary "Accept-Encoding"
+  }
+
+}
+```
 
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
