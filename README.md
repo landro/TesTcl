@@ -34,34 +34,36 @@ rule simple {
 
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
-    package require -exact testcl 1.0.3
-    namespace import ::testcl::*
+```tcl
+package require -exact testcl 1.0.3
+namespace import ::testcl::*
 
-    # Comment in to enable logging
-    #log::lvSuppressLE info 0
-    
-    it "should handle request using pool bar" {
-      event HTTP_REQUEST
-      on HTTP::uri return "/bar"
-      endstate pool bar
-      run simple_irule.tcl simple
-    }
+# Comment in to enable logging
+#log::lvSuppressLE info 0
 
-    it "should handle request using pool foo" {
-      event HTTP_REQUEST
-      on HTTP::uri return "/foo/admin"
-      endstate pool foo
-      run simple_irule.tcl simple
-    }
+it "should handle request using pool bar" {
+  event HTTP_REQUEST
+  on HTTP::uri return "/bar"
+  endstate pool bar
+  run simple_irule.tcl simple
+}
 
-    it "should replace existing Vary http response headers with Accept-Encoding value" {
-      event HTTP_RESPONSE
-      verify "there should be only one Vary header" 1 == {HTTP::header count vary}
-      verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
-      HTTP::header insert Vary "dummy value"
-      HTTP::header insert Vary "another dummy value"
-      run irules/simple_irule.tcl simple
-    }
+it "should handle request using pool foo" {
+  event HTTP_REQUEST
+  on HTTP::uri return "/foo/admin"
+  endstate pool foo
+  run simple_irule.tcl simple
+}
+
+it "should replace existing Vary http response headers with Accept-Encoding value" {
+  event HTTP_RESPONSE
+  verify "there should be only one Vary header" 1 == {HTTP::header count vary}
+  verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
+  HTTP::header insert Vary "dummy value"
+  HTTP::header insert Vary "another dummy value"
+  run irules/simple_irule.tcl simple
+}
+```
 
 #### Installing JTcl including jtcl-irule extensions
 
@@ -84,9 +86,11 @@ On MacOs X and Linux, this can be achieved by putting the following line just ab
 
 Create a script file named *test_jtcl_irule.tcl* containing the following lines 
 
-    if {"aa" starts_with "a"} {
-      puts "The jtcl-irule extension has successfully been installed"
-    }
+```tcl
+if {"aa" starts_with "a"} {
+  puts "The jtcl-irule extension has successfully been installed"
+}
+```
 
 and execute it using 
 
@@ -164,38 +168,40 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
-    package require -exact testcl 1.0.3
-    namespace import ::testcl::*
+```tcl
+package require -exact testcl 1.0.3
+namespace import ::testcl::*
 
-    # Comment in to enable logging
-    #log::lvSuppressLE info 0
+# Comment in to enable logging
+#log::lvSuppressLE info 0
 
-    before {
-      event HTTP_REQUEST
-    }
+before {
+  event HTTP_REQUEST
+}
 
-    it "should handle request using pool bar" {
-      on HTTP::uri return "/bar"
-      endstate pool bar
-      run simple_irule.tcl simple
-    }
+it "should handle request using pool bar" {
+  on HTTP::uri return "/bar"
+  endstate pool bar
+  run simple_irule.tcl simple
+}
 
-    it "should handle request using pool foo" {
-      on HTTP::uri return "/foo/admin"
-      endstate pool foo
-      run simple_irule.tcl simple
-    }
+it "should handle request using pool foo" {
+  on HTTP::uri return "/foo/admin"
+  endstate pool foo
+  run simple_irule.tcl simple
+}
 
-    it "should replace existing Vary http response headers with Accept-Encoding value" {
-      # NB! override event type set in before
-      event HTTP_RESPONSE
+it "should replace existing Vary http response headers with Accept-Encoding value" {
+  # NB! override event type set in before
+  event HTTP_RESPONSE
 
-      verify "there should be only one Vary header" 1 == {HTTP::header count vary}
-      verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
-      HTTP::header insert Vary "dummy value"
-      HTTP::header insert Vary "another dummy value"
-      run irules/simple_irule.tcl simple
-    }
+  verify "there should be only one Vary header" 1 == {HTTP::header count vary}
+  verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
+  HTTP::header insert Vary "dummy value"
+  HTTP::header insert Vary "another dummy value"
+  run irules/simple_irule.tcl simple
+}
+```
 
 On a side note, it's worth mentioning that there is no _after_ command, since we're always dealing with mocks.
 
@@ -203,181 +209,188 @@ On a side note, it's worth mentioning that there is no _after_ command, since we
 
 Let's have a look at a more advanced iRule (advanced_irule.tcl):
 
-    rule advanced {
+```tcl
+rule advanced {
 
-      when HTTP_REQUEST {
+  when HTTP_REQUEST {
 
-        HTTP::header insert X-Forwarded-SSL true
+    HTTP::header insert X-Forwarded-SSL true
 
-        if { [HTTP::uri] eq "/admin" } {
-          if { ([HTTP::username] eq "admin") && ([HTTP::password] eq "password") } {
-            set newuri [string map {/admin/ /} [HTTP::uri]]
-            HTTP::uri $newuri
-            pool pool_admin_application
-          } else {
-            HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
-          }
-        } elseif { [HTTP::uri] eq "/blocked" } {
-          HTTP::respond 403
-        } elseif { [HTTP::uri] starts_with "/app"} {
-          if { [active_members pool_application] == 0 } {
-            if { [HTTP::header User-Agent] eq "Apache HTTP Client" } {
-              HTTP::respond 503
-            } else {
-              HTTP::redirect "http://fallback.com"
-            }
-          } else {
-            set newuri [string map {/app/ /} [HTTP::uri]]
-            HTTP::uri $newuri
-            pool pool_application
-          }
-        } else {
-          HTTP::respond 404
-        }
-
+    if { [HTTP::uri] eq "/admin" } {
+      if { ([HTTP::username] eq "admin") && ([HTTP::password] eq "password") } {
+        set newuri [string map {/admin/ /} [HTTP::uri]]
+        HTTP::uri $newuri
+        pool pool_admin_application
+      } else {
+        HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
       }
-
+    } elseif { [HTTP::uri] eq "/blocked" } {
+      HTTP::respond 403
+    } elseif { [HTTP::uri] starts_with "/app"} {
+      if { [active_members pool_application] == 0 } {
+        if { [HTTP::header User-Agent] eq "Apache HTTP Client" } {
+          HTTP::respond 503
+        } else {
+          HTTP::redirect "http://fallback.com"
+        }
+      } else {
+        set newuri [string map {/app/ /} [HTTP::uri]]
+        HTTP::uri $newuri
+        pool pool_application
+      }
+    } else {
+      HTTP::respond 404
     }
+
+  }
+
+}
+```
 
 The specs for this iRule would look like this:
 
-    package require -exact testcl 1.0.3
-    namespace import ::testcl::*
+```tcl
+package require -exact testcl 1.0.3
+namespace import ::testcl::*
 
-    # Comment out to suppress logging
-    #log::lvSuppressLE info 0
+# Comment out to suppress logging
+#log::lvSuppressLE info 0
 
-    before {
-      event HTTP_REQUEST
-    }
+before {
+  event HTTP_REQUEST
+}
 
-    it "should handle admin request using pool admin when credentials are valid" {
-      HTTP::uri "/admin"
-      on HTTP::username return "admin"
-      on HTTP::password return "password"
-      endstate pool pool_admin_application
-      run irules/advanced_irule.tcl advanced
-    }
+it "should handle admin request using pool admin when credentials are valid" {
+  HTTP::uri "/admin"
+  on HTTP::username return "admin"
+  on HTTP::password return "password"
+  endstate pool pool_admin_application
+  run irules/advanced_irule.tcl advanced
+}
 
-    it "should ask for credentials when admin request with incorrect credentials" {
-      HTTP::uri "/admin"
-      HTTP::header insert Authorization "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
-      verify "user Aladdin" "Aladdin" eq {HTTP::username}
-      verify "password 'open sesame'" "open sesame" eq {HTTP::password}
-      verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
-      verify "response status code is 401" 401 eq {HTTP::status}
-      run irules/advanced_irule.tcl advanced
-    }
+it "should ask for credentials when admin request with incorrect credentials" {
+  HTTP::uri "/admin"
+  HTTP::header insert Authorization "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
+  verify "user Aladdin" "Aladdin" eq {HTTP::username}
+  verify "password 'open sesame'" "open sesame" eq {HTTP::password}
+  verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
+  verify "response status code is 401" 401 eq {HTTP::status}
+  run irules/advanced_irule.tcl advanced
+}
 
-    it "should ask for credentials when admin request without credentials" {
-      HTTP::uri "/admin"
-      verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
-      verify "response status code is 401" 401 eq {HTTP::status}
-      run irules/advanced_irule.tcl advanced
-    }
+it "should ask for credentials when admin request without credentials" {
+  HTTP::uri "/admin"
+  verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
+  verify "response status code is 401" 401 eq {HTTP::status}
+  run irules/advanced_irule.tcl advanced
+}
 
-    it "should block access to uri /blocked" {
-      HTTP::uri "/blocked"
-      endstate HTTP::respond 403
-      run irules/advanced_irule.tcl advanced
-    }
+it "should block access to uri /blocked" {
+  HTTP::uri "/blocked"
+  endstate HTTP::respond 403
+  run irules/advanced_irule.tcl advanced
+}
 
-    it "should give apache http client a correct error code when app pool is down" {
-      HTTP::uri "/app"
-      on active_members pool_application return 0
-      HTTP::header insert User-Agent "Apache HTTP Client"
-      endstate HTTP::respond 503
-      run irules/advanced_irule.tcl advanced
-    }
+it "should give apache http client a correct error code when app pool is down" {
+  HTTP::uri "/app"
+  on active_members pool_application return 0
+  HTTP::header insert User-Agent "Apache HTTP Client"
+  endstate HTTP::respond 503
+  run irules/advanced_irule.tcl advanced
+}
 
-    it "should give other clients then apache http client redirect to fallback when app pool is down" {
-      HTTP::uri "/app"
-      on active_members pool_application return 0
-      HTTP::header insert User-Agent "Firefox 13.0.1"
-      verify "response status code is 302" 302 eq {HTTP::status}
-      verify "Location header is 'http://fallback.com'" "http://fallback.com" eq {HTTP::header Location}
-      run irules/advanced_irule.tcl advanced
-    }
+it "should give other clients then apache http client redirect to fallback when app pool is down" {
+  HTTP::uri "/app"
+  on active_members pool_application return 0
+  HTTP::header insert User-Agent "Firefox 13.0.1"
+  verify "response status code is 302" 302 eq {HTTP::status}
+  verify "Location header is 'http://fallback.com'" "http://fallback.com" eq {HTTP::header Location}
+  run irules/advanced_irule.tcl advanced
+}
 
-    it "should give handle app request using app pool when app pool is up" {
-      HTTP::uri "/app/form?test=query"
-      on active_members pool_application return 2
-      endstate pool pool_application
-      verify "result uri is /form?test=query" "/form?test=query" eq {HTTP::uri}
-      verify "result path is /form" "/form" eq {HTTP::path}
-      verify "result query is test=query" "test=query" eq {HTTP::query}
-      run irules/advanced_irule.tcl advanced
-    }
+it "should give handle app request using app pool when app pool is up" {
+  HTTP::uri "/app/form?test=query"
+  on active_members pool_application return 2
+  endstate pool pool_application
+  verify "result uri is /form?test=query" "/form?test=query" eq {HTTP::uri}
+  verify "result path is /form" "/form" eq {HTTP::path}
+  verify "result query is test=query" "test=query" eq {HTTP::query}
+  run irules/advanced_irule.tcl advanced
+}
 
-    it "should give 404 when request cannot be handled" {
-      HTTP::uri "/cannot_be_handled"
-      endstate HTTP::respond 404
-      run irules/advanced_irule.tcl advanced
-    }
+it "should give 404 when request cannot be handled" {
+  HTTP::uri "/cannot_be_handled"
+  endstate HTTP::respond 404
+  run irules/advanced_irule.tcl advanced
+}
 
-    stats
-
+stats
+```
 
 ### Modification of HTTP headers example
 
 Let's have a look at a another iRule (headers_irule.tcl):
+
+```tcl    
+rule headers {
+
+  #notify backend about SSL using X-Forwarded-SSL http header
+  #if there is client certificate put common name into X-Common-Name-SSL http header
+  #if not make sure X-Common-Name-SSL header is not set
+  when HTTP_REQUEST {
+    HTTP::header insert X-Forwarded-SSL true
+    HTTP::header remove X-Common-Name-SSL
     
-    rule headers {
-    
-      #notify backend about SSL using X-Forwarded-SSL http header
-      #if there is client certificate put common name into X-Common-Name-SSL http header
-      #if not make sure X-Common-Name-SSL header is not set
-      when HTTP_REQUEST {
-        HTTP::header insert X-Forwarded-SSL true
-        HTTP::header remove X-Common-Name-SSL
+    if { [SSL::cert count] > 0 } {
+      set ssl_cert [SSL::cert 0]
+      set subject [X509::subject $ssl_cert]
+      set cn ""
+      foreach { label value } [split $subject ",="] {
+        set label [string toupper [string trim $label]]
+        set value [string trim $value]
         
-        if { [SSL::cert count] > 0 } {
-          set ssl_cert [SSL::cert 0]
-          set subject [X509::subject $ssl_cert]
-          set cn ""
-          foreach { label value } [split $subject ",="] {
-            set label [string toupper [string trim $label]]
-            set value [string trim $value]
-            
-            if { $label == "CN" } {
-              set cn "$value"
-              break
-            }
-          }
-        
-          HTTP::header insert X-Common-Name-SSL "$cn"
+        if { $label == "CN" } {
+          set cn "$value"
+          break
         }
       }
     
+      HTTP::header insert X-Common-Name-SSL "$cn"
     }
+  }
+
+}
+```
 
 The example specs for this iRule would look like this:
 
-    package require -exact testcl 1.0.3
-    namespace import ::testcl::*
+```tcl
+package require -exact testcl 1.0.3
+namespace import ::testcl::*
 
-    # Comment out to suppress logging
-    #log::lvSuppressLE info 0
+# Comment out to suppress logging
+#log::lvSuppressLE info 0
 
-    before {
-      event HTTP_REQUEST
-      verify "There should be always set HTTP header X-Forwarded-SSL to true" true eq {HTTP::header X-Forwarded-SSL}
-    }
+before {
+  event HTTP_REQUEST
+  verify "There should be always set HTTP header X-Forwarded-SSL to true" true eq {HTTP::header X-Forwarded-SSL}
+}
 
-    it "should remove X-Common-Name-SSL header from request if there was no client SSL certificate" {
-      HTTP::header insert X-Common-Name-SSL "testCommonName"
-      on SSL::cert count return 0
-      verify "There should be no X-Common-Name-SSL" 0 == {HTTP::header exists X-Common-Name-SSL}
-      run irules/headers_irule.tcl headers
-    }
+it "should remove X-Common-Name-SSL header from request if there was no client SSL certificate" {
+  HTTP::header insert X-Common-Name-SSL "testCommonName"
+  on SSL::cert count return 0
+  verify "There should be no X-Common-Name-SSL" 0 == {HTTP::header exists X-Common-Name-SSL}
+  run irules/headers_irule.tcl headers
+}
 
-    it "should add X-Common-Name-SSL with Common Name from client SSL certificate if it was available" {
-      on SSL::cert count return 1
-      on SSL::cert 0 return {}
-      on X509::subject [SSL::cert 0] return "CN=testCommonName,DN=abc.de.fg"
-      verify "X-Common-Name-SSL HTTP header value is the same as CN" "testCommonName" eq {HTTP::header X-Common-Name-SSL}
-      run irules/headers_irule.tcl headers
-    }
+it "should add X-Common-Name-SSL with Common Name from client SSL certificate if it was available" {
+  on SSL::cert count return 1
+  on SSL::cert 0 return {}
+  on X509::subject [SSL::cert 0] return "CN=testCommonName,DN=abc.de.fg"
+  verify "X-Common-Name-SSL HTTP header value is the same as CN" "testCommonName" eq {HTTP::header X-Common-Name-SSL}
+  run irules/headers_irule.tcl headers
+}
+```
 
 ## How stable is this code?
 This work is quite stable, but you can expect minor breaking changes.
@@ -419,10 +432,10 @@ Clearly, **manual** testing is not the way forward!
 
 |               | Mac Os X | Windows| Cygwin |
 | ------------- |----------|--------|--------|
-| JTcl  2.4.0   | yes      | yes    | yes*   |
-| JTcl  2.5.0   | yes      | yes    | yes*   |
-| JTcl  2.6.0   | yes      | yes    | yes*   |
-| Tclsh 8.6     | ?        | yes*   |        |
+| JTcl  2.4.0   | yes      | yes    | yes    |
+| JTcl  2.5.0   | yes      | yes    | yes    |
+| JTcl  2.6.0   | yes      | yes    | yes    |
+| Tclsh 8.6     | yes*     | yes*   | ?      |
 
 The * indicates support only for standard Tcl commands
 
