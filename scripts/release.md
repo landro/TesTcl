@@ -5,3 +5,12 @@ Mac OS X/Free BSD
 
     find -E .. -regex '^.*\.(tcl|md)$' -exec sed -i '' 's/OLD_VERSION_NUMBER/NEW_VERSION_NUMBER/g' {} \;
 
+Tagging a new release and pushin to origin
+
+    git tag -a v1.0.3 -m 'Release 1.0.3' 
+    git push --tags
+
+Remove feature branches after merging
+
+    git branch -d feature_branch
+    git push origin --delete feature_branch 
