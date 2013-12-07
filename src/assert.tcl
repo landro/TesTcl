@@ -1,4 +1,4 @@
-package provide testcl 1.0.2
+package provide testcl 1.0.3
 package require log
 
 namespace eval ::testcl {
