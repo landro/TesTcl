@@ -49,55 +49,55 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 
 <p>Let's say you want to test the following simple iRule found in <em>simple_irule.tcl</em>:</p>
 
-<pre><code>rule simple {
+<div class="highlight highlight-tcl"><pre><span class="nv">rule</span> simple <span class="k">{</span>
 
-  when HTTP_REQUEST {
-    if { [HTTP::uri] starts_with "/foo" } {
-      pool foo
-    } else {
-      pool bar
-    }
-  }
+  <span class="nv">when</span> HTTP_REQUEST <span class="k">{</span>
+    <span class="k">if</span> <span class="k">{</span> <span class="k">[</span><span class="nv">HTTP</span><span class="o">::</span>uri<span class="k">]</span> <span class="nv">starts_with</span> <span class="s2">"/foo"</span> <span class="k">}</span> <span class="k">{</span>
+      <span class="nv">pool</span> foo
+    <span class="k">}</span> <span class="k">else</span> <span class="k">{</span>
+      <span class="nv">pool</span> bar
+    <span class="k">}</span>
+  <span class="k">}</span>
 
-  when HTTP_RESPONSE {
-    HTTP::header remove "Vary"
-    HTTP::header insert Vary "Accept-Encoding"
-  }
+  <span class="nv">when</span> HTTP_RESPONSE <span class="k">{</span>
+    <span class="nv">HTTP</span><span class="o">::</span>header remove <span class="s2">"Vary"</span>
+    <span class="nv">HTTP</span><span class="o">::</span>header insert Vary <span class="s2">"Accept-Encoding"</span>
+  <span class="k">}</span>
 
-}
-</code></pre>
+<span class="k">}</span>
+</pre></div>
 
 <p>Now, create a file called <em>test_simple_irule.tcl</em> containing the following lines:</p>
 
-<pre><code>package require -exact testcl 1.0.3
-namespace import ::testcl::*
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.3
+<span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
-# Comment in to enable logging
-#log::lvSuppressLE info 0
+<span class="c"># Comment in to enable logging</span>
+<span class="c">#log::lvSuppressLE info 0</span>
 
-it "should handle request using pool bar" {
-  event HTTP_REQUEST
-  on HTTP::uri return "/bar"
-  endstate pool bar
-  run simple_irule.tcl simple
-}
+<span class="nv">it</span> <span class="s2">"should handle request using pool bar"</span> <span class="k">{</span>
+  <span class="nv">event</span> HTTP_REQUEST
+  <span class="nv">on</span> HTTP::uri return <span class="s2">"/bar"</span>
+  <span class="nv">endstate</span> pool bar
+  <span class="nv">run</span> simple_irule.tcl simple
+<span class="k">}</span>
 
-it "should handle request using pool foo" {
-  event HTTP_REQUEST
-  on HTTP::uri return "/foo/admin"
-  endstate pool foo
-  run simple_irule.tcl simple
-}
+<span class="nv">it</span> <span class="s2">"should handle request using pool foo"</span> <span class="k">{</span>
+  <span class="nv">event</span> HTTP_REQUEST
+  <span class="nv">on</span> HTTP::uri return <span class="s2">"/foo/admin"</span>
+  <span class="nv">endstate</span> pool foo
+  <span class="nv">run</span> simple_irule.tcl simple
+<span class="k">}</span>
 
-it "should replace existing Vary http response headers with Accept-Encoding value" {
-  event HTTP_RESPONSE
-  verify "there should be only one Vary header" 1 == {HTTP::header count vary}
-  verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
-  HTTP::header insert Vary "dummy value"
-  HTTP::header insert Vary "another dummy value"
-  run irules/simple_irule.tcl simple
-}
-</code></pre>
+<span class="nv">it</span> <span class="s2">"should replace existing Vary http response headers with Accept-Encoding value"</span> <span class="k">{</span>
+  <span class="nv">event</span> HTTP_RESPONSE
+  <span class="nv">verify</span> <span class="s2">"there should be only one Vary header"</span> <span class="mi">1</span> <span class="o">==</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header count vary<span class="k">}</span>
+  <span class="nv">verify</span> <span class="s2">"there should be Accept-Encoding value in Vary header"</span> <span class="s2">"Accept-Encoding"</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header Vary<span class="k">}</span>
+  <span class="nv">HTTP</span><span class="o">::</span>header insert Vary <span class="s2">"dummy value"</span>
+  <span class="nv">HTTP</span><span class="o">::</span>header insert Vary <span class="s2">"another dummy value"</span>
+  <span class="nv">run</span> irules<span class="o">/</span>simple_irule.tcl simple
+<span class="k">}</span>
+</pre></div>
 
 <h4>
 <a name="installing-jtcl-including-jtcl-irule-extensions" class="anchor" href="#installing-jtcl-including-jtcl-irule-extensions"><span class="octicon octicon-link"></span></a>Installing JTcl including jtcl-irule extensions</h4>
@@ -125,10 +125,10 @@ On MacOs X and Linux, this can be achieved by putting the following line just ab
 
 <p>Create a script file named <em>test_jtcl_irule.tcl</em> containing the following lines </p>
 
-<pre><code>if {"aa" starts_with "a"} {
-  puts "The jtcl-irule extension has successfully been installed"
-}
-</code></pre>
+<div class="highlight highlight-tcl"><pre><span class="k">if</span> <span class="k">{</span><span class="s2">"aa"</span> <span class="nv">starts_with</span> <span class="s2">"a"</span><span class="k">}</span> <span class="k">{</span>
+  <span class="nb">puts</span> <span class="s2">"The jtcl-irule extension has successfully been installed"</span>
+<span class="k">}</span>
+</pre></div>
 
 <p>and execute it using </p>
 
@@ -237,39 +237,39 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>Using the <em>before</em> command, <em>test_simple_irule.tcl</em> can be rewritten as:</p>
 
-<pre><code>package require -exact testcl 1.0.3
-namespace import ::testcl::*
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.3
+<span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
-# Comment in to enable logging
-#log::lvSuppressLE info 0
+<span class="c"># Comment in to enable logging</span>
+<span class="c">#log::lvSuppressLE info 0</span>
 
-before {
-  event HTTP_REQUEST
-}
+<span class="nv">before</span> <span class="k">{</span>
+  <span class="nv">event</span> HTTP_REQUEST
+<span class="k">}</span>
 
-it "should handle request using pool bar" {
-  on HTTP::uri return "/bar"
-  endstate pool bar
-  run simple_irule.tcl simple
-}
+<span class="nv">it</span> <span class="s2">"should handle request using pool bar"</span> <span class="k">{</span>
+  <span class="nv">on</span> HTTP::uri return <span class="s2">"/bar"</span>
+  <span class="nv">endstate</span> pool bar
+  <span class="nv">run</span> simple_irule.tcl simple
+<span class="k">}</span>
 
-it "should handle request using pool foo" {
-  on HTTP::uri return "/foo/admin"
-  endstate pool foo
-  run simple_irule.tcl simple
-}
+<span class="nv">it</span> <span class="s2">"should handle request using pool foo"</span> <span class="k">{</span>
+  <span class="nv">on</span> HTTP::uri return <span class="s2">"/foo/admin"</span>
+  <span class="nv">endstate</span> pool foo
+  <span class="nv">run</span> simple_irule.tcl simple
+<span class="k">}</span>
 
-it "should replace existing Vary http response headers with Accept-Encoding value" {
-  # NB! override event type set in before
-  event HTTP_RESPONSE
+<span class="nv">it</span> <span class="s2">"should replace existing Vary http response headers with Accept-Encoding value"</span> <span class="k">{</span>
+  <span class="c"># NB! override event type set in before</span>
+  <span class="nv">event</span> HTTP_RESPONSE
 
-  verify "there should be only one Vary header" 1 == {HTTP::header count vary}
-  verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
-  HTTP::header insert Vary "dummy value"
-  HTTP::header insert Vary "another dummy value"
-  run irules/simple_irule.tcl simple
-}
-</code></pre>
+  <span class="nv">verify</span> <span class="s2">"there should be only one Vary header"</span> <span class="mi">1</span> <span class="o">==</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header count vary<span class="k">}</span>
+  <span class="nv">verify</span> <span class="s2">"there should be Accept-Encoding value in Vary header"</span> <span class="s2">"Accept-Encoding"</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header Vary<span class="k">}</span>
+  <span class="nv">HTTP</span><span class="o">::</span>header insert Vary <span class="s2">"dummy value"</span>
+  <span class="nv">HTTP</span><span class="o">::</span>header insert Vary <span class="s2">"another dummy value"</span>
+  <span class="nv">run</span> irules<span class="o">/</span>simple_irule.tcl simple
+<span class="k">}</span>
+</pre></div>
 
 <p>On a side note, it's worth mentioning that there is no <em>after</em> command, since we're always dealing with mocks.</p>
 
@@ -278,185 +278,185 @@ it "should replace existing Vary http response headers with Accept-Encoding valu
 
 <p>Let's have a look at a more advanced iRule (advanced_irule.tcl):</p>
 
-<pre><code>rule advanced {
+<div class="highlight highlight-tcl"><pre><span class="nv">rule</span> advanced <span class="k">{</span>
 
-  when HTTP_REQUEST {
+  <span class="nv">when</span> HTTP_REQUEST <span class="k">{</span>
 
-    HTTP::header insert X-Forwarded-SSL true
+    <span class="nv">HTTP</span><span class="o">::</span>header insert X-Forwarded-SSL true
 
-    if { [HTTP::uri] eq "/admin" } {
-      if { ([HTTP::username] eq "admin") &amp;&amp; ([HTTP::password] eq "password") } {
-        set newuri [string map {/admin/ /} [HTTP::uri]]
-        HTTP::uri $newuri
-        pool pool_admin_application
-      } else {
-        HTTP::respond 401 WWW-Authenticate "Basic realm=\"Restricted Area\""
-      }
-    } elseif { [HTTP::uri] eq "/blocked" } {
-      HTTP::respond 403
-    } elseif { [HTTP::uri] starts_with "/app"} {
-      if { [active_members pool_application] == 0 } {
-        if { [HTTP::header User-Agent] eq "Apache HTTP Client" } {
-          HTTP::respond 503
-        } else {
-          HTTP::redirect "http://fallback.com"
-        }
-      } else {
-        set newuri [string map {/app/ /} [HTTP::uri]]
-        HTTP::uri $newuri
-        pool pool_application
-      }
-    } else {
-      HTTP::respond 404
-    }
+    <span class="k">if</span> <span class="k">{</span> <span class="k">[</span><span class="nv">HTTP</span><span class="o">::</span>uri<span class="k">]</span> <span class="nv">eq</span> <span class="s2">"/admin"</span> <span class="k">}</span> <span class="k">{</span>
+      <span class="k">if</span> <span class="k">{</span> <span class="k">([</span><span class="nv">HTTP</span><span class="o">::</span>username<span class="k">]</span> <span class="nv">eq</span> <span class="s2">"admin"</span><span class="k">)</span> <span class="o">&amp;&amp;</span> <span class="k">([</span><span class="nv">HTTP</span><span class="o">::</span>password<span class="k">]</span> <span class="nv">eq</span> <span class="s2">"password"</span><span class="k">)</span> <span class="k">}</span> <span class="k">{</span>
+        <span class="k">set</span> newuri <span class="k">[</span><span class="nb">string</span> map <span class="k">{</span><span class="o">/</span><span class="nv">admin</span><span class="o">/</span> <span class="o">/</span><span class="k">}</span> <span class="k">[</span><span class="nv">HTTP</span><span class="o">::</span>uri<span class="k">]]</span>
+        <span class="nv">HTTP</span><span class="o">::</span>uri <span class="nv">$newuri</span>
+        <span class="nv">pool</span> pool_admin_application
+      <span class="k">}</span> <span class="k">else</span> <span class="k">{</span>
+        <span class="nv">HTTP</span><span class="o">::</span>respond <span class="mi">401</span> WWW-Authenticate <span class="s2">"Basic realm=\"Restricted Area\""</span>
+      <span class="k">}</span>
+    <span class="k">}</span> <span class="k">elseif</span> <span class="k">{</span> <span class="k">[</span><span class="nv">HTTP</span><span class="o">::</span>uri<span class="k">]</span> <span class="nv">eq</span> <span class="s2">"/blocked"</span> <span class="k">}</span> <span class="k">{</span>
+      <span class="nv">HTTP</span><span class="o">::</span>respond <span class="mi">403</span>
+    <span class="k">}</span> <span class="k">elseif</span> <span class="k">{</span> <span class="k">[</span><span class="nv">HTTP</span><span class="o">::</span>uri<span class="k">]</span> <span class="nv">starts_with</span> <span class="s2">"/app"</span><span class="k">}</span> <span class="k">{</span>
+      <span class="k">if</span> <span class="k">{</span> <span class="k">[</span><span class="nv">active_members</span> pool_application<span class="k">]</span> <span class="o">==</span> <span class="nv">0</span> <span class="k">}</span> <span class="k">{</span>
+        <span class="k">if</span> <span class="k">{</span> <span class="k">[</span><span class="nv">HTTP</span><span class="o">::</span>header User-Agent<span class="k">]</span> <span class="nv">eq</span> <span class="s2">"Apache HTTP Client"</span> <span class="k">}</span> <span class="k">{</span>
+          <span class="nv">HTTP</span><span class="o">::</span>respond <span class="mi">503</span>
+        <span class="k">}</span> <span class="k">else</span> <span class="k">{</span>
+          <span class="nv">HTTP</span><span class="o">::</span>redirect <span class="s2">"http://fallback.com"</span>
+        <span class="k">}</span>
+      <span class="k">}</span> <span class="k">else</span> <span class="k">{</span>
+        <span class="k">set</span> newuri <span class="k">[</span><span class="nb">string</span> map <span class="k">{</span><span class="o">/</span><span class="nv">app</span><span class="o">/</span> <span class="o">/</span><span class="k">}</span> <span class="k">[</span><span class="nv">HTTP</span><span class="o">::</span>uri<span class="k">]]</span>
+        <span class="nv">HTTP</span><span class="o">::</span>uri <span class="nv">$newuri</span>
+        <span class="nv">pool</span> pool_application
+      <span class="k">}</span>
+    <span class="k">}</span> <span class="k">else</span> <span class="k">{</span>
+      <span class="nv">HTTP</span><span class="o">::</span>respond <span class="mi">404</span>
+    <span class="k">}</span>
 
-  }
+  <span class="k">}</span>
 
-}
-</code></pre>
+<span class="k">}</span>
+</pre></div>
 
 <p>The specs for this iRule would look like this:</p>
 
-<pre><code>package require -exact testcl 1.0.3
-namespace import ::testcl::*
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.3
+<span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
-# Comment out to suppress logging
-#log::lvSuppressLE info 0
+<span class="c"># Comment out to suppress logging</span>
+<span class="c">#log::lvSuppressLE info 0</span>
 
-before {
-  event HTTP_REQUEST
-}
+<span class="nv">before</span> <span class="k">{</span>
+  <span class="nv">event</span> HTTP_REQUEST
+<span class="k">}</span>
 
-it "should handle admin request using pool admin when credentials are valid" {
-  HTTP::uri "/admin"
-  on HTTP::username return "admin"
-  on HTTP::password return "password"
-  endstate pool pool_admin_application
-  run irules/advanced_irule.tcl advanced
-}
+<span class="nv">it</span> <span class="s2">"should handle admin request using pool admin when credentials are valid"</span> <span class="k">{</span>
+  <span class="nv">HTTP</span><span class="o">::</span>uri <span class="s2">"/admin"</span>
+  <span class="nv">on</span> HTTP::username return <span class="s2">"admin"</span>
+  <span class="nv">on</span> HTTP::password return <span class="s2">"password"</span>
+  <span class="nv">endstate</span> pool pool_admin_application
+  <span class="nv">run</span> irules<span class="o">/</span>advanced_irule.tcl advanced
+<span class="k">}</span>
 
-it "should ask for credentials when admin request with incorrect credentials" {
-  HTTP::uri "/admin"
-  HTTP::header insert Authorization "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
-  verify "user Aladdin" "Aladdin" eq {HTTP::username}
-  verify "password 'open sesame'" "open sesame" eq {HTTP::password}
-  verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
-  verify "response status code is 401" 401 eq {HTTP::status}
-  run irules/advanced_irule.tcl advanced
-}
+<span class="nv">it</span> <span class="s2">"should ask for credentials when admin request with incorrect credentials"</span> <span class="k">{</span>
+  <span class="nv">HTTP</span><span class="o">::</span>uri <span class="s2">"/admin"</span>
+  <span class="nv">HTTP</span><span class="o">::</span>header insert Authorization <span class="s2">"Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="</span>
+  <span class="nv">verify</span> <span class="s2">"user Aladdin"</span> <span class="s2">"Aladdin"</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>username<span class="k">}</span>
+  <span class="nv">verify</span> <span class="s2">"password 'open sesame'"</span> <span class="s2">"open sesame"</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>password<span class="k">}</span>
+  <span class="nv">verify</span> <span class="s2">"WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'"</span> <span class="s2">"Basic realm=\"Restricted Area\""</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header <span class="s2">"WWW-Authenticate"</span><span class="k">}</span>
+  <span class="nv">verify</span> <span class="s2">"response status code is 401"</span> <span class="mi">401</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>status<span class="k">}</span>
+  <span class="nv">run</span> irules<span class="o">/</span>advanced_irule.tcl advanced
+<span class="k">}</span>
 
-it "should ask for credentials when admin request without credentials" {
-  HTTP::uri "/admin"
-  verify "WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'" "Basic realm=\"Restricted Area\"" eq {HTTP::header "WWW-Authenticate"}
-  verify "response status code is 401" 401 eq {HTTP::status}
-  run irules/advanced_irule.tcl advanced
-}
+<span class="nv">it</span> <span class="s2">"should ask for credentials when admin request without credentials"</span> <span class="k">{</span>
+  <span class="nv">HTTP</span><span class="o">::</span>uri <span class="s2">"/admin"</span>
+  <span class="nv">verify</span> <span class="s2">"WWW-Authenticate header is 'Basic realm=\"Restricted Area\"'"</span> <span class="s2">"Basic realm=\"Restricted Area\""</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header <span class="s2">"WWW-Authenticate"</span><span class="k">}</span>
+  <span class="nv">verify</span> <span class="s2">"response status code is 401"</span> <span class="mi">401</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>status<span class="k">}</span>
+  <span class="nv">run</span> irules<span class="o">/</span>advanced_irule.tcl advanced
+<span class="k">}</span>
 
-it "should block access to uri /blocked" {
-  HTTP::uri "/blocked"
-  endstate HTTP::respond 403
-  run irules/advanced_irule.tcl advanced
-}
+<span class="nv">it</span> <span class="s2">"should block access to uri /blocked"</span> <span class="k">{</span>
+  <span class="nv">HTTP</span><span class="o">::</span>uri <span class="s2">"/blocked"</span>
+  <span class="nv">endstate</span> HTTP::respond <span class="mi">403</span>
+  <span class="nv">run</span> irules<span class="o">/</span>advanced_irule.tcl advanced
+<span class="k">}</span>
 
-it "should give apache http client a correct error code when app pool is down" {
-  HTTP::uri "/app"
-  on active_members pool_application return 0
-  HTTP::header insert User-Agent "Apache HTTP Client"
-  endstate HTTP::respond 503
-  run irules/advanced_irule.tcl advanced
-}
+<span class="nv">it</span> <span class="s2">"should give apache http client a correct error code when app pool is down"</span> <span class="k">{</span>
+  <span class="nv">HTTP</span><span class="o">::</span>uri <span class="s2">"/app"</span>
+  <span class="nv">on</span> active_members pool_application return <span class="mi">0</span>
+  <span class="nv">HTTP</span><span class="o">::</span>header insert User-Agent <span class="s2">"Apache HTTP Client"</span>
+  <span class="nv">endstate</span> HTTP::respond <span class="mi">503</span>
+  <span class="nv">run</span> irules<span class="o">/</span>advanced_irule.tcl advanced
+<span class="k">}</span>
 
-it "should give other clients then apache http client redirect to fallback when app pool is down" {
-  HTTP::uri "/app"
-  on active_members pool_application return 0
-  HTTP::header insert User-Agent "Firefox 13.0.1"
-  verify "response status code is 302" 302 eq {HTTP::status}
-  verify "Location header is 'http://fallback.com'" "http://fallback.com" eq {HTTP::header Location}
-  run irules/advanced_irule.tcl advanced
-}
+<span class="nv">it</span> <span class="s2">"should give other clients then apache http client redirect to fallback when app pool is down"</span> <span class="k">{</span>
+  <span class="nv">HTTP</span><span class="o">::</span>uri <span class="s2">"/app"</span>
+  <span class="nv">on</span> active_members pool_application return <span class="mi">0</span>
+  <span class="nv">HTTP</span><span class="o">::</span>header insert User-Agent <span class="s2">"Firefox 13.0.1"</span>
+  <span class="nv">verify</span> <span class="s2">"response status code is 302"</span> <span class="mi">302</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>status<span class="k">}</span>
+  <span class="nv">verify</span> <span class="s2">"Location header is 'http://fallback.com'"</span> <span class="s2">"http://fallback.com"</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header Location<span class="k">}</span>
+  <span class="nv">run</span> irules<span class="o">/</span>advanced_irule.tcl advanced
+<span class="k">}</span>
 
-it "should give handle app request using app pool when app pool is up" {
-  HTTP::uri "/app/form?test=query"
-  on active_members pool_application return 2
-  endstate pool pool_application
-  verify "result uri is /form?test=query" "/form?test=query" eq {HTTP::uri}
-  verify "result path is /form" "/form" eq {HTTP::path}
-  verify "result query is test=query" "test=query" eq {HTTP::query}
-  run irules/advanced_irule.tcl advanced
-}
+<span class="nv">it</span> <span class="s2">"should give handle app request using app pool when app pool is up"</span> <span class="k">{</span>
+  <span class="nv">HTTP</span><span class="o">::</span>uri <span class="s2">"/app/form?test=query"</span>
+  <span class="nv">on</span> active_members pool_application return <span class="mi">2</span>
+  <span class="nv">endstate</span> pool pool_application
+  <span class="nv">verify</span> <span class="s2">"result uri is /form?test=query"</span> <span class="s2">"/form?test=query"</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>uri<span class="k">}</span>
+  <span class="nv">verify</span> <span class="s2">"result path is /form"</span> <span class="s2">"/form"</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>path<span class="k">}</span>
+  <span class="nv">verify</span> <span class="s2">"result query is test=query"</span> <span class="s2">"test=query"</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>query<span class="k">}</span>
+  <span class="nv">run</span> irules<span class="o">/</span>advanced_irule.tcl advanced
+<span class="k">}</span>
 
-it "should give 404 when request cannot be handled" {
-  HTTP::uri "/cannot_be_handled"
-  endstate HTTP::respond 404
-  run irules/advanced_irule.tcl advanced
-}
+<span class="nv">it</span> <span class="s2">"should give 404 when request cannot be handled"</span> <span class="k">{</span>
+  <span class="nv">HTTP</span><span class="o">::</span>uri <span class="s2">"/cannot_be_handled"</span>
+  <span class="nv">endstate</span> HTTP::respond <span class="mi">404</span>
+  <span class="nv">run</span> irules<span class="o">/</span>advanced_irule.tcl advanced
+<span class="k">}</span>
 
-stats
-</code></pre>
+<span class="nv">stats</span>
+</pre></div>
 
 <h3>
 <a name="modification-of-http-headers-example" class="anchor" href="#modification-of-http-headers-example"><span class="octicon octicon-link"></span></a>Modification of HTTP headers example</h3>
 
 <p>Let's have a look at a another iRule (headers_irule.tcl):</p>
 
-<pre><code>rule headers {
+<div class="highlight highlight-tcl"><pre><span class="nv">rule</span> headers <span class="k">{</span>
 
-  #notify backend about SSL using X-Forwarded-SSL http header
-  #if there is client certificate put common name into X-Common-Name-SSL http header
-  #if not make sure X-Common-Name-SSL header is not set
-  when HTTP_REQUEST {
-    HTTP::header insert X-Forwarded-SSL true
-    HTTP::header remove X-Common-Name-SSL
+  <span class="c">#notify backend about SSL using X-Forwarded-SSL http header</span>
+  <span class="c">#if there is client certificate put common name into X-Common-Name-SSL http header</span>
+  <span class="c">#if not make sure X-Common-Name-SSL header is not set</span>
+  <span class="nv">when</span> HTTP_REQUEST <span class="k">{</span>
+    <span class="nv">HTTP</span><span class="o">::</span>header insert X-Forwarded-SSL true
+    <span class="nv">HTTP</span><span class="o">::</span>header remove X-Common-Name-SSL
 
-    if { [SSL::cert count] &gt; 0 } {
-      set ssl_cert [SSL::cert 0]
-      set subject [X509::subject $ssl_cert]
-      set cn ""
-      foreach { label value } [split $subject ",="] {
-        set label [string toupper [string trim $label]]
-        set value [string trim $value]
+    <span class="k">if</span> <span class="k">{</span> <span class="k">[</span><span class="nv">SSL</span><span class="o">::</span>cert count<span class="k">]</span> <span class="o">&gt;</span> <span class="nv">0</span> <span class="k">}</span> <span class="k">{</span>
+      <span class="k">set</span> ssl_cert <span class="k">[</span><span class="nv">SSL</span><span class="o">::</span>cert <span class="mi">0</span><span class="k">]</span>
+      <span class="k">set</span> subject <span class="k">[</span><span class="nv">X509</span><span class="o">::</span>subject <span class="nv">$ssl_cert</span><span class="k">]</span>
+      <span class="k">set</span> cn <span class="s2">""</span>
+      <span class="k">foreach</span> <span class="k">{</span> <span class="nv">label</span> value <span class="k">}</span> <span class="k">[</span><span class="nb">split</span> <span class="nv">$subject</span> <span class="s2">",="</span><span class="k">]</span> <span class="k">{</span>
+        <span class="k">set</span> label <span class="k">[</span><span class="nb">string</span> toupper <span class="k">[</span><span class="nb">string</span> trim <span class="nv">$label</span><span class="k">]]</span>
+        <span class="k">set</span> value <span class="k">[</span><span class="nb">string</span> trim <span class="nv">$value</span><span class="k">]</span>
 
-        if { $label == "CN" } {
-          set cn "$value"
-          break
-        }
-      }
+        <span class="k">if</span> <span class="k">{</span> <span class="nv">$label</span> <span class="o">==</span> <span class="s2">"CN"</span> <span class="k">}</span> <span class="k">{</span>
+          <span class="k">set</span> cn <span class="s2">"$value"</span>
+          <span class="k">break</span>
+        <span class="k">}</span>
+      <span class="k">}</span>
 
-      HTTP::header insert X-Common-Name-SSL "$cn"
-    }
-  }
+      <span class="nv">HTTP</span><span class="o">::</span>header insert X-Common-Name-SSL <span class="s2">"$cn"</span>
+    <span class="k">}</span>
+  <span class="k">}</span>
 
-}
-</code></pre>
+<span class="k">}</span>
+</pre></div>
 
 <p>The example specs for this iRule would look like this:</p>
 
-<pre><code>package require -exact testcl 1.0.3
-namespace import ::testcl::*
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.3
+<span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
-# Comment out to suppress logging
-#log::lvSuppressLE info 0
+<span class="c"># Comment out to suppress logging</span>
+<span class="c">#log::lvSuppressLE info 0</span>
 
-before {
-  event HTTP_REQUEST
-  verify "There should be always set HTTP header X-Forwarded-SSL to true" true eq {HTTP::header X-Forwarded-SSL}
-}
+<span class="nv">before</span> <span class="k">{</span>
+  <span class="nv">event</span> HTTP_REQUEST
+  <span class="nv">verify</span> <span class="s2">"There should be always set HTTP header X-Forwarded-SSL to true"</span> true <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header X-Forwarded-SSL<span class="k">}</span>
+<span class="k">}</span>
 
-it "should remove X-Common-Name-SSL header from request if there was no client SSL certificate" {
-  HTTP::header insert X-Common-Name-SSL "testCommonName"
-  on SSL::cert count return 0
-  verify "There should be no X-Common-Name-SSL" 0 == {HTTP::header exists X-Common-Name-SSL}
-  run irules/headers_irule.tcl headers
-}
+<span class="nv">it</span> <span class="s2">"should remove X-Common-Name-SSL header from request if there was no client SSL certificate"</span> <span class="k">{</span>
+  <span class="nv">HTTP</span><span class="o">::</span>header insert X-Common-Name-SSL <span class="s2">"testCommonName"</span>
+  <span class="nv">on</span> SSL::cert count return <span class="mi">0</span>
+  <span class="nv">verify</span> <span class="s2">"There should be no X-Common-Name-SSL"</span> <span class="mi">0</span> <span class="o">==</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header exists X-Common-Name-SSL<span class="k">}</span>
+  <span class="nv">run</span> irules<span class="o">/</span>headers_irule.tcl headers
+<span class="k">}</span>
 
-it "should add X-Common-Name-SSL with Common Name from client SSL certificate if it was available" {
-  on SSL::cert count return 1
-  on SSL::cert 0 return {}
-  on X509::subject [SSL::cert 0] return "CN=testCommonName,DN=abc.de.fg"
-  verify "X-Common-Name-SSL HTTP header value is the same as CN" "testCommonName" eq {HTTP::header X-Common-Name-SSL}
-  run irules/headers_irule.tcl headers
-}
-</code></pre>
+<span class="nv">it</span> <span class="s2">"should add X-Common-Name-SSL with Common Name from client SSL certificate if it was available"</span> <span class="k">{</span>
+  <span class="nv">on</span> SSL::cert count return <span class="mi">1</span>
+  <span class="nv">on</span> SSL::cert <span class="mi">0</span> return <span class="k">{}</span>
+  <span class="nv">on</span> X509::subject <span class="k">[</span><span class="nv">SSL</span><span class="o">::</span>cert <span class="mi">0</span><span class="k">]</span> return <span class="s2">"CN=testCommonName,DN=abc.de.fg"</span>
+  <span class="nv">verify</span> <span class="s2">"X-Common-Name-SSL HTTP header value is the same as CN"</span> <span class="s2">"testCommonName"</span> <span class="ow">eq</span> <span class="k">{</span><span class="nv">HTTP</span><span class="o">::</span>header X-Common-Name-SSL<span class="k">}</span>
+  <span class="nv">run</span> irules<span class="o">/</span>headers_irule.tcl headers
+<span class="k">}</span>
+</pre></div>
 
 <h2>
 <a name="how-stable-is-this-code" class="anchor" href="#how-stable-is-this-code"><span class="octicon octicon-link"></span></a>How stable is this code?</h2>
@@ -517,25 +517,25 @@ In order to make your system perform the best it can, you need:</p>
 <td>JTcl  2.4.0</td>
 <td>yes</td>
 <td>yes</td>
-<td>yes*</td>
+<td>yes</td>
 </tr>
 <tr>
 <td>JTcl  2.5.0</td>
 <td>yes</td>
 <td>yes</td>
-<td>yes*</td>
+<td>yes</td>
 </tr>
 <tr>
 <td>JTcl  2.6.0</td>
 <td>yes</td>
 <td>yes</td>
-<td>yes*</td>
+<td>yes</td>
 </tr>
 <tr>
 <td>Tclsh 8.6</td>
-<td>?</td>
 <td>yes*</td>
-<td></td>
+<td>yes*</td>
+<td>?</td>
 </tr>
 </tbody>
 </table><p>The * indicates support only for standard Tcl commands</p>
