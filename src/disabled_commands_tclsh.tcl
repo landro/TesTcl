@@ -15,7 +15,7 @@ proc saferename {from to} {
 ################################################
 
 
-#  Commnands used by tclsh internally 
+#  Commands used by tclsh internally 
 ################################################
 
 #saferename dict ::tcl::dict
