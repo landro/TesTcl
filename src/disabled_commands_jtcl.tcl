@@ -59,7 +59,7 @@ saferename close ::tcl::close
 saferename dict ::tcl::dict
 saferename eof ::tcl::eof
 saferename encoding ::tcl::encoding
-saferename exec ::tcl::exec
+#saferename exec ::tcl::exec
 saferename exit ::tcl::exit
 saferename fblocked ::tcl::fblocked
 saferename fconfigure ::tcl::fconfigure

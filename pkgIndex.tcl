@@ -56,7 +56,7 @@ if { $::tcl_platform(platform) eq "java" } {
   puts stderr "WARNING"
 }
 
-package ifneeded testcl 1.0.3 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]\n[list source [file join $dir src/irulehttp.tcl]]
+package ifneeded testcl 1.0.3 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]\n[list source [file join $dir src/irulehttp.tcl]]\n[list source [file join $dir src/terminal.tcl]]
 
 # Disable certain Tcl commands from iRules
 if { $::tcl_platform(platform) eq "java" } {

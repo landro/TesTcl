@@ -49,7 +49,7 @@ saferename cd ::tcl::cd
 saferename close ::tcl::close
 saferename eof ::tcl::eof
 saferename encoding ::tcl::encoding
-saferename exec ::tcl::exec
+#saferename exec ::tcl::exec
 saferename fblocked ::tcl::fblocked
 saferename fconfigure ::tcl::fconfigure
 saferename fcopy ::tcl::fcopy

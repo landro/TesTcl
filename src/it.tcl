@@ -135,12 +135,12 @@ proc ::testcl::it {description body} {
   }
   
   if {$rc != 0 } {
-    puts "-> Test failure!!"
-    puts "-> -> $result"
+    put red "-> Test failure!!"
+    put red "-> -> $result"
     log::log error $result 
     incr nbOfTestFailures
   } else {
-    puts "-> Test ok"
+    put green "-> Test ok"
   }
   
 }
@@ -159,7 +159,12 @@ proc ::testcl::it {description body} {
 proc ::testcl::stats {} {
   variable nbOfTestFailures
   puts "\n\n\n"
-  puts "========================================================="
-  puts "  Total number of test failures: $nbOfTestFailures"
-  puts "========================================================="
+  if {$nbOfTestFailures == 0} {
+    set color green	  
+  } else {
+    set color red
+  }
+  put $color "========================================================="
+  put $color "  Total number of test failures: $nbOfTestFailures"
+  put $color "========================================================="
 }
