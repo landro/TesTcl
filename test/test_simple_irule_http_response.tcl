@@ -2,6 +2,7 @@ source src/on.tcl
 source src/assert.tcl
 source src/onirule.tcl
 source src/irulehttp.tcl
+source src/terminal.tcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
