@@ -158,7 +158,7 @@ proc ::testcl::it {description body} {
 # Prints test failure statistics
 proc ::testcl::stats {} {
   variable nbOfTestFailures
-  puts "\n\n\n"
+  puts "\n"
   if {$nbOfTestFailures == 0} {
     set color green	  
   } else {
