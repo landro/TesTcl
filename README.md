@@ -143,7 +143,7 @@ This should give you the following output:
 ##### A word on the TesTcl commands #####
 
 - _it_ statement takes two arguments, description and code block to execute as test case.
-- _event_ statement takes a single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.
+- _event_ statement takes a single argument - event type. Supported values are [all standard HTTP, TCP and IP events .](https://devcentral.f5.com/wiki/irules.Events.ashx)
 - _on_ statement has the following syntax: _on_ ... (return|error) result
 - _endstate_ statement accepts 2 to 5 arguments which are matched with command to stop processing iRule with success in test case evaluation.
 - _verify_ statement takes four arguments. Syntax: _verify_ "DESCRIPTION" value _CONDITION_ {verification code}
