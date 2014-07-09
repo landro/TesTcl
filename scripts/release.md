@@ -5,7 +5,7 @@ Mac OS X/Free BSD
 
     find -E .. -regex '^.*\.(tcl|md)$' -exec sed -i '' 's/OLD_VERSION_NUMBER/NEW_VERSION_NUMBER/g' {} \;
 
-Tagging a new release and pushin to origin
+Tagging a new release and pushing to origin
 
     git tag -a v1.0.3 -m 'Release 1.0.3' 
     git push --tags
