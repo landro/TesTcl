@@ -1,4 +1,4 @@
-package require -exact testcl 1.0.3
+package require -exact testcl 1.0.4
 namespace import ::testcl::*
 
 ##
