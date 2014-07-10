@@ -125,6 +125,10 @@ proc ::testcl::event {event_type} {
 proc ::testcl::run {irule rulename} {
   log::log info "Running irule $irule"
   set rc [catch {source $irule} result]
-  testcl::assertNumberEquals 0 $rc
+  if { 0 != $rc } {
+    log::log error "Running irule $irule failed: $result"	  
+    log::log error "Error info: $::errorInfo"
+    error "Running irule $irule failed: $result"	
+  }
   testcl::assertStringEquals "rule $rulename" $result
 }
