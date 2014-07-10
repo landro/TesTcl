@@ -4,7 +4,7 @@
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="TesTcl - a library for unit testing BigIp iRules : when you don't have the balls to test your iRules directly in production" />
+    <meta name="description" content="TesTcl - a library for unit testing BigIp iRules : when you don&#39;t have the balls to test your iRules directly in production" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -19,7 +19,7 @@
           <a id="forkme_banner" href="https://github.com/landro/TesTcl">View on GitHub</a>
 
           <h1 id="project_title">TesTcl - a library for unit testing BigIp iRules</h1>
-          <h2 id="project_tagline">when you don't have the balls to test your iRules directly in production</h2>
+          <h2 id="project_tagline">when you don&#39;t have the balls to test your iRules directly in production</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/landro/TesTcl/zipball/master">Download this project as a .zip file</a>
@@ -69,7 +69,7 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 
 <p>Now, create a file called <em>test_simple_irule.tcl</em> containing the following lines:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.3
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.4
 <span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
 <span class="c"># Comment in to enable logging</span>
@@ -143,7 +143,7 @@ On MacOs X and Linux, this can be achieved by putting the following line just ab
 <p>Download latest <a href="https://github.com/landro/TesTcl/releases">TesTcl distribution</a> from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the <a href="http://jtcl.kenai.com/gettingstarted.html">TCLLIBPATH</a> environment variable:</p>
 
-<pre><code>export TCLLIBPATH=whereever/TesTcl-1.0.3
+<pre><code>export TCLLIBPATH=whereever/TesTcl-1.0.4
 </code></pre>
 
 <p>In order to run this example, type in the following at the command-line:</p>
@@ -185,7 +185,7 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 </li>
 <li>Add one or several <em>on</em> statements to setup expectations/mocks. If you don't care about the return value, return "".</li>
 <li>Add an <em>endstate</em>. This could be a <em>pool</em>, <em>HTTP::respond</em>, <em>HTTP::redirect</em> or any other function call (see <a href="https://devcentral.f5.com/tech-tips/articles/-the101-irules-101-routing#.UW0OwoLfeN4">link</a>).</li>
-<li>Add a <em>verify</em>. The verifications will be run immediately after the iRule execution. Describe every verification as precisely as possible, add as many <em>verification</em>s as needed in your particular test scenario.</li>
+<li>Add a <em>verify</em>. The verifications will be run immediately after the iRule execution. Describe every verification as precisely as possible, add as many *verification*s as needed in your particular test scenario.</li>
 <li>Add an HTTP::header initialization if you are testing modification of HTTP headers (stubs/mocks are provided for all commands in HTTP namespace).</li>
 <li>Add a <em>run</em> statement in order to actually run the Tcl script file containing your iRule. <strong>This is mandatory.</strong>
 </li>
@@ -198,7 +198,8 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 <li>
 <em>it</em> statement takes two arguments, description and code block to execute as test case.</li>
 <li>
-<em>event</em> statement takes a single argument - event type. Supported values are HTTP_REQUEST and HTTP_RESPONSE.</li>
+<em>event</em> statement takes a single argument - event type. Supported values are <a href="https://devcentral.f5.com/wiki/irules.Events.ashx">all standard HTTP, TCP and IP events .</a>
+</li>
 <li>
 <em>on</em> statement has the following syntax: <em>on</em> ... (return|error) result</li>
 <li>
@@ -214,7 +215,7 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 <li>
 <em>condition</em> is operator used during comparison of <em>value</em> with code result (ex. ==, !=, eq).</li>
 <li>
-<em>verification</em>code_ is code to evaluate after iRule execution</li>
+<em>verification_code</em> is code to evaluate after iRule execution</li>
 </ul>
 </li>
 <li>
@@ -223,7 +224,7 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 <a name="a-word-on-stubsmocks-you-choose-what-to-call-em" class="anchor" href="#a-word-on-stubsmocks-you-choose-what-to-call-em"><span class="octicon octicon-link"></span></a>A word on stubs/mocks (you choose what to call 'em)</h5>
 
 <p>There is a ready to use <em>HTTP::header</em> mockup implementation, which simulates behavior of original F5 implementation (as described at <a href="https://devcentral.f5.com/wiki/irules.HTTP__header.ashx">link</a>). 
-However <em>insert</em>modssl_fields_ subcommand is not supported in current version.
+However <em>insert_modssl_fields</em> subcommand is not supported in current version.
 In addition, most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
 you wonder what is going on in the mocks.</p>
 
@@ -237,7 +238,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>Using the <em>before</em> command, <em>test_simple_irule.tcl</em> can be rewritten as:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.3
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.4
 <span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
 <span class="c"># Comment in to enable logging</span>
@@ -317,7 +318,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>The specs for this iRule would look like this:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.3
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.4
 <span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
 <span class="c"># Comment out to suppress logging</span>
@@ -431,7 +432,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>The example specs for this iRule would look like this:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.3
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.4
 <span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
 <span class="c"># Comment out to suppress logging</span>
