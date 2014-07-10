@@ -28,6 +28,9 @@ proc ::testcl::rule {ruleName body} {
   log::log info "rule $ruleName finished, return code: $rc  result: $result"
 
   if {$rc != 2000} {
+    log::log error "Expected return code 200 from calling when, got $rc"
+    log::log error "Error info: $::errorInfo"
+    log::log error "++++++++++++++++++++++++++++++++++++++++++"	  	  
     error "Expected return code 2000 from calling when, got $rc"
   } else {
     return "rule $ruleName"
@@ -68,6 +71,9 @@ proc ::testcl::when {event body} {
     }
 
     if {$rc != 1000} {
+      log::log error "Expected end state with return code 3, got $rc"
+      log::log error "Error info: $::errorInfo"
+      log::log error "++++++++++++++++++++++++++++++++++++++++++"	  	  
       error "Expected end state with return code 3, got $rc"
     }
 
@@ -136,6 +142,7 @@ proc ::testcl::run {irule rulename} {
   if { 0 != $rc } {
     log::log error "Running irule $irule failed: $result"	  
     log::log error "Error info: $::errorInfo"
+    log::log error "++++++++++++++++++++++++++++++++++++++++++"	  	  
     error "Running irule $irule failed: $result"	
   }
   testcl::assertStringEquals "rule $rulename" $result
