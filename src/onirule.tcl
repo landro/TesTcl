@@ -91,7 +91,7 @@ proc ::testcl::when {event body} {
 # Proc to setup the kind of event to expect
 #
 # Arguments:
-# event_type The type of event, either HTTP_REQUEST or HTTP_RESPONSE
+# event_type The type of event, e.g. HTTP_REQUEST, HTTP_RESPONSE, CLIENT_ACCEPTED
 #
 # Side Effects:
 # None.
@@ -101,11 +101,19 @@ proc ::testcl::when {event body} {
 
 proc ::testcl::event {event_type} {
   variable expectedEvent
-  if {$event_type eq "HTTP_REQUEST" || $event_type eq "HTTP_RESPONSE"} {
+  set validEvents [list]	
+  # HTTP events
+  lappend validEvents HTTP_CLASS_FAILED HTTP_CLASS_SELECTED HTTP_DISABLED HTTP_PROXY_REQUEST HTTP_REQUEST 
+  lappend validEvents HTTP_REQUEST_DATA HTTP_REQUEST_SEND HTTP_RESPONSE HTTP_RESPONSE_CONTINUE HTTP_RESPONSE_DATA 
+  lappend validEvents HTTP_REQUEST_RELEASE HTTP_RESPONSE_RELEASE
+  # TCP/IP events
+  lappend validEvents CLIENT_ACCEPTED CLIENT_CLOSED CLIENT_DATA CLIENTSSL_DATA SERVER_CLOSED SERVER_CONNECTED 
+  lappend validEvents SERVER_DATA SERVERSSL_DATA USER_REQUEST USER_RESPONSE
+  if { [lsearch $validEvents "$event_type"] != -1 } {
     set expectedEvent $event_type
   } else {
-    log::log error "Usupported event: $event_type. Supported events are HTTP_REQUEST and HTTP_RESPONSE"
-    error "Usupported event: $event_type. Supported events are HTTP_REQUEST and HTTP_RESPONSE"
+    log::log error "Usupported event: $event_type. Supported events are $validEvents"
+    error "Usupported event: $event_type. Supported events are $validEvents"
   }
 }
 
