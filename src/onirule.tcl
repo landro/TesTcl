@@ -107,7 +107,9 @@ proc ::testcl::when {event body} {
 
 proc ::testcl::event {event_type} {
   variable expectedEvent
-  set validEvents [list]	
+  set validEvents [list]
+  # GLOBAL events
+  lappend validEvents FLOW_INIT LB_FAILED LB_SELECTED NAME_RESOLVED PERSIST_DOWN RULE_INIT
   # HTTP events
   lappend validEvents HTTP_CLASS_FAILED HTTP_CLASS_SELECTED HTTP_DISABLED HTTP_PROXY_REQUEST HTTP_REQUEST 
   lappend validEvents HTTP_REQUEST_DATA HTTP_REQUEST_SEND HTTP_RESPONSE HTTP_RESPONSE_CONTINUE HTTP_RESPONSE_DATA 
