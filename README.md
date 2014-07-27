@@ -4,6 +4,10 @@
 [iRules](https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx) which 
 are used when configuring [F5 BigIP](http://www.f5.com/products/big-ip/) devices.
 
+## News
+
+27th July 2014 - Version [1.0.5](https://github.com/landro/TesTcl/releases) released 
+
 ## Getting started
 
 If you're familiar with unit testing and [mocking](http://en.wikipedia.org/wiki/Mock_object) in particular,
