@@ -57,7 +57,7 @@ proc ::testcl::when {event body} {
 
   if {[info exists expectedEvent] && $event eq $expectedEvent} {
     log::log debug "when invoked with expected event '$event'"
-    set rc [catch $body result]
+    set rc [catch { uplevel 1 $body } result]
     log::log info "when invoked with expected event $event finished, return code: $rc  result: $result"
 
     variable expectedEvent
