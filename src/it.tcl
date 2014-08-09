@@ -78,7 +78,7 @@ proc ::testcl::reset_expectations { } {
 
 # testcl::before --
 #
-#  that actual numeric value matches expected numeric value
+#  Runs common setup code before specifications
 #
 # Arguments:
 # body Body containing statements to be run before the specifications
