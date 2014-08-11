@@ -1,7 +1,7 @@
 # Demo of how code can be upleveled
 
 proc when { body } {
-  set rc [catch { uplevel 1 $body } result] 		
+  set rc [catch { uplevel #0 $body } result] 		
 }
 
 when {
