@@ -51,7 +51,19 @@ proc ::testcl::rule {ruleName body} {
 #
 # Results:
 # None.
-proc ::testcl::when {event body} {
+proc ::testcl::when args {
+	
+  if { [llength $args] > 2 } {
+    # TODO https://devcentral.f5.com/wiki/iRules.when.ashx
+    puts "Currently ignoring timing and priority in when command"
+    set event [lindex $args 0]
+    set body [lindex $args end]
+  } elseif { [llength $args] < 2 } {
+    error "wrong # args: see F5  documentation"
+  } else {
+    set event [lindex $args 0]
+    set body [lindex $args 1]
+  }
 
   variable expectedEvent
 

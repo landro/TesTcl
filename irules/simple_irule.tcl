@@ -1,6 +1,6 @@
 rule simple {
 
-  when HTTP_REQUEST {
+  when HTTP_REQUEST priority 100 {
     #starts_with "/foo" 
     if { [regexp {^/foo} [HTTP::uri]] } {
       pool foo
