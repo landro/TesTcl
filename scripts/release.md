@@ -7,7 +7,7 @@ Mac OS X/Free BSD
 
 Tagging a new release and pushing to origin
 
-    git tag -a v1.0.5 -m 'Release 1.0.5' 
+    git tag -a v1.0.6 -m 'Release 1.0.6' 
     git push --tags
 
 Remove feature branches after merging

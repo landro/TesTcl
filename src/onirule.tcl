@@ -1,4 +1,4 @@
-package provide testcl 1.0.5
+package provide testcl 1.0.6
 package require log
 
 namespace eval ::testcl {
@@ -42,8 +42,12 @@ proc ::testcl::rule {ruleName body} {
 #
 # Override of the iRule when command
 #
+# https://devcentral.f5.com/wiki/iRules.when.ashx
+#
 # Arguments:
 # event Type of event, for instance HTTP_REQUEST
+# [timing on|off] currently ignored
+# [priority N] currently ignored
 # body the body of the when command
 #
 # Side Effects:
@@ -51,7 +55,15 @@ proc ::testcl::rule {ruleName body} {
 #
 # Results:
 # None.
-proc ::testcl::when {event body} {
+proc ::testcl::when args {
+	
+  # TODO add support for priority 
+  if { [llength $args] != 2 && [llength $args] != 4 && [llength $args] != 6 } {
+    error "wrong # args for when, expected 2, 4 or 6 args"
+  } else {
+    set event [lindex $args 0]
+    set body [lindex $args end]
+  }
 
   variable expectedEvent
 
