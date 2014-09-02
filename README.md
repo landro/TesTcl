@@ -334,7 +334,7 @@ stats
 
 ### Modification of HTTP headers example
 
-Let's have a look at a another iRule (headers_irule.tcl):
+Let's have a look at another iRule (headers_irule.tcl):
 
 ```tcl    
 rule headers {
