@@ -2,9 +2,9 @@
 <html>
 
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="TesTcl - a library for unit testing BigIp iRules : when you don&#39;t have the balls to test your iRules directly in production" />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="TesTcl - a library for unit testing BigIp iRules : when you don&#39;t have the balls to test your iRules directly in production">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -41,9 +41,10 @@ are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BigIP<
 <h2>
 <a name="news" class="anchor" href="#news"><span class="octicon octicon-link"></span></a>News</h2>
 
-<p>27th July 2014 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.5</a> released </p>
-
-<h2>
+<ul>
+<li>2nd September 2014 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.6</a> released</li>
+<li>27th July 2014 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.5</a> released </li>
+</ul><h2>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting started</h2>
 
 <p>If you're familiar with unit testing and <a href="http://en.wikipedia.org/wiki/Mock_object">mocking</a> in particular,
@@ -74,7 +75,7 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 
 <p>Now, create a file called <em>test_simple_irule.tcl</em> containing the following lines:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.5
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.6
 <span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
 <span class="c"># Comment in to enable logging</span>
@@ -148,7 +149,7 @@ On MacOs X and Linux, this can be achieved by putting the following line just ab
 <p>Download latest <a href="https://github.com/landro/TesTcl/releases">TesTcl distribution</a> from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the <a href="http://jtcl.kenai.com/gettingstarted.html">TCLLIBPATH</a> environment variable:</p>
 
-<pre><code>export TCLLIBPATH=whereever/TesTcl-1.0.5
+<pre><code>export TCLLIBPATH=whereever/TesTcl-1.0.6
 </code></pre>
 
 <p>In order to run this example, type in the following at the command-line:</p>
@@ -243,7 +244,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>Using the <em>before</em> command, <em>test_simple_irule.tcl</em> can be rewritten as:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.5
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.6
 <span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
 <span class="c"># Comment in to enable logging</span>
@@ -323,7 +324,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>The specs for this iRule would look like this:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.5
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.6
 <span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
 <span class="c"># Comment out to suppress logging</span>
@@ -437,7 +438,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>The example specs for this iRule would look like this:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.5
+<div class="highlight highlight-tcl"><pre><span class="nb">package</span> require <span class="o">-</span>exact testcl <span class="mf">1.0</span>.6
 <span class="k">namespace</span> import <span class="o">::</span>testcl::<span class="o">*</span>
 
 <span class="c"># Comment out to suppress logging</span>
