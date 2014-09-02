@@ -42,8 +42,12 @@ proc ::testcl::rule {ruleName body} {
 #
 # Override of the iRule when command
 #
+# https://devcentral.f5.com/wiki/iRules.when.ashx
+#
 # Arguments:
 # event Type of event, for instance HTTP_REQUEST
+# [timing on|off] currently ignored
+# [priority N] currently ignored
 # body the body of the when command
 #
 # Side Effects:
@@ -53,16 +57,12 @@ proc ::testcl::rule {ruleName body} {
 # None.
 proc ::testcl::when args {
 	
-  if { [llength $args] > 2 } {
-    # TODO https://devcentral.f5.com/wiki/iRules.when.ashx
-    puts "Currently ignoring timing and priority in when command"
-    set event [lindex $args 0]
-    set body [lindex $args end]
-  } elseif { [llength $args] < 2 } {
-    error "wrong # args: see F5  documentation"
+  # TODO add support for priority 
+  if { [llength $args] != 2 && [llength $args] != 4 && [llength $args] != 6 } {
+    error "wrong # args for when, expected 2, 4 or 6 args"
   } else {
     set event [lindex $args 0]
-    set body [lindex $args 1]
+    set body [lindex $args end]
   }
 
   variable expectedEvent
