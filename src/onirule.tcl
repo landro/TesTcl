@@ -7,6 +7,49 @@ namespace eval ::testcl {
   namespace export when
   namespace export event
   namespace export run
+
+  variable procedures [dict create]
+  dict set procedures FLOW_INIT { }
+  dict set procedures LB_FAILED { }
+  dict set procedures LB_SELECTED { }
+  dict set procedures NAME_RESOLVED { }
+  dict set procedures PERSIST_DOWN { }
+  dict set procedures RULE_INIT { }
+  # HTTP procedures
+  dict set procedures HTTP_CLASS_FAILED { }
+  dict set procedures HTTP_CLASS_SELECTED { }
+  dict set procedures HTTP_DISABLED { }
+  dict set procedures HTTP_PROXY_REQUEST { }
+  dict set procedures HTTP_REQUEST { }
+  dict set procedures HTTP_REQUEST_DATA { }
+  dict set procedures HTTP_REQUEST_SEND { }
+  dict set procedures HTTP_RESPONSE { }
+  dict set procedures HTTP_RESPONSE_CONTINUE { }
+  dict set procedures HTTP_RESPONSE_DATA { }
+  dict set procedures HTTP_REQUEST_RELEASE { }
+  dict set procedures HTTP_RESPONSE_RELEASE { }
+  # TCP/IP procedures { }
+  dict set procedures CLIENT_ACCEPTED { }
+  dict set procedures CLIENT_CLOSED { }
+  dict set procedures CLIENT_DATA { }
+  dict set procedures CLIENTSSL_DATA { }
+  dict set procedures SERVER_CLOSED { }
+  dict set procedures SERVER_CONNECTED { }
+  dict set procedures SERVER_DATA { }
+  dict set procedures SERVERSSL_DATA { }
+  dict set procedures USER_REQUEST { }
+  dict set procedures USER_RESPONSE { }
+}
+
+proc ::testcl::call {fn} {
+  set rc [catch { namespace eval ::testcl $fn } result]
+  if { $rc != 0 } {
+    log::log error "ERROR: $rc"
+    log::log error $fn
+    log::log error $result
+  } else {
+    return $result
+  }
 }
 
 # testcl::rule --
@@ -22,20 +65,9 @@ namespace eval ::testcl {
 #
 # Results:
 # None.
-proc ::testcl::rule {ruleName body} {
+proc ::testcl::rule {ruleName fn} {
   log::log debug "rule $ruleName invoked"
-  set rc [catch $body result]
-  log::log info "rule $ruleName finished, return code: $rc  result: $result"
-
-  if {$rc != 2000} {
-    log::log error "Expected return code 200 from calling when, got $rc"
-    log::log error "Error info: $::errorInfo"
-    log::log error "++++++++++++++++++++++++++++++++++++++++++"	  	  
-    error "Expected return code 2000 from calling when, got $rc"
-  } else {
-    return "rule $ruleName"
-  }
-  
+  call $fn
 }
 
 # testcl::when --
@@ -56,8 +88,7 @@ proc ::testcl::rule {ruleName body} {
 # Results:
 # None.
 proc ::testcl::when args {
-	
-  # TODO add support for priority 
+  variable procedures
   if { [llength $args] != 2 && [llength $args] != 4 && [llength $args] != 6 } {
     error "wrong # args for when, expected 2, 4 or 6 args"
   } else {
@@ -65,43 +96,21 @@ proc ::testcl::when args {
     set body [lindex $args end]
   }
 
-  variable expectedEvent
-
-  if {[info exists expectedEvent] && $event eq $expectedEvent} {
-    log::log debug "when invoked with expected event '$event'"
-    set rc [catch $body result]
-    log::log info "when invoked with expected event $event finished, return code: $rc  result: $result"
-
-    variable expectedEvent
-    variable expectedEndState
-    if { ![info exist expectedEndState] } {
-      log::log debug "endstate verification skipped - undefined in current \"it\" context"
-      if {$rc >= 1000} {
-        error "Expected return code < 1000, got $rc"
-      }
-      return -code 2000 "when $event"
-    }
-
-    if {$rc != 1000} {
-      log::log error "Expected end state with return code 3, got $rc"
-      log::log error "Error info: $::errorInfo"
-      log::log error "++++++++++++++++++++++++++++++++++++++++++"	  	  
-      error "Expected end state with return code 3, got $rc"
-    }
-
-    if {$result ne $expectedEndState} {
-      error "Expected end state $expectedEndState, got $result"
-    }
-
-    return -code 2000 "when $event"
-
-  } elseif {[info exists expectedEvent] && $event ne $expectedEvent} {
-    log::log debug "when not invoked due to non-matching event type"
+  if { [dict exists $procedures $event] } {
+    set lst [dict get $procedures $event]
+    lappend lst $body
+    dict set procedures $event $lst
   } else {
-    log::log error "when not invoked due to missing expected event"
-    error "when not invoked due to missing expected event"
+    log::log error "event $event not supported"
   }
+}
 
+proc ::testcl::trigger {event args} {
+  variable procedures
+  set lst [dict get $procedures $event]
+  foreach fn $lst {
+    call $fn
+  }
 }
 
 # testcl::event --
@@ -117,23 +126,11 @@ proc ::testcl::when args {
 # Results:
 # None.
 
-proc ::testcl::event {event_type} {
-  variable expectedEvent
-  set validEvents [list]
-  # GLOBAL events
-  lappend validEvents FLOW_INIT LB_FAILED LB_SELECTED NAME_RESOLVED PERSIST_DOWN RULE_INIT
-  # HTTP events
-  lappend validEvents HTTP_CLASS_FAILED HTTP_CLASS_SELECTED HTTP_DISABLED HTTP_PROXY_REQUEST HTTP_REQUEST 
-  lappend validEvents HTTP_REQUEST_DATA HTTP_REQUEST_SEND HTTP_RESPONSE HTTP_RESPONSE_CONTINUE HTTP_RESPONSE_DATA 
-  lappend validEvents HTTP_REQUEST_RELEASE HTTP_RESPONSE_RELEASE
-  # TCP/IP events
-  lappend validEvents CLIENT_ACCEPTED CLIENT_CLOSED CLIENT_DATA CLIENTSSL_DATA SERVER_CLOSED SERVER_CONNECTED 
-  lappend validEvents SERVER_DATA SERVERSSL_DATA USER_REQUEST USER_RESPONSE
-  if { [lsearch $validEvents "$event_type"] != -1 } {
-    set expectedEvent $event_type
-  } else {
-    log::log error "Usupported event: $event_type. Supported events are $validEvents"
-    error "Usupported event: $event_type. Supported events are $validEvents"
+proc ::testcl::event {event {method}} {
+  variable procedures
+  if { $method == "disable" } {
+    log::log error "disabled event: $event"
+    dict unset procedures $event
   }
 }
 
@@ -152,12 +149,6 @@ proc ::testcl::event {event_type} {
 # none
 proc ::testcl::run {irule rulename} {
   log::log info "Running irule $irule"
-  set rc [catch {source $irule} result]
-  if { 0 != $rc } {
-    log::log error "Running irule $irule failed: $result"	  
-    log::log error "Error info: $::errorInfo"
-    log::log error "++++++++++++++++++++++++++++++++++++++++++"	  	  
-    error "Running irule $irule failed: $result"	
-  }
-  testcl::assertStringEquals "rule $rulename" $result
+  set fn "source $irule"
+  call $fn
 }
