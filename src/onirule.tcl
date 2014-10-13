@@ -7,6 +7,7 @@ namespace eval ::testcl {
   namespace export when
   namespace export event
   namespace export run
+  namespace export trigger
 
   variable procedures [dict create]
   dict set procedures FLOW_INIT { }
