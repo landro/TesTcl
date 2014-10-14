@@ -6,6 +6,21 @@ rule table-data {
         set lab foo
       }
 
+      10.176.49.90 {
+        set lmt 2
+        set lab bar
+      }
+
+      10.176.49.91 {
+        set lmt 2
+        set lab bar
+      }
+
+      10.176.49.92 {
+        set lmt 2
+        set lab bar
+      }
+
       default {
         set lmt 1000
         set lab other

@@ -7,7 +7,6 @@ rule table {
     set key "[IP::client_addr]:$count"
     if { $count >= $lmt } {
       event CLIENT_CLOSED disable
-      log local0. "$tbl connection limit $lmt - rejected [IP::client_addr]"
       reject
     } else {
       table set -subtable $tbl $key "ignored" 180

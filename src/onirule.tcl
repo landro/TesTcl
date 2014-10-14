@@ -130,7 +130,7 @@ proc ::testcl::trigger {event args} {
 proc ::testcl::event {event {method}} {
   variable procedures
   if { $method == "disable" } {
-    log::log error "disabled event: $event"
+    log::log info "disabled event: $event"
     dict unset procedures $event
   }
 }

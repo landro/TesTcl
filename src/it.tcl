@@ -23,10 +23,8 @@ namespace eval ::testcl {
 # None.
 proc ::testcl::reset_expectations { } {
   variable expectations
-  if { [info exists expectations] } {
-    log::log debug "Reset expectations"
-    set expectations {}
-  }
+  set expectations [dict create]
+
   variable expectedEndState
   if { [info exists expectedEndState] } {
     log::log debug "Reset end state"
