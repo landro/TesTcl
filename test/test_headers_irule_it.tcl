@@ -1,15 +1,11 @@
-source src/on.tcl
-source src/assert.tcl
-source src/onirule.tcl
-source src/it.tcl
-source src/irulehttp.tcl
+package require testcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
 #log::lvSuppressLE info 0
 
 before {
-  run irules/headers_irule.tcl headers
+  run test/fixtures/headers_irule.tcl headers
   verify "There should be always set HTTP header X-Forwarded-SSL to true" true eq {HTTP::header X-Forwarded-SSL}
 }
 

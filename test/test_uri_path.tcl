@@ -1,16 +1,11 @@
-source src/on.tcl
-source src/assert.tcl
-source src/onirule.tcl
-source src/it.tcl
-source src/irulehttp.tcl
-source src/pool.tcl
+package require testcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
 #log::lvSuppressLE info 0
 
 before {
-  run irules/simple_irule.tcl simple
+  run test/fixtures/simple_irule.tcl simple
 }
 
 it "should endstate with pool bar using mock value for HTTP::uri" {

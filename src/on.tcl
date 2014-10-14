@@ -27,8 +27,9 @@ namespace eval ::testcl {
 proc ::testcl::on {args} {
   variable expectations
   log::log debug "on called with the following [llength $args] arguments: $args"
-  set fname [lindex $args 0]
-  dict set expectations $fname $args
+  set proccall [lrange $args 0 end-2]
+  set procresult [lrange $args end-1 end]
+  dict set expectations $proccall $procresult
 }
 
 # testcl::endstate --
@@ -178,12 +179,11 @@ proc ::testcl::expected {args} {
 
   log::log debug "verify expectations ([llength $expectations] defined)"
 
-  set fname [lindex $args 0]
+  set proccall $args
 
-  if { [dict exists $expectations $fname] } {
+  if { [dict exists $expectations $proccall] } {
 
-    set expectation [dict get $expectations $fname]
-    set proccall [lrange $expectation 0 end-2]
+    set expectation [dict get $expectations $proccall]
     set procresult [lindex $expectation end]
 
     switch -regexp [lindex $expectation end-1] {
