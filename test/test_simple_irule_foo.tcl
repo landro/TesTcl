@@ -1,16 +1,17 @@
 source src/on.tcl
 source src/assert.tcl
 source src/onirule.tcl
+source src/pool.tcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
 #log::lvSuppressLE info 0
 
-event HTTP_REQUEST
-
 on HTTP::uri return "/foo/admin"
 on pool bar return ""
 
-endstate pool foo
-
 run irules/simple_irule.tcl simple
+
+trigger HTTP_REQUEST
+
+endstate pool foo

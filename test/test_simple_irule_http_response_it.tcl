@@ -9,9 +9,9 @@ namespace import ::testcl::*
 #log::lvSuppressLE info 0
 
 it "should modify response" {
-  event HTTP_RESPONSE
-  verify "Vary HTTP header value should be set to Accept-Encoding" "Accept-Encoding" eq {HTTP::header Vary}
   run irules/simple_irule.tcl simple
+  trigger HTTP_RESPONSE
+  verify "Vary HTTP header value should be set to Accept-Encoding" "Accept-Encoding" eq {HTTP::header Vary}
 }
 
 stats

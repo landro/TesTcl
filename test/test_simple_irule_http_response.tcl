@@ -7,6 +7,6 @@ namespace import ::testcl::*
 # Comment out to suppress logging
 #log::lvSuppressLE info 0
 
-event HTTP_RESPONSE
-
 run irules/simple_irule.tcl simple
+
+trigger HTTP_RESPONSE

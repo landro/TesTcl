@@ -3,21 +3,21 @@ source src/assert.tcl
 source src/onirule.tcl
 source src/irulehttp.tcl
 source src/it.tcl
+source src/pool.tcl
 namespace import ::testcl::*
 
-# Comment out to suppress logging
-#log::lvSuppressLE info 0
-
 before {
-  event HTTP_REQUEST
+  run irules/advanced_irule.tcl advanced
 }
 
 it "should handle admin request using pool admin when credentials are valid" {
   HTTP::uri "/admin"
   on HTTP::username return "admin"
   on HTTP::password return "password"
-  endstate pool pool_admin_application
-  run irules/advanced_irule.tcl advanced
+
+  trigger HTTP_REQUEST
+
+  assertStringEquals pool_admin_application [currentPool]
 }
 
 it "should ask for credentials when admin request with incorrect credentials" {
