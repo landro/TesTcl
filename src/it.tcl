@@ -109,11 +109,12 @@ proc ::testcl::before {body} {
 proc ::testcl::it {description body} {
   variable before
 
+  setupProcedures
   reset_expectations
 
   if { [info exists before] } {
     log::log debug "Calling before"
-    eval $before
+    call $before
   } else {
     log::log debug "No before proc"
   }

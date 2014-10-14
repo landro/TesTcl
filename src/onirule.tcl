@@ -8,7 +8,10 @@ namespace eval ::testcl {
   namespace export event
   namespace export run
   namespace export trigger
+  variable procedures [dict create]
+}
 
+proc ::testcl::setupProcedures {} {
   variable procedures [dict create]
   dict set procedures FLOW_INIT { }
   dict set procedures LB_FAILED { }
