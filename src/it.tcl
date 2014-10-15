@@ -23,10 +23,8 @@ namespace eval ::testcl {
 # None.
 proc ::testcl::reset_expectations { } {
   variable expectations
-  if { [info exists expectations] } {
-    log::log debug "Reset expectations"
-    set expectations {}
-  }
+  set expectations [dict create]
+
   variable expectedEndState
   if { [info exists expectedEndState] } {
     log::log debug "Reset end state"
@@ -109,40 +107,37 @@ proc ::testcl::before {body} {
 # -> Test OK if specification is met
 # -> Test failure otherwise
 proc ::testcl::it {description body} {
+  variable before
 
-  puts "\n**************************************************************************"
-  puts "* it $description"
-  puts "**************************************************************************"
-
+  setupProcedures
   reset_expectations
 
-  variable before
   if { [info exists before] } {
     log::log debug "Calling before"
-    eval $before
+    call $before
   } else {
     log::log debug "No before proc"
   }
 
   variable nbOfTestFailures
+
   set rc [catch $body result]
-  
   if {$rc == 0} {
     set result [testcl::verifyEvaluate]
     if {$result ne ""} {
       set rc 1
     }
   }
-  
+
   if {$rc != 0 } {
-    puts "-> Test failure!!"
-    puts "-> -> $result"
-    log::log error $result 
+    puts "\033\[31mError:"
+    puts "$description"
+    puts "    $result"
     incr nbOfTestFailures
   } else {
-    puts "-> Test ok"
+    puts "\033\[32m$description passed."
   }
-  
+  puts "\033\[0m"
 }
 # testcl::stats --
 #
@@ -158,9 +153,11 @@ proc ::testcl::it {description body} {
 # Prints test failure statistics
 proc ::testcl::stats {} {
   variable nbOfTestFailures
-  puts "\n"
-  puts "============================================================================================="
-  puts "  Total number of test failures: $nbOfTestFailures"
-  puts "============================================================================================="
-  puts "\n\n\n"
+  if { $nbOfTestFailures > 0 } {
+    # 150 tests, 210 assertions, 0 failures, 7 errors, 0 skips
+    puts "\033\[31m$nbOfTestFailures failures"
+  } else {
+    puts "\033\[32m$nbOfTestFailures failures"
+  }
+  puts "\033\[0m"
 }

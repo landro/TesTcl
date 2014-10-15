@@ -1,16 +1,16 @@
-source src/on.tcl
-source src/assert.tcl
-source src/onirule.tcl
+package require testcl
 namespace import ::testcl::*
 
 # Comment out to suppress logging
 #log::lvSuppressLE info 0
 
-event HTTP_REQUEST
+it "should call event" {
+  on HTTP::uri return "/foo/admin"
+  on pool bar return ""
 
-on HTTP::uri return "/foo/admin"
-on pool bar return ""
+  run test/fixtures/simple_irule.tcl simple
 
-endstate pool foo
+  trigger HTTP_REQUEST
 
-run irules/simple_irule.tcl simple
+  endstate pool foo
+}

@@ -2,7 +2,7 @@ package provide testcl 1.0.6
 package require log
 
 namespace eval ::testcl {
-  variable expectations {}
+  variable expectations [dict create]
   variable expectedEndState
   variable verifications {}
   namespace export on
@@ -25,9 +25,11 @@ namespace eval ::testcl {
 # Results:
 # None.
 proc ::testcl::on {args} {
-  log::log debug "on called with the following [llength $args] arguments: $args"
   variable expectations
-  lappend expectations $args
+  log::log debug "on called with the following [llength $args] arguments: $args"
+  set proccall [lrange $args 0 end-2]
+  set procresult [lrange $args end-1 end]
+  dict set expectations $proccall $procresult
 }
 
 # testcl::endstate --
@@ -53,6 +55,7 @@ proc ::testcl::endstate {args} {
 # Proc to setup verification required after iRule evaluation
 #
 # Arguments:
+#
 # description Description of verification
 # result Result to compare with outcome from verification body evaluation
 # condition Comparison operator
@@ -162,10 +165,11 @@ proc ::testcl::unknown {args} {
 # Results:
 # Whatever your expectation says
 proc ::testcl::expected {args} {
+  variable expectations
+  variable expectedEndState
 
   log::log debug "expected called with args: $args"
 
-  variable expectedEndState
   log::log debug "verify expected end state if available"
 
   if { [info exists expectedEndState] && ( $expectedEndState == $args ) } {
@@ -173,35 +177,30 @@ proc ::testcl::expected {args} {
     return -code 1000 $args
   }
 
-  variable expectations
   log::log debug "verify expectations ([llength $expectations] defined)"
 
-  if { [llength $expectations] > 0 } {
+  set proccall $args
 
-    foreach expectation $expectations {
+  if { [dict exists $expectations $proccall] } {
 
-      set proccall [lrange $expectation 0 end-2]
-      set procresult [lindex $expectation end]
+    set expectation [dict get $expectations $proccall]
+    set procresult [lindex $expectation end]
 
-      if { $proccall == $args} {
-        switch -regexp [lindex $expectation end-1] {
-          {^return$} {
-            log::log info "Returning value '$procresult' for procedure call '$proccall'"
-            return $procresult
-          }
-          {^error$} {
-            log::log info "Generate error '$procresult' for procedure call'$proccall'"
-            error $procresult
-          }
-          default {
-            error "Invalid expectation - expected one of return, error or end."
-          }
-        }
+    switch -regexp [lindex $expectation end-1] {
+      {^return$} {
+        log::log info "Returning value '$procresult' for procedure call '$proccall'"
+        return $procresult
       }
-      
+      {^error$} {
+        log::log info "Generate error '$procresult' for procedure call'$proccall'"
+        error $procresult
+      }
+      default {
+        error "Invalid expectation - expected one of return, error or end."
+      }
     }
-
   }
+
   log::log debug "expectation not found for $args (return code 1500)"
   return -code 1500 "expectation not found"
 }

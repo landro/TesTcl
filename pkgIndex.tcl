@@ -11,7 +11,7 @@
 if  {[namespace exists ::testcl]} {
   #already loaded
   return
-} 
+}
 
 if { $::tcl_platform(platform) eq "java" } {
 
@@ -20,35 +20,35 @@ if { $::tcl_platform(platform) eq "java" } {
     puts stderr "WARNING The jtcl-irule extension to JTcl is not loaded"
     puts stderr "WARNING"
     puts stderr "WARNING The following custom iRule operators will not work:"
-    puts stderr "WARNING   - starts_with" 
-    puts stderr "WARNING   - ends_with" 
-    puts stderr "WARNING   - contains" 
-    puts stderr "WARNING   - matches_glob" 
-    puts stderr "WARNING   - matches_regex" 
-    puts stderr "WARNING   - equals" 
-    puts stderr "WARNING   - and" 
-    puts stderr "WARNING   - or" 
+    puts stderr "WARNING   - starts_with"
+    puts stderr "WARNING   - ends_with"
+    puts stderr "WARNING   - contains"
+    puts stderr "WARNING   - matches_glob"
+    puts stderr "WARNING   - matches_regex"
+    puts stderr "WARNING   - equals"
+    puts stderr "WARNING   - and"
+    puts stderr "WARNING   - or"
     puts stderr "WARNING   - not"
     puts stderr "WARNING"
     puts stderr "WARNING Please check your JTcl classpath - see TesTcl documentation"
     puts stderr "WARNING for installation instructions"
-    puts stderr "WARNING"		  
+    puts stderr "WARNING"
   }
-		
+
 } else {
   puts stderr "WARNING"
   puts stderr "WARNING You're using a Tcl interpreter that doesn't support the jtcl-irule extension"
   puts stderr "WARNING which requires the java based JTcl interpreter"
   puts stderr "WARNING"
   puts stderr "WARNING The following custom iRule operators will not work:"
-  puts stderr "WARNING   - starts_with" 
-  puts stderr "WARNING   - ends_with" 
-  puts stderr "WARNING   - contains" 
-  puts stderr "WARNING   - matches_glob" 
-  puts stderr "WARNING   - matches_regex" 
-  puts stderr "WARNING   - equals" 
-  puts stderr "WARNING   - and" 
-  puts stderr "WARNING   - or" 
+  puts stderr "WARNING   - starts_with"
+  puts stderr "WARNING   - ends_with"
+  puts stderr "WARNING   - contains"
+  puts stderr "WARNING   - matches_glob"
+  puts stderr "WARNING   - matches_regex"
+  puts stderr "WARNING   - equals"
+  puts stderr "WARNING   - and"
+  puts stderr "WARNING   - or"
   puts stderr "WARNING   - not"
   puts stderr "WARNING"
   puts stderr "WARNING If you require any of these operators, you'll have to use JTcl instead"
@@ -56,7 +56,7 @@ if { $::tcl_platform(platform) eq "java" } {
   puts stderr "WARNING"
 }
 
-package ifneeded testcl 1.0.6 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]\n[list source [file join $dir src/irulehttp.tcl]]
+package ifneeded testcl 1.0.6 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]\n[list source [file join $dir src/irulehttp.tcl]]\n[list source [file join $dir src/table.tcl]]\n[list source [file join $dir src/pool.tcl]]
 
 # Disable certain Tcl commands from iRules
 if { $::tcl_platform(platform) eq "java" } {
