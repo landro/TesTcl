@@ -81,11 +81,22 @@ jar artifact from the [downloads](https://github.com/landro/TesTcl/downloads) se
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in _jtcl_ or _jtcl.bat_.
 **IMPORTANT!** Make sure you place the _jtcl-irule.jar_ on the classpath **before** the standard jtcl-<version>.jar
+
+###### MacOS X and Linux
+
 On MacOs X and Linux, this can be achieved by putting the following line just above the last line in the jtcl shell script
 
     export CLASSPATH=$dir/jtcl-irule.jar:$CLASSPATH
     
-    
+###### Windows
+
+On Windows, modify the following line in jtcl.bat from 
+
+    set cp="%dir%\jtcl-%jtclver%.jar;%CLASSPATH%"
+
+to
+
+    set cp="%dir%\jtcl-irule.jar;%dir%\jtcl-%jtclver%.jar;%CLASSPATH%"
 
 ##### Verify installation
 
