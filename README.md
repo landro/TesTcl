@@ -2,7 +2,7 @@
 
 **TesTcl** is a [Tcl](http://en.wikipedia.org/wiki/Tcl) library for unit testing
 [iRules](https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx) which 
-are used when configuring [F5 BigIP](http://www.f5.com/products/big-ip/) devices.
+are used when configuring [F5 BIG-IP](http://www.f5.com/products/big-ip/) devices.
 
 ## News
 
@@ -413,10 +413,10 @@ This work is quite stable, but you can expect minor breaking changes.
 
 ## Why I created this project
 
-Configuring BigIP devices is no trivial task, and typically falls in under a DevOps kind of role.
+Configuring BIG-IP devices is no trivial task, and typically falls in under a DevOps kind of role.
 In order to make your system perform the best it can, you need:
 
-- In-depth knowledge about the BigIP system (typically requiring at least a [$1,995 3-day course](http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html))
+- In-depth knowledge about the BIG-IP system (typically requiring at least a [$1,995 3-day course](http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html))
 - In-depth knowledge about the web application being load balanced 
 - The Tcl language and the iRule extensions
 - And finally: _A way to test your iRules_
@@ -440,7 +440,7 @@ There are lots of issues with this **manual** approach:
 - Bringing servers up and down to test fallback scenarios can be quite tedious
 - **Manual** verification steps are prone to error
 - **Manual** testing takes a lot of time
-- Development roundtrip-time is forever, since deployment to BigIP sometimes can take several minutes
+- Development roundtrip-time is forever, since deployment to BIG-IP sometimes can take several minutes
 
 Clearly, **manual** testing is not the way forward!
 
