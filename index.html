@@ -1,42 +1,30 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="TesTcl - a library for unit testing BigIp iRules : when you don&#39;t have the balls to test your iRules directly in production">
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>TesTcl - a library for unit testing BigIp iRules</title>
+    <meta charset="UTF-8">
+    <title>TesTcl - a library for unit testing BIG-IP iRules by landro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
+    <section class="page-header">
+      <h1 class="project-name">TesTcl - a library for unit testing BIG-IP iRules</h1>
+      <h2 class="project-tagline">when you don&#39;t have the balls to test your iRules directly in production</h2>
+      <a href="https://github.com/landro/TesTcl" class="btn">View on GitHub</a>
+      <a href="https://github.com/landro/TesTcl/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/landro/TesTcl/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/landro/TesTcl">View on GitHub</a>
-
-          <h1 id="project_title">TesTcl - a library for unit testing BigIp iRules</h1>
-          <h2 id="project_tagline">when you don&#39;t have the balls to test your iRules directly in production</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/landro/TesTcl/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/landro/TesTcl/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
+    <section class="main-content">
+      <h1>
 <a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
 
 <p><strong>TesTcl</strong> is a <a href="http://en.wikipedia.org/wiki/Tcl">Tcl</a> library for unit testing
 <a href="https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx">iRules</a> which 
-are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BigIP</a> devices.</p>
+are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BIG-IP</a> devices.</p>
 
 <h2>
 <a id="news" class="anchor" href="#news" aria-hidden="true"><span class="octicon octicon-link"></span></a>News</h2>
@@ -60,7 +48,7 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 <div class="highlight highlight-tcl"><pre>rule simple {
 
   when HTTP_REQUEST {
-    <span class="pl-k">if</span> { [HTTP::uri] starts_with <span class="pl-s1"><span class="pl-pds">"</span>/foo<span class="pl-pds">"</span></span> } {
+    <span class="pl-k">if</span> { [HTTP::uri] starts_with <span class="pl-s"><span class="pl-pds">"</span>/foo<span class="pl-pds">"</span></span> } {
       pool foo
     } <span class="pl-k">else</span> {
       pool bar
@@ -68,8 +56,8 @@ using TesTcl should't be to hard. Check out the examples below:</p>
   }
 
   when HTTP_RESPONSE {
-    HTTP::header remove <span class="pl-s1"><span class="pl-pds">"</span>Vary<span class="pl-pds">"</span></span>
-    HTTP::header insert Vary <span class="pl-s1"><span class="pl-pds">"</span>Accept-Encoding<span class="pl-pds">"</span></span>
+    HTTP::header remove <span class="pl-s"><span class="pl-pds">"</span>Vary<span class="pl-pds">"</span></span>
+    HTTP::header insert Vary <span class="pl-s"><span class="pl-pds">"</span>Accept-Encoding<span class="pl-pds">"</span></span>
   }
 
 }</pre></div>
@@ -82,26 +70,26 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 <span class="pl-c"># Comment in to enable logging</span>
 <span class="pl-c">#log::lvSuppressLE info 0</span>
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should handle request using pool bar<span class="pl-pds">"</span></span> {
+it <span class="pl-s"><span class="pl-pds">"</span>should handle request using pool bar<span class="pl-pds">"</span></span> {
   event HTTP_REQUEST
-  on HTTP::uri return <span class="pl-s1"><span class="pl-pds">"</span>/bar<span class="pl-pds">"</span></span>
+  on HTTP::uri return <span class="pl-s"><span class="pl-pds">"</span>/bar<span class="pl-pds">"</span></span>
   endstate pool bar
   run simple_irule.tcl simple
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should handle request using pool foo<span class="pl-pds">"</span></span> {
+it <span class="pl-s"><span class="pl-pds">"</span>should handle request using pool foo<span class="pl-pds">"</span></span> {
   event HTTP_REQUEST
-  on HTTP::uri return <span class="pl-s1"><span class="pl-pds">"</span>/foo/admin<span class="pl-pds">"</span></span>
+  on HTTP::uri return <span class="pl-s"><span class="pl-pds">"</span>/foo/admin<span class="pl-pds">"</span></span>
   endstate pool foo
   run simple_irule.tcl simple
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should replace existing Vary http response headers with Accept-Encoding value<span class="pl-pds">"</span></span> {
+it <span class="pl-s"><span class="pl-pds">"</span>should replace existing Vary http response headers with Accept-Encoding value<span class="pl-pds">"</span></span> {
   event HTTP_RESPONSE
-  verify <span class="pl-s1"><span class="pl-pds">"</span>there should be only one Vary header<span class="pl-pds">"</span></span> 1 == {HTTP::header count vary}
-  verify <span class="pl-s1"><span class="pl-pds">"</span>there should be Accept-Encoding value in Vary header<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>Accept-Encoding<span class="pl-pds">"</span></span> eq {HTTP::header Vary}
-  HTTP::header insert Vary <span class="pl-s1"><span class="pl-pds">"</span>dummy value<span class="pl-pds">"</span></span>
-  HTTP::header insert Vary <span class="pl-s1"><span class="pl-pds">"</span>another dummy value<span class="pl-pds">"</span></span>
+  verify <span class="pl-s"><span class="pl-pds">"</span>there should be only one Vary header<span class="pl-pds">"</span></span> 1 == {HTTP::header count vary}
+  verify <span class="pl-s"><span class="pl-pds">"</span>there should be Accept-Encoding value in Vary header<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Accept-Encoding<span class="pl-pds">"</span></span> eq {HTTP::header Vary}
+  HTTP::header insert Vary <span class="pl-s"><span class="pl-pds">"</span>dummy value<span class="pl-pds">"</span></span>
+  HTTP::header insert Vary <span class="pl-s"><span class="pl-pds">"</span>another dummy value<span class="pl-pds">"</span></span>
   run irules/simple_irule.tcl simple
 }</pre></div>
 
@@ -148,8 +136,8 @@ Add jtcl-irule to the classpath in <em>jtcl</em> or <em>jtcl.bat</em>.
 
 <p>Create a script file named <em>test_jtcl_irule.tcl</em> containing the following lines </p>
 
-<div class="highlight highlight-tcl"><pre><span class="pl-k">if</span> {<span class="pl-s1"><span class="pl-pds">"</span>aa<span class="pl-pds">"</span></span> starts_with <span class="pl-s1"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>} {
-  <span class="pl-k">puts</span> <span class="pl-s1"><span class="pl-pds">"</span>The jtcl-irule extension has successfully been installed<span class="pl-pds">"</span></span>
+<div class="highlight highlight-tcl"><pre><span class="pl-k">if</span> {<span class="pl-s"><span class="pl-pds">"</span>aa<span class="pl-pds">"</span></span> starts_with <span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>} {
+  <span class="pl-k">puts</span> <span class="pl-s"><span class="pl-pds">"</span>The jtcl-irule extension has successfully been installed<span class="pl-pds">"</span></span>
 }</pre></div>
 
 <p>and execute it using </p>
@@ -274,26 +262,26 @@ before {
   event HTTP_REQUEST
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should handle request using pool bar<span class="pl-pds">"</span></span> {
-  on HTTP::uri return <span class="pl-s1"><span class="pl-pds">"</span>/bar<span class="pl-pds">"</span></span>
+it <span class="pl-s"><span class="pl-pds">"</span>should handle request using pool bar<span class="pl-pds">"</span></span> {
+  on HTTP::uri return <span class="pl-s"><span class="pl-pds">"</span>/bar<span class="pl-pds">"</span></span>
   endstate pool bar
   run simple_irule.tcl simple
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should handle request using pool foo<span class="pl-pds">"</span></span> {
-  on HTTP::uri return <span class="pl-s1"><span class="pl-pds">"</span>/foo/admin<span class="pl-pds">"</span></span>
+it <span class="pl-s"><span class="pl-pds">"</span>should handle request using pool foo<span class="pl-pds">"</span></span> {
+  on HTTP::uri return <span class="pl-s"><span class="pl-pds">"</span>/foo/admin<span class="pl-pds">"</span></span>
   endstate pool foo
   run simple_irule.tcl simple
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should replace existing Vary http response headers with Accept-Encoding value<span class="pl-pds">"</span></span> {
+it <span class="pl-s"><span class="pl-pds">"</span>should replace existing Vary http response headers with Accept-Encoding value<span class="pl-pds">"</span></span> {
   <span class="pl-c"># NB! override event type set in before</span>
   event HTTP_RESPONSE
 
-  verify <span class="pl-s1"><span class="pl-pds">"</span>there should be only one Vary header<span class="pl-pds">"</span></span> 1 == {HTTP::header count vary}
-  verify <span class="pl-s1"><span class="pl-pds">"</span>there should be Accept-Encoding value in Vary header<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>Accept-Encoding<span class="pl-pds">"</span></span> eq {HTTP::header Vary}
-  HTTP::header insert Vary <span class="pl-s1"><span class="pl-pds">"</span>dummy value<span class="pl-pds">"</span></span>
-  HTTP::header insert Vary <span class="pl-s1"><span class="pl-pds">"</span>another dummy value<span class="pl-pds">"</span></span>
+  verify <span class="pl-s"><span class="pl-pds">"</span>there should be only one Vary header<span class="pl-pds">"</span></span> 1 == {HTTP::header count vary}
+  verify <span class="pl-s"><span class="pl-pds">"</span>there should be Accept-Encoding value in Vary header<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Accept-Encoding<span class="pl-pds">"</span></span> eq {HTTP::header Vary}
+  HTTP::header insert Vary <span class="pl-s"><span class="pl-pds">"</span>dummy value<span class="pl-pds">"</span></span>
+  HTTP::header insert Vary <span class="pl-s"><span class="pl-pds">"</span>another dummy value<span class="pl-pds">"</span></span>
   run irules/simple_irule.tcl simple
 }</pre></div>
 
@@ -310,26 +298,26 @@ it <span class="pl-s1"><span class="pl-pds">"</span>should replace existing Vary
 
     HTTP::header insert X-Forwarded-SSL true
 
-    <span class="pl-k">if</span> { [HTTP::uri] eq <span class="pl-s1"><span class="pl-pds">"</span>/admin<span class="pl-pds">"</span></span> } {
-      <span class="pl-k">if</span> { ([HTTP::username] eq <span class="pl-s1"><span class="pl-pds">"</span>admin<span class="pl-pds">"</span></span>) &amp;&amp; ([HTTP::password] eq <span class="pl-s1"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>) } {
+    <span class="pl-k">if</span> { [HTTP::uri] eq <span class="pl-s"><span class="pl-pds">"</span>/admin<span class="pl-pds">"</span></span> } {
+      <span class="pl-k">if</span> { ([HTTP::username] eq <span class="pl-s"><span class="pl-pds">"</span>admin<span class="pl-pds">"</span></span>) &amp;&amp; ([HTTP::password] eq <span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>) } {
         <span class="pl-k">set</span> newuri [<span class="pl-k">string</span> map {/admin/ /} [HTTP::uri]]
-        HTTP::uri <span class="pl-vo">$newuri</span>
+        HTTP::uri <span class="pl-smi">$newuri</span>
         pool pool_admin_application
       } <span class="pl-k">else</span> {
-        HTTP::respond 401 WWW-Authenticate <span class="pl-s1"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span>
+        HTTP::respond 401 WWW-Authenticate <span class="pl-s"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span>
       }
-    } <span class="pl-k">elseif</span> { [HTTP::uri] eq <span class="pl-s1"><span class="pl-pds">"</span>/blocked<span class="pl-pds">"</span></span> } {
+    } <span class="pl-k">elseif</span> { [HTTP::uri] eq <span class="pl-s"><span class="pl-pds">"</span>/blocked<span class="pl-pds">"</span></span> } {
       HTTP::respond 403
-    } <span class="pl-k">elseif</span> { [HTTP::uri] starts_with <span class="pl-s1"><span class="pl-pds">"</span>/app<span class="pl-pds">"</span></span>} {
+    } <span class="pl-k">elseif</span> { [HTTP::uri] starts_with <span class="pl-s"><span class="pl-pds">"</span>/app<span class="pl-pds">"</span></span>} {
       <span class="pl-k">if</span> { [active_members pool_application] == 0 } {
-        <span class="pl-k">if</span> { [HTTP::header User-Agent] eq <span class="pl-s1"><span class="pl-pds">"</span>Apache HTTP Client<span class="pl-pds">"</span></span> } {
+        <span class="pl-k">if</span> { [HTTP::header User-Agent] eq <span class="pl-s"><span class="pl-pds">"</span>Apache HTTP Client<span class="pl-pds">"</span></span> } {
           HTTP::respond 503
         } <span class="pl-k">else</span> {
-          HTTP::redirect <span class="pl-s1"><span class="pl-pds">"</span>http://fallback.com<span class="pl-pds">"</span></span>
+          HTTP::redirect <span class="pl-s"><span class="pl-pds">"</span>http://fallback.com<span class="pl-pds">"</span></span>
         }
       } <span class="pl-k">else</span> {
         <span class="pl-k">set</span> newuri [<span class="pl-k">string</span> map {/app/ /} [HTTP::uri]]
-        HTTP::uri <span class="pl-vo">$newuri</span>
+        HTTP::uri <span class="pl-smi">$newuri</span>
         pool pool_application
       }
     } <span class="pl-k">else</span> {
@@ -352,66 +340,66 @@ before {
   event HTTP_REQUEST
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should handle admin request using pool admin when credentials are valid<span class="pl-pds">"</span></span> {
-  HTTP::uri <span class="pl-s1"><span class="pl-pds">"</span>/admin<span class="pl-pds">"</span></span>
-  on HTTP::username return <span class="pl-s1"><span class="pl-pds">"</span>admin<span class="pl-pds">"</span></span>
-  on HTTP::password return <span class="pl-s1"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>
+it <span class="pl-s"><span class="pl-pds">"</span>should handle admin request using pool admin when credentials are valid<span class="pl-pds">"</span></span> {
+  HTTP::uri <span class="pl-s"><span class="pl-pds">"</span>/admin<span class="pl-pds">"</span></span>
+  on HTTP::username return <span class="pl-s"><span class="pl-pds">"</span>admin<span class="pl-pds">"</span></span>
+  on HTTP::password return <span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>
   endstate pool pool_admin_application
   run irules/advanced_irule.tcl advanced
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should ask for credentials when admin request with incorrect credentials<span class="pl-pds">"</span></span> {
-  HTTP::uri <span class="pl-s1"><span class="pl-pds">"</span>/admin<span class="pl-pds">"</span></span>
-  HTTP::header insert Authorization <span class="pl-s1"><span class="pl-pds">"</span>Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==<span class="pl-pds">"</span></span>
-  verify <span class="pl-s1"><span class="pl-pds">"</span>user Aladdin<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>Aladdin<span class="pl-pds">"</span></span> eq {HTTP::username}
-  verify <span class="pl-s1"><span class="pl-pds">"</span>password 'open sesame'<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>open sesame<span class="pl-pds">"</span></span> eq {HTTP::password}
-  verify <span class="pl-s1"><span class="pl-pds">"</span>WWW-Authenticate header is 'Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span>'<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span> eq {HTTP::header <span class="pl-s1"><span class="pl-pds">"</span>WWW-Authenticate<span class="pl-pds">"</span></span>}
-  verify <span class="pl-s1"><span class="pl-pds">"</span>response status code is 401<span class="pl-pds">"</span></span> 401 eq {HTTP::status}
+it <span class="pl-s"><span class="pl-pds">"</span>should ask for credentials when admin request with incorrect credentials<span class="pl-pds">"</span></span> {
+  HTTP::uri <span class="pl-s"><span class="pl-pds">"</span>/admin<span class="pl-pds">"</span></span>
+  HTTP::header insert Authorization <span class="pl-s"><span class="pl-pds">"</span>Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==<span class="pl-pds">"</span></span>
+  verify <span class="pl-s"><span class="pl-pds">"</span>user Aladdin<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Aladdin<span class="pl-pds">"</span></span> eq {HTTP::username}
+  verify <span class="pl-s"><span class="pl-pds">"</span>password 'open sesame'<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>open sesame<span class="pl-pds">"</span></span> eq {HTTP::password}
+  verify <span class="pl-s"><span class="pl-pds">"</span>WWW-Authenticate header is 'Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span>'<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span> eq {HTTP::header <span class="pl-s"><span class="pl-pds">"</span>WWW-Authenticate<span class="pl-pds">"</span></span>}
+  verify <span class="pl-s"><span class="pl-pds">"</span>response status code is 401<span class="pl-pds">"</span></span> 401 eq {HTTP::status}
   run irules/advanced_irule.tcl advanced
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should ask for credentials when admin request without credentials<span class="pl-pds">"</span></span> {
-  HTTP::uri <span class="pl-s1"><span class="pl-pds">"</span>/admin<span class="pl-pds">"</span></span>
-  verify <span class="pl-s1"><span class="pl-pds">"</span>WWW-Authenticate header is 'Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span>'<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span> eq {HTTP::header <span class="pl-s1"><span class="pl-pds">"</span>WWW-Authenticate<span class="pl-pds">"</span></span>}
-  verify <span class="pl-s1"><span class="pl-pds">"</span>response status code is 401<span class="pl-pds">"</span></span> 401 eq {HTTP::status}
+it <span class="pl-s"><span class="pl-pds">"</span>should ask for credentials when admin request without credentials<span class="pl-pds">"</span></span> {
+  HTTP::uri <span class="pl-s"><span class="pl-pds">"</span>/admin<span class="pl-pds">"</span></span>
+  verify <span class="pl-s"><span class="pl-pds">"</span>WWW-Authenticate header is 'Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span>'<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Restricted Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span> eq {HTTP::header <span class="pl-s"><span class="pl-pds">"</span>WWW-Authenticate<span class="pl-pds">"</span></span>}
+  verify <span class="pl-s"><span class="pl-pds">"</span>response status code is 401<span class="pl-pds">"</span></span> 401 eq {HTTP::status}
   run irules/advanced_irule.tcl advanced
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should block access to uri /blocked<span class="pl-pds">"</span></span> {
-  HTTP::uri <span class="pl-s1"><span class="pl-pds">"</span>/blocked<span class="pl-pds">"</span></span>
+it <span class="pl-s"><span class="pl-pds">"</span>should block access to uri /blocked<span class="pl-pds">"</span></span> {
+  HTTP::uri <span class="pl-s"><span class="pl-pds">"</span>/blocked<span class="pl-pds">"</span></span>
   endstate HTTP::respond 403
   run irules/advanced_irule.tcl advanced
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should give apache http client a correct error code when app pool is down<span class="pl-pds">"</span></span> {
-  HTTP::uri <span class="pl-s1"><span class="pl-pds">"</span>/app<span class="pl-pds">"</span></span>
+it <span class="pl-s"><span class="pl-pds">"</span>should give apache http client a correct error code when app pool is down<span class="pl-pds">"</span></span> {
+  HTTP::uri <span class="pl-s"><span class="pl-pds">"</span>/app<span class="pl-pds">"</span></span>
   on active_members pool_application return 0
-  HTTP::header insert User-Agent <span class="pl-s1"><span class="pl-pds">"</span>Apache HTTP Client<span class="pl-pds">"</span></span>
+  HTTP::header insert User-Agent <span class="pl-s"><span class="pl-pds">"</span>Apache HTTP Client<span class="pl-pds">"</span></span>
   endstate HTTP::respond 503
   run irules/advanced_irule.tcl advanced
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should give other clients then apache http client redirect to fallback when app pool is down<span class="pl-pds">"</span></span> {
-  HTTP::uri <span class="pl-s1"><span class="pl-pds">"</span>/app<span class="pl-pds">"</span></span>
+it <span class="pl-s"><span class="pl-pds">"</span>should give other clients then apache http client redirect to fallback when app pool is down<span class="pl-pds">"</span></span> {
+  HTTP::uri <span class="pl-s"><span class="pl-pds">"</span>/app<span class="pl-pds">"</span></span>
   on active_members pool_application return 0
-  HTTP::header insert User-Agent <span class="pl-s1"><span class="pl-pds">"</span>Firefox 13.0.1<span class="pl-pds">"</span></span>
-  verify <span class="pl-s1"><span class="pl-pds">"</span>response status code is 302<span class="pl-pds">"</span></span> 302 eq {HTTP::status}
-  verify <span class="pl-s1"><span class="pl-pds">"</span>Location header is 'http://fallback.com'<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>http://fallback.com<span class="pl-pds">"</span></span> eq {HTTP::header Location}
+  HTTP::header insert User-Agent <span class="pl-s"><span class="pl-pds">"</span>Firefox 13.0.1<span class="pl-pds">"</span></span>
+  verify <span class="pl-s"><span class="pl-pds">"</span>response status code is 302<span class="pl-pds">"</span></span> 302 eq {HTTP::status}
+  verify <span class="pl-s"><span class="pl-pds">"</span>Location header is 'http://fallback.com'<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>http://fallback.com<span class="pl-pds">"</span></span> eq {HTTP::header Location}
   run irules/advanced_irule.tcl advanced
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should give handle app request using app pool when app pool is up<span class="pl-pds">"</span></span> {
-  HTTP::uri <span class="pl-s1"><span class="pl-pds">"</span>/app/form?test=query<span class="pl-pds">"</span></span>
+it <span class="pl-s"><span class="pl-pds">"</span>should give handle app request using app pool when app pool is up<span class="pl-pds">"</span></span> {
+  HTTP::uri <span class="pl-s"><span class="pl-pds">"</span>/app/form?test=query<span class="pl-pds">"</span></span>
   on active_members pool_application return 2
   endstate pool pool_application
-  verify <span class="pl-s1"><span class="pl-pds">"</span>result uri is /form?test=query<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>/form?test=query<span class="pl-pds">"</span></span> eq {HTTP::uri}
-  verify <span class="pl-s1"><span class="pl-pds">"</span>result path is /form<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>/form<span class="pl-pds">"</span></span> eq {HTTP::path}
-  verify <span class="pl-s1"><span class="pl-pds">"</span>result query is test=query<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>test=query<span class="pl-pds">"</span></span> eq {HTTP::query}
+  verify <span class="pl-s"><span class="pl-pds">"</span>result uri is /form?test=query<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>/form?test=query<span class="pl-pds">"</span></span> eq {HTTP::uri}
+  verify <span class="pl-s"><span class="pl-pds">"</span>result path is /form<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>/form<span class="pl-pds">"</span></span> eq {HTTP::path}
+  verify <span class="pl-s"><span class="pl-pds">"</span>result query is test=query<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>test=query<span class="pl-pds">"</span></span> eq {HTTP::query}
   run irules/advanced_irule.tcl advanced
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should give 404 when request cannot be handled<span class="pl-pds">"</span></span> {
-  HTTP::uri <span class="pl-s1"><span class="pl-pds">"</span>/cannot_be_handled<span class="pl-pds">"</span></span>
+it <span class="pl-s"><span class="pl-pds">"</span>should give 404 when request cannot be handled<span class="pl-pds">"</span></span> {
+  HTTP::uri <span class="pl-s"><span class="pl-pds">"</span>/cannot_be_handled<span class="pl-pds">"</span></span>
   endstate HTTP::respond 404
   run irules/advanced_irule.tcl advanced
 }
@@ -434,19 +422,19 @@ stats</pre></div>
 
     <span class="pl-k">if</span> { [SSL::cert count] &gt; 0 } {
       <span class="pl-k">set</span> ssl_cert [SSL::cert 0]
-      <span class="pl-k">set</span> subject [X509::subject <span class="pl-vo">$ssl_cert</span>]
-      <span class="pl-k">set</span> cn <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-      <span class="pl-k">foreach</span> { label value } [<span class="pl-k">split</span> <span class="pl-vo">$subject</span> <span class="pl-s1"><span class="pl-pds">"</span>,=<span class="pl-pds">"</span></span>] {
-        <span class="pl-k">set</span> label [<span class="pl-k">string</span> toupper [<span class="pl-k">string</span> trim <span class="pl-vo">$label</span>]]
-        <span class="pl-k">set</span> value [<span class="pl-k">string</span> trim <span class="pl-vo">$value</span>]
+      <span class="pl-k">set</span> subject [X509::subject <span class="pl-smi">$ssl_cert</span>]
+      <span class="pl-k">set</span> cn <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+      <span class="pl-k">foreach</span> { label value } [<span class="pl-k">split</span> <span class="pl-smi">$subject</span> <span class="pl-s"><span class="pl-pds">"</span>,=<span class="pl-pds">"</span></span>] {
+        <span class="pl-k">set</span> label [<span class="pl-k">string</span> toupper [<span class="pl-k">string</span> trim <span class="pl-smi">$label</span>]]
+        <span class="pl-k">set</span> value [<span class="pl-k">string</span> trim <span class="pl-smi">$value</span>]
 
-        <span class="pl-k">if</span> { <span class="pl-vo">$label</span> == <span class="pl-s1"><span class="pl-pds">"</span>CN<span class="pl-pds">"</span></span> } {
-          <span class="pl-k">set</span> cn <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$value</span><span class="pl-pds">"</span></span>
+        <span class="pl-k">if</span> { <span class="pl-smi">$label</span> == <span class="pl-s"><span class="pl-pds">"</span>CN<span class="pl-pds">"</span></span> } {
+          <span class="pl-k">set</span> cn <span class="pl-s"><span class="pl-pds">"</span><span class="pl-smi">$value</span><span class="pl-pds">"</span></span>
           <span class="pl-k">break</span>
         }
       }
 
-      HTTP::header insert X-Common-Name-SSL <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$cn</span><span class="pl-pds">"</span></span>
+      HTTP::header insert X-Common-Name-SSL <span class="pl-s"><span class="pl-pds">"</span><span class="pl-smi">$cn</span><span class="pl-pds">"</span></span>
     }
   }
 
@@ -462,21 +450,21 @@ stats</pre></div>
 
 before {
   event HTTP_REQUEST
-  verify <span class="pl-s1"><span class="pl-pds">"</span>There should be always set HTTP header X-Forwarded-SSL to true<span class="pl-pds">"</span></span> true eq {HTTP::header X-Forwarded-SSL}
+  verify <span class="pl-s"><span class="pl-pds">"</span>There should be always set HTTP header X-Forwarded-SSL to true<span class="pl-pds">"</span></span> true eq {HTTP::header X-Forwarded-SSL}
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should remove X-Common-Name-SSL header from request if there was no client SSL certificate<span class="pl-pds">"</span></span> {
-  HTTP::header insert X-Common-Name-SSL <span class="pl-s1"><span class="pl-pds">"</span>testCommonName<span class="pl-pds">"</span></span>
+it <span class="pl-s"><span class="pl-pds">"</span>should remove X-Common-Name-SSL header from request if there was no client SSL certificate<span class="pl-pds">"</span></span> {
+  HTTP::header insert X-Common-Name-SSL <span class="pl-s"><span class="pl-pds">"</span>testCommonName<span class="pl-pds">"</span></span>
   on SSL::cert count return 0
-  verify <span class="pl-s1"><span class="pl-pds">"</span>There should be no X-Common-Name-SSL<span class="pl-pds">"</span></span> 0 == {HTTP::header exists X-Common-Name-SSL}
+  verify <span class="pl-s"><span class="pl-pds">"</span>There should be no X-Common-Name-SSL<span class="pl-pds">"</span></span> 0 == {HTTP::header exists X-Common-Name-SSL}
   run irules/headers_irule.tcl headers
 }
 
-it <span class="pl-s1"><span class="pl-pds">"</span>should add X-Common-Name-SSL with Common Name from client SSL certificate if it was available<span class="pl-pds">"</span></span> {
+it <span class="pl-s"><span class="pl-pds">"</span>should add X-Common-Name-SSL with Common Name from client SSL certificate if it was available<span class="pl-pds">"</span></span> {
   on SSL::cert count return 1
   on SSL::cert 0 return {}
-  on X509::subject [SSL::cert 0] return <span class="pl-s1"><span class="pl-pds">"</span>CN=testCommonName,DN=abc.de.fg<span class="pl-pds">"</span></span>
-  verify <span class="pl-s1"><span class="pl-pds">"</span>X-Common-Name-SSL HTTP header value is the same as CN<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>testCommonName<span class="pl-pds">"</span></span> eq {HTTP::header X-Common-Name-SSL}
+  on X509::subject [SSL::cert 0] return <span class="pl-s"><span class="pl-pds">"</span>CN=testCommonName,DN=abc.de.fg<span class="pl-pds">"</span></span>
+  verify <span class="pl-s"><span class="pl-pds">"</span>X-Common-Name-SSL HTTP header value is the same as CN<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>testCommonName<span class="pl-pds">"</span></span> eq {HTTP::header X-Common-Name-SSL}
   run irules/headers_irule.tcl headers
 }</pre></div>
 
@@ -488,11 +476,11 @@ it <span class="pl-s1"><span class="pl-pds">"</span>should add X-Common-Name-SSL
 <h2>
 <a id="why-i-created-this-project" class="anchor" href="#why-i-created-this-project" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why I created this project</h2>
 
-<p>Configuring BigIP devices is no trivial task, and typically falls in under a DevOps kind of role.
+<p>Configuring BIG-IP devices is no trivial task, and typically falls in under a DevOps kind of role.
 In order to make your system perform the best it can, you need:</p>
 
 <ul>
-<li>In-depth knowledge about the BigIP system (typically requiring at least a <a href="http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html">$1,995 3-day course</a>)</li>
+<li>In-depth knowledge about the BIG-IP system (typically requiring at least a <a href="http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html">$1,995 3-day course</a>)</li>
 <li>In-depth knowledge about the web application being load balanced </li>
 <li>The Tcl language and the iRule extensions</li>
 <li>And finally: <em>A way to test your iRules</em>
@@ -525,7 +513,7 @@ In order to make your system perform the best it can, you need:</p>
 <strong>Manual</strong> verification steps are prone to error</li>
 <li>
 <strong>Manual</strong> testing takes a lot of time</li>
-<li>Development roundtrip-time is forever, since deployment to BigIP sometimes can take several minutes</li>
+<li>Development roundtrip-time is forever, since deployment to BIG-IP sometimes can take several minutes</li>
 </ul>
 
 <p>Clearly, <strong>manual</strong> testing is not the way forward!</p>
@@ -615,18 +603,16 @@ File bugs over at <a href="https://github.com/landro/TesTcl">github</a></p>
 <p>You can also check out <a href="http://no.linkedin.com/in/landro">my LinkedIn profile</a> or 
 <a href="https://plus.google.com/114497086993236232709?rel=author">my Google+ profile</a>, or 
 even <a href="https://twitter.com/landro">my twitter account - follow it for TesTcl releases</a></p>
-      </section>
-    </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">TesTcl - a library for unit testing BigIp iRules maintained by <a href="https://github.com/landro">landro</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/landro/TesTcl">TesTcl - a library for unit testing BIG-IP iRules</a> is maintained by <a href="https://github.com/landro">landro</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
-    </div>
 
-              <script type="text/javascript">
+    </section>
+
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -637,6 +623,6 @@ even <a href="https://twitter.com/landro">my twitter account - follow it for Tes
             } catch(err) {}
           </script>
 
-
   </body>
 </html>
+
