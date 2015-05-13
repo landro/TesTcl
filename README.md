@@ -416,7 +416,7 @@ This work is quite stable, but you can expect minor breaking changes.
 Configuring BIG-IP devices is no trivial task, and typically falls in under a DevOps kind of role.
 In order to make your system perform the best it can, you need:
 
-- In-depth knowledge about the BIG-IP system (typically requiring at least a [$1,995 3-day course](http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html))
+- In-depth knowledge about the BIG-IP system (typically requiring at least a [$2,000 3-day course](https://f5.com/education/training))
 - In-depth knowledge about the web application being load balanced 
 - The Tcl language and the iRule extensions
 - And finally: _A way to test your iRules_
