@@ -163,4 +163,5 @@ proc ::testcl::stats {} {
   puts "  Total number of test failures: $nbOfTestFailures"
   puts "============================================================================================="
   puts "\n\n\n"
+  exit $nbOfTestFailures
 }

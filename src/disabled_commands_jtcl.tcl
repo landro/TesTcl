@@ -41,6 +41,7 @@ proc saferename {from to} {
 #saferename source ::tcl::source
 #saferename unknown ::tcl::unknown
 #saferename rename ::tcl::rename
+#saferename exit ::tcl::exit
 
 # Commands used by log package
 ################################################
@@ -60,7 +61,6 @@ saferename dict ::tcl::dict
 saferename eof ::tcl::eof
 saferename encoding ::tcl::encoding
 saferename exec ::tcl::exec
-saferename exit ::tcl::exit
 saferename fblocked ::tcl::fblocked
 saferename fconfigure ::tcl::fconfigure
 saferename fcopy ::tcl::fcopy
