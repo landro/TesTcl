@@ -24,6 +24,8 @@ assertNumberEquals [class match -index "ftp://locahost" starts_with protocols] 2
 assertNumberEquals [class search server equals "192.168.0.1"] 1
 assertNumberEquals [class search server equals "doesn't exist"] 0
 assertNumberEquals [class search doesnt_exist equals "192.168.0.1"] 0
+assertStringEquals [class -value search server equals "doesn't exist"] ""
+assertStringEquals [class -name search doesnt_exist equals "192.168.0.1"] ""
 assertNumberEquals [class size protocols] 3
 assertNumberEquals [class size doesnt_exist] 0
 assertStringEquals [class element 2 protocols] [list "ftp" "ftp://"]
