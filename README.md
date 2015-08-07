@@ -6,7 +6,7 @@ are used when configuring [F5 BIG-IP](http://www.f5.com/products/big-ip/) device
 
 ## News
 
-- 2nd September 2014 - Version [1.0.6](https://github.com/landro/TesTcl/releases) released
+- 2nd September 2014 - Version [1.0.7](https://github.com/landro/TesTcl/releases) released
 - 27th July 2014 - Version [1.0.5](https://github.com/landro/TesTcl/releases) released 
 
 ## Getting started
@@ -40,7 +40,7 @@ rule simple {
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -118,7 +118,7 @@ You should get a success message.
 Download latest [TesTcl distribution](https://github.com/landro/TesTcl/releases) from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the [TCLLIBPATH](http://jtcl.kenai.com/gettingstarted.html) environment variable:
 
-    export TCLLIBPATH=whereever/TesTcl-1.0.6
+    export TCLLIBPATH=whereever/TesTcl-1.0.7
 
 In order to run this example, type in the following at the command-line:
 
@@ -185,7 +185,7 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -266,7 +266,7 @@ rule advanced {
 The specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -381,7 +381,7 @@ rule headers {
 The example specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment out to suppress logging
