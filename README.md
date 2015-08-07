@@ -6,7 +6,8 @@ are used when configuring [F5 BIG-IP](http://www.f5.com/products/big-ip/) device
 
 ## News
 
-- 2nd September 2014 - Version [1.0.7](https://github.com/landro/TesTcl/releases) released
+- 7th August 2015 - Version [1.0.7](https://github.com/landro/TesTcl/releases) released
+- 2nd September 2014 - Version [1.0.6](https://github.com/landro/TesTcl/releases) released
 - 27th July 2014 - Version [1.0.5](https://github.com/landro/TesTcl/releases) released 
 
 ## Getting started
