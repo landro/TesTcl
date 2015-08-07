@@ -13,6 +13,8 @@ if  {[namespace exists ::testcl]} {
   return
 } 
 
+set disable_interpreter_warning [ expr { [ array names env DISABLE_TESTCL_INTERPRETER_WARNING ] ne "" && $env(DISABLE_TESTCL_INTERPRETER_WARNING) eq "true"} ]
+
 if { $::tcl_platform(platform) eq "java" } {
 
   if { [catch { expr {"abc" starts_with "a"} } errormsg ] } {
@@ -35,7 +37,8 @@ if { $::tcl_platform(platform) eq "java" } {
     puts stderr "WARNING"		  
   }
 		
-} else {
+} elseif { ! $disable_interpreter_warning } {
+
   puts stderr "WARNING"
   puts stderr "WARNING You're using a Tcl interpreter that doesn't support the jtcl-irule extension"
   puts stderr "WARNING which requires the java based JTcl interpreter"
