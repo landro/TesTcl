@@ -5,7 +5,7 @@
     <title>TesTcl - a library for unit testing BIG-IP iRules by landro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
@@ -30,6 +30,7 @@ are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BIG-IP
 <a id="news" class="anchor" href="#news" aria-hidden="true"><span class="octicon octicon-link"></span></a>News</h2>
 
 <ul>
+<li>7th August 2015 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.7</a> released</li>
 <li>2nd September 2014 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.6</a> released</li>
 <li>27th July 2014 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.5</a> released </li>
 </ul>
@@ -64,7 +65,7 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 
 <p>Now, create a file called <em>test_simple_irule.tcl</em> containing the following lines:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.6
+<div class="highlight highlight-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.7
 <span class="pl-k">namespace</span> import ::testcl::*
 
 <span class="pl-c"># Comment in to enable logging</span>
@@ -153,7 +154,7 @@ Add jtcl-irule to the classpath in <em>jtcl</em> or <em>jtcl.bat</em>.
 <p>Download latest <a href="https://github.com/landro/TesTcl/releases">TesTcl distribution</a> from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the <a href="http://jtcl.kenai.com/gettingstarted.html">TCLLIBPATH</a> environment variable:</p>
 
-<pre><code>export TCLLIBPATH=whereever/TesTcl-1.0.6
+<pre><code>export TCLLIBPATH=whereever/TesTcl-1.0.7
 </code></pre>
 
 <p>In order to run this example, type in the following at the command-line:</p>
@@ -252,7 +253,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>Using the <em>before</em> command, <em>test_simple_irule.tcl</em> can be rewritten as:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.6
+<div class="highlight highlight-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.7
 <span class="pl-k">namespace</span> import ::testcl::*
 
 <span class="pl-c"># Comment in to enable logging</span>
@@ -330,7 +331,7 @@ it <span class="pl-s"><span class="pl-pds">"</span>should replace existing Vary 
 
 <p>The specs for this iRule would look like this:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.6
+<div class="highlight highlight-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.7
 <span class="pl-k">namespace</span> import ::testcl::*
 
 <span class="pl-c"># Comment out to suppress logging</span>
@@ -442,7 +443,7 @@ stats</pre></div>
 
 <p>The example specs for this iRule would look like this:</p>
 
-<div class="highlight highlight-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.6
+<div class="highlight highlight-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.7
 <span class="pl-k">namespace</span> import ::testcl::*
 
 <span class="pl-c"># Comment out to suppress logging</span>
@@ -480,7 +481,7 @@ it <span class="pl-s"><span class="pl-pds">"</span>should add X-Common-Name-SSL 
 In order to make your system perform the best it can, you need:</p>
 
 <ul>
-<li>In-depth knowledge about the BIG-IP system (typically requiring at least a <a href="http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html">$1,995 3-day course</a>)</li>
+<li>In-depth knowledge about the BIG-IP system (typically requiring at least a <a href="https://f5.com/education/training">$2,000 3-day course</a>)</li>
 <li>In-depth knowledge about the web application being load balanced </li>
 <li>The Tcl language and the iRule extensions</li>
 <li>And finally: <em>A way to test your iRules</em>
@@ -625,4 +626,3 @@ even <a href="https://twitter.com/landro">my twitter account - follow it for Tes
 
   </body>
 </html>
-
