@@ -236,12 +236,36 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 </ul>
 
 <h5>
-<a id="a-word-on-stubsmocks-you-choose-what-to-call-em" class="anchor" href="#a-word-on-stubsmocks-you-choose-what-to-call-em" aria-hidden="true"><span class="octicon octicon-link"></span></a>A word on stubs/mocks (you choose what to call 'em)</h5>
+<a id="a-word-on-stubs-or-mockups-you-choose-what-to-call-em" class="anchor" href="#a-word-on-stubs-or-mockups-you-choose-what-to-call-em" aria-hidden="true"><span class="octicon octicon-link"></span></a>A word on stubs or mockups (you choose what to call 'em)</h5>
 
-<p>There is a ready to use <em>HTTP::header</em> mockup implementation, which simulates behavior of original F5 implementation (as described at <a href="https://devcentral.f5.com/wiki/irules.HTTP__header.ashx">link</a>). 
-However <em>insert_modssl_fields</em> subcommand is not supported in current version.
-In addition, most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
-you wonder what is going on in the mocks.</p>
+<h6>
+<a id="http-namespace" class="anchor" href="#http-namespace" aria-hidden="true"><span class="octicon octicon-link"></span></a>HTTP namespace</h6>
+
+<p>Most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
+you wonder what is going on in the mocks.
+In particular, the <a href="https://devcentral.f5.com/wiki/irules.HTTP__header.ashx">HTTP::header</a> mockup implementation should work as expected.
+However <em>insert_modssl_fields</em> subcommand is not supported in current version.</p>
+
+<h6>
+<a id="uri-namespace" class="anchor" href="#uri-namespace" aria-hidden="true"><span class="octicon octicon-link"></span></a>URI namespace</h6>
+
+<p>Partial support for </p>
+
+<ul>
+<li>
+<a href="https://devcentral.f5.com/wiki/iRules.URI__encode.ashx">URI::encode</a> </li>
+</ul>
+
+<h6>
+<a id="global-namespace" class="anchor" href="#global-namespace" aria-hidden="true"><span class="octicon octicon-link"></span></a>GLOBAL namespace</h6>
+
+<p>Support for</p>
+
+<ul>
+<li><a href="https://devcentral.f5.com/wiki/iRules.getfield.ashx">getfield</a></li>
+<li>
+<a href="https://devcentral.f5.com/wiki/iRules.log.ashx">log</a> </li>
+</ul>
 
 <h4>
 <a id="avoiding-code-duplication-using-the-before-command" class="anchor" href="#avoiding-code-duplication-using-the-before-command" aria-hidden="true"><span class="octicon octicon-link"></span></a>Avoiding code duplication using the before command</h4>
