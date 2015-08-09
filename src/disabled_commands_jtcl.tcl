@@ -42,6 +42,10 @@ proc saferename {from to} {
 #saferename unknown ::tcl::unknown
 #saferename rename ::tcl::rename
 #saferename exit ::tcl::exit
+#saferename uplevel ::tcl::uplevel
+#saferename auto_load ::tcl::auto_load
+#saferename auto_qualify ::tcl::auto_qualify
+#saferename encoding ::tcl::encoding
 
 # Commands used by log package
 ################################################
@@ -53,13 +57,10 @@ proc saferename {from to} {
 
 saferename auto_execok ::tcl::auto_execok
 saferename auto_import ::tcl::auto_import
-saferename auto_load ::tcl::auto_load
-saferename auto_qualify ::tcl::auto_qualify
 saferename cd ::tcl::cd
 saferename close ::tcl::close
 saferename dict ::tcl::dict
 saferename eof ::tcl::eof
-saferename encoding ::tcl::encoding
 saferename exec ::tcl::exec
 saferename fblocked ::tcl::fblocked
 saferename fconfigure ::tcl::fconfigure
@@ -77,7 +78,6 @@ saferename socket ::tcl::socket
 saferename tell ::tcl::tell
 saferename time ::tcl::time
 saferename update ::tcl::update
-saferename uplevel ::tcl::uplevel
 saferename upvar ::tcl::upvar
 saferename vwait ::tcl::vwait
 

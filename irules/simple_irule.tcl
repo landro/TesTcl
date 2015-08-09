@@ -5,7 +5,6 @@ rule simple {
     if { [regexp {^/foo} [HTTP::uri]] } {
       pool foo
     } else {
-      set encodedUri [URI::encode [HTTP::uri]]
       pool bar
     }
   }
