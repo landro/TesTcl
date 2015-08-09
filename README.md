@@ -170,11 +170,24 @@ This should give you the following output:
   - _verification_code_ is code to evaluate after iRule execution
 - _run_ statement takes two arguments, file name of iRule source and name of iRule to execute
 
-##### A word on stubs/mocks (you choose what to call 'em)#####
-There is a ready to use _HTTP::header_ mockup implementation, which simulates behavior of original F5 implementation (as described at [link](https://devcentral.f5.com/wiki/irules.HTTP__header.ashx)). 
-However _insert_modssl_fields_ subcommand is not supported in current version.
-In addition, most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
+##### A word on stubs or mockups (you choose what to call 'em)#####
+
+###### HTTP namespace ######
+Most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
 you wonder what is going on in the mocks.
+In particular, the [HTTP::header](https://devcentral.f5.com/wiki/irules.HTTP__header.ashx) mockup implementation should work as expected.
+However _insert_modssl_fields_ subcommand is not supported in current version.
+
+###### URI namespace ######
+Partial support for 
+
+ - [URI::encode](https://devcentral.f5.com/wiki/iRules.URI__encode.ashx) 
+
+###### GLOBAL namespace ######
+Support for
+
+ - [getfield](https://devcentral.f5.com/wiki/iRules.getfield.ashx)
+ - [log](https://devcentral.f5.com/wiki/iRules.log.ashx) 
 
 #### Avoiding code duplication using the before command
 
