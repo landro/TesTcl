@@ -1,4 +1,4 @@
-package provide testcl 1.0.6
+package provide testcl 1.0.7
 package require log
 
 namespace eval ::testcl {
@@ -163,4 +163,5 @@ proc ::testcl::stats {} {
   puts "  Total number of test failures: $nbOfTestFailures"
   puts "============================================================================================="
   puts "\n\n\n"
+  exit $nbOfTestFailures
 }

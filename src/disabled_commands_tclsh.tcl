@@ -22,6 +22,7 @@ proc saferename {from to} {
 #saferename exit ::tcl::exit
 #saferename file ::tcl::file
 #saferename interp ::tcl::interp
+#saferename uplevel ::tcl::uplevel
 
 # Commands used by TesTcl
 ################################################
@@ -66,7 +67,6 @@ saferename socket ::tcl::socket
 saferename tell ::tcl::tell
 saferename time ::tcl::time
 saferename update ::tcl::update
-saferename uplevel ::tcl::uplevel
 saferename upvar ::tcl::upvar
 saferename vwait ::tcl::vwait
 

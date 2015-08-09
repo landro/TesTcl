@@ -2,10 +2,11 @@
 
 **TesTcl** is a [Tcl](http://en.wikipedia.org/wiki/Tcl) library for unit testing
 [iRules](https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx) which 
-are used when configuring [F5 BigIP](http://www.f5.com/products/big-ip/) devices.
+are used when configuring [F5 BIG-IP](http://www.f5.com/products/big-ip/) devices.
 
 ## News
 
+- 7th August 2015 - Version [1.0.7](https://github.com/landro/TesTcl/releases) released
 - 2nd September 2014 - Version [1.0.6](https://github.com/landro/TesTcl/releases) released
 - 27th July 2014 - Version [1.0.5](https://github.com/landro/TesTcl/releases) released 
 
@@ -40,7 +41,7 @@ rule simple {
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -81,11 +82,22 @@ jar artifact from the [downloads](https://github.com/landro/TesTcl/downloads) se
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in _jtcl_ or _jtcl.bat_.
 **IMPORTANT!** Make sure you place the _jtcl-irule.jar_ on the classpath **before** the standard jtcl-<version>.jar
+
+###### MacOS X and Linux
+
 On MacOs X and Linux, this can be achieved by putting the following line just above the last line in the jtcl shell script
 
     export CLASSPATH=$dir/jtcl-irule.jar:$CLASSPATH
     
-    
+###### Windows
+
+On Windows, modify the following line in jtcl.bat from 
+
+    set cp="%dir%\jtcl-%jtclver%.jar;%CLASSPATH%"
+
+to
+
+    set cp="%dir%\jtcl-irule.jar;%dir%\jtcl-%jtclver%.jar;%CLASSPATH%"
 
 ##### Verify installation
 
@@ -107,7 +119,7 @@ You should get a success message.
 Download latest [TesTcl distribution](https://github.com/landro/TesTcl/releases) from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the [TCLLIBPATH](http://jtcl.kenai.com/gettingstarted.html) environment variable:
 
-    export TCLLIBPATH=whereever/TesTcl-1.0.6
+    export TCLLIBPATH=whereever/TesTcl-1.0.7
 
 In order to run this example, type in the following at the command-line:
 
@@ -174,7 +186,7 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -255,7 +267,7 @@ rule advanced {
 The specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -370,7 +382,7 @@ rule headers {
 The example specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -402,10 +414,10 @@ This work is quite stable, but you can expect minor breaking changes.
 
 ## Why I created this project
 
-Configuring BigIP devices is no trivial task, and typically falls in under a DevOps kind of role.
+Configuring BIG-IP devices is no trivial task, and typically falls in under a DevOps kind of role.
 In order to make your system perform the best it can, you need:
 
-- In-depth knowledge about the BigIP system (typically requiring at least a [$1,995 3-day course](http://www.f5.com/services/global-training/course-descriptions/big-ip-ltm-essentials.html))
+- In-depth knowledge about the BIG-IP system (typically requiring at least a [$2,000 3-day course](https://f5.com/education/training))
 - In-depth knowledge about the web application being load balanced 
 - The Tcl language and the iRule extensions
 - And finally: _A way to test your iRules_
@@ -429,7 +441,7 @@ There are lots of issues with this **manual** approach:
 - Bringing servers up and down to test fallback scenarios can be quite tedious
 - **Manual** verification steps are prone to error
 - **Manual** testing takes a lot of time
-- Development roundtrip-time is forever, since deployment to BigIP sometimes can take several minutes
+- Development roundtrip-time is forever, since deployment to BIG-IP sometimes can take several minutes
 
 Clearly, **manual** testing is not the way forward!
 
