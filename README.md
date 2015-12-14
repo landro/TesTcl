@@ -6,6 +6,7 @@ are used when configuring [F5 BIG-IP](http://www.f5.com/products/big-ip/) device
 
 ## News
 
+- 7th August 2015 - Version [1.0.7](https://github.com/landro/TesTcl/releases) released
 - 2nd September 2014 - Version [1.0.6](https://github.com/landro/TesTcl/releases) released
 - 27th July 2014 - Version [1.0.5](https://github.com/landro/TesTcl/releases) released 
 
@@ -40,7 +41,7 @@ rule simple {
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -118,7 +119,7 @@ You should get a success message.
 Download latest [TesTcl distribution](https://github.com/landro/TesTcl/releases) from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the [TCLLIBPATH](http://jtcl.kenai.com/gettingstarted.html) environment variable:
 
-    export TCLLIBPATH=whereever/TesTcl-1.0.6
+    export TCLLIBPATH=whereever/TesTcl-1.0.7
 
 In order to run this example, type in the following at the command-line:
 
@@ -169,11 +170,24 @@ This should give you the following output:
   - _verification_code_ is code to evaluate after iRule execution
 - _run_ statement takes two arguments, file name of iRule source and name of iRule to execute
 
-##### A word on stubs/mocks (you choose what to call 'em)#####
-There is a ready to use _HTTP::header_ mockup implementation, which simulates behavior of original F5 implementation (as described at [link](https://devcentral.f5.com/wiki/irules.HTTP__header.ashx)). 
-However _insert_modssl_fields_ subcommand is not supported in current version.
-In addition, most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
+##### A word on stubs or mockups (you choose what to call 'em)#####
+
+###### HTTP namespace ######
+Most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
 you wonder what is going on in the mocks.
+In particular, the [HTTP::header](https://devcentral.f5.com/wiki/irules.HTTP__header.ashx) mockup implementation should work as expected.
+However _insert_modssl_fields_ subcommand is not supported in current version.
+
+###### URI namespace ######
+Partial support for 
+
+ - [URI::encode](https://devcentral.f5.com/wiki/iRules.URI__encode.ashx) 
+
+###### GLOBAL namespace ######
+Support for
+
+ - [getfield](https://devcentral.f5.com/wiki/iRules.getfield.ashx)
+ - [log](https://devcentral.f5.com/wiki/iRules.log.ashx) 
 
 #### Avoiding code duplication using the before command
 
@@ -185,7 +199,7 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -266,7 +280,7 @@ rule advanced {
 The specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -381,7 +395,7 @@ rule headers {
 The example specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import ::testcl::*
 
 # Comment out to suppress logging

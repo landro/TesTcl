@@ -13,6 +13,8 @@ if  {[namespace exists ::testcl]} {
   return
 } 
 
+set disable_interpreter_warning [ expr { [ array names env DISABLE_TESTCL_INTERPRETER_WARNING ] ne "" && $env(DISABLE_TESTCL_INTERPRETER_WARNING) eq "true"} ]
+
 if { $::tcl_platform(platform) eq "java" } {
 
   if { [catch { expr {"abc" starts_with "a"} } errormsg ] } {
@@ -35,7 +37,8 @@ if { $::tcl_platform(platform) eq "java" } {
     puts stderr "WARNING"		  
   }
 		
-} else {
+} elseif { ! $disable_interpreter_warning } {
+
   puts stderr "WARNING"
   puts stderr "WARNING You're using a Tcl interpreter that doesn't support the jtcl-irule extension"
   puts stderr "WARNING which requires the java based JTcl interpreter"
@@ -56,7 +59,12 @@ if { $::tcl_platform(platform) eq "java" } {
   puts stderr "WARNING"
 }
 
-package ifneeded testcl 1.0.6 [list source [file join $dir src/assert.tcl]]\n[list source [file join $dir src/it.tcl]]\n[list source [file join $dir src/on.tcl]]\n[list source [file join $dir src/onirule.tcl]]\n[list source [file join $dir src/irulehttp.tcl]]\n[list source [file join $dir src/global.tcl]]
+set files { assert.tcl it.tcl on.tcl onirule.tcl irulehttp.tcl iruleuri.tcl global.tcl ip.tcl }
+set sources {}
+foreach {f} $files {
+    lappend sources [list source [file join $dir src $f]]
+}
+package ifneeded testcl 1.0.7 [join $sources "\n"]
 
 # Disable certain Tcl commands from iRules
 if { $::tcl_platform(platform) eq "java" } {
