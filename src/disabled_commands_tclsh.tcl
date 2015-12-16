@@ -36,6 +36,7 @@ proc saferename {from to} {
 #saferename auto_load ::tcl::auto_load
 #saferename auto_qualify ::tcl::auto_qualify
 #saferename encoding ::tcl::encoding
+#saferename upvar ::tcl::upvar
 
 # Commands used by log package
 ################################################
@@ -67,7 +68,6 @@ saferename socket ::tcl::socket
 saferename tell ::tcl::tell
 saferename time ::tcl::time
 saferename update ::tcl::update
-saferename upvar ::tcl::upvar
 saferename vwait ::tcl::vwait
 
 saferename auto_mkindex ::tcl::auto_mkindex
