@@ -1,4 +1,4 @@
-package provide testcl 1.0.7
+package provide testcl 1.0.8
 package require log
 package require cmdline
 
