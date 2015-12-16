@@ -422,6 +422,48 @@ it "should add X-Common-Name-SSL with Common Name from client SSL certificate if
 }
 ```
 
+### Classes Example
+
+TesTcl has partial support for the `class` command. For example, we could test the following rule:
+
+```tcl
+rule classes {
+  when HTTP_REQUEST {
+    if { [class match [IP::remote_addr] equals blacklist] } {
+      drop
+    } else {
+      pool main-pool
+    }
+  }
+}
+```
+
+with code that looks like this
+
+```tcl
+package require -exact testcl 1.0.7
+namespace import testcl::*
+
+before {
+  event HTTP_REQUEST
+  class configure blacklist {
+    "blacklisted" "192.168.6.66"
+  }
+}
+
+it "should drop blacklisted addresses" {
+  on IP::remote_addr return "192.168.6.66"
+  endstate drop
+  run irules/classes.tcl classes
+}
+
+it "should drop blacklisted addresses" {
+  on IP::remote_addr return "192.168.0.1"
+  endstate pool main-pool
+  run irules/classes.tcl classes
+}
+```
+
 ## How stable is this code?
 This work is quite stable, but you can expect minor breaking changes.
 
