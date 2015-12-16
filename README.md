@@ -441,7 +441,7 @@ rule classes {
 with code that looks like this
 
 ```tcl
-package require -exact testcl 1.0.6
+package require -exact testcl 1.0.7
 namespace import testcl::*
 
 before {

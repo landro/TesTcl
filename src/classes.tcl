@@ -1,4 +1,4 @@
-package provide testcl 1.0.6
+package provide testcl 1.0.7
 package require log
 package require cmdline
 
@@ -87,7 +87,7 @@ proc ::testcl::class {cmd args} {
       set classname [lindex $args 0]
       set operator [lindex $args 1]
       set item [lindex $args 2]
-      if {[expr not [info exists classes($classname)]]} $return_failure_block
+      if {[expr ! [info exists classes($classname)]]} $return_failure_block
       set clazz $classes($classname)
       for {set i 0} {$i < [llength $clazz] / 2} {incr i} {
         set element_name [lindex $clazz [expr 2 * $i]]
@@ -100,7 +100,7 @@ proc ::testcl::class {cmd args} {
       set item [lindex $args 0]
       set operator [lindex $args 1]
       set classname [lindex $args 2]
-      if {[expr not [info exists classes($classname)]]} $return_failure_block
+      if {[expr ! [info exists classes($classname)]]} $return_failure_block
       set clazz $classes($classname)
       for {set i 0} {$i < [llength $clazz] / 2} {incr i} {
         set element_name [lindex $clazz [expr 2 * $i]]
@@ -133,7 +133,7 @@ proc ::testcl::class {cmd args} {
     }
     size {
       set classname [lindex $args 0]
-      if {[expr not [info exists classes($classname)]]} {
+      if {[expr ! [info exists classes($classname)]]} {
         return 0
       } else {
         return [expr [llength $classes($classname)] / 2]
