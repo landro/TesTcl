@@ -78,7 +78,7 @@ saferename socket ::tcl::socket
 saferename tell ::tcl::tell
 saferename time ::tcl::time
 saferename update ::tcl::update
-saferename upvar ::tcl::upvar
+#saferename upvar ::tcl::upvar
 saferename vwait ::tcl::vwait
 
 rename saferename {}

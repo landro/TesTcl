@@ -59,7 +59,7 @@ if { $::tcl_platform(platform) eq "java" } {
   puts stderr "WARNING"
 }
 
-set files { assert.tcl it.tcl on.tcl onirule.tcl irulehttp.tcl iruleuri.tcl global.tcl ip.tcl }
+set files { assert.tcl it.tcl on.tcl onirule.tcl irulehttp.tcl iruleuri.tcl global.tcl ip.tcl classes.tcl }
 set sources {}
 foreach {f} $files {
     lappend sources [list source [file join $dir src $f]]
