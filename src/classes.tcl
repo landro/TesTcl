@@ -112,7 +112,7 @@ proc ::testcl::class {cmd args} {
     lookup {
       set item [lindex $args 0]
       set classname [lindex $args 1]
-      return [::testcl::class match -value $item equals $classname]
+      return [::testcl::class match -value $item eq $classname]
     }
     element {
       set index [lindex $args 0]

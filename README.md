@@ -429,7 +429,7 @@ TesTcl has partial support for the `class` command. For example, we could test t
 ```tcl
 rule classes {
   when HTTP_REQUEST {
-    if { [class match [IP::remote_addr] equals blacklist] } {
+    if { [class match [IP::remote_addr] eq blacklist] } {
       drop
     } else {
       pool main-pool
