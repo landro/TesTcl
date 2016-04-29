@@ -508,6 +508,8 @@ Clearly, **manual** testing is not the way forward!
 | JTcl  2.4.0   | yes      | yes    | yes    |
 | JTcl  2.5.0   | yes      | yes    | yes    |
 | JTcl  2.6.0   | yes      | yes    | yes    |
+| JTcl  2.7.0   | yes      | yes    | yes    |
+| JTcl  2.8.0   | yes      | yes    | yes    |
 | Tclsh 8.6     | yes*     | yes*   | ?      |
 
 The * indicates support only for standard Tcl commands
@@ -531,7 +533,7 @@ Contributions are very welcomed. There are just a few things to remember:
 
 ## Who uses it?
 
-Well, I can't really tell you, but according to Google Analytics, this site gets around 5 hits per day.
+Well, I can't really tell you, but according to Google Analytics, this site gets around 10 hits per day.
 
 ## License
 
