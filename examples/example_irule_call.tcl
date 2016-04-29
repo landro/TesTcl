@@ -9,7 +9,7 @@ it "should redirect to the same url but using https" {
   on HTTP::uri return "/bar"
   on HTTP::host return "www.foo.com"
   endstate HTTP::redirect https://www.foo.com/bar
-  run irules/call_irule.tcl Simple
+  run irules/call_irule.tcl call
 }
 
 stats

@@ -161,3 +161,7 @@ proc ::testcl::run {irule rulename} {
   }
   testcl::assertStringEquals "rule $rulename" $result
 }
+
+proc ::testcl::call args {
+  return [eval $args]
+}
