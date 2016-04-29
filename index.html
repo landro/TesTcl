@@ -20,16 +20,17 @@
 
     <section class="main-content">
       <h1>
-<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h1>
 
 <p><strong>TesTcl</strong> is a <a href="http://en.wikipedia.org/wiki/Tcl">Tcl</a> library for unit testing
 <a href="https://devcentral.f5.com/HotTopics/iRules/tabid/1082202/Default.aspx">iRules</a> which 
 are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BIG-IP</a> devices.</p>
 
 <h2>
-<a id="news" class="anchor" href="#news" aria-hidden="true"><span class="octicon octicon-link"></span></a>News</h2>
+<a id="news" class="anchor" href="#news" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>News</h2>
 
 <ul>
+<li>29th April 2016 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.9</a> released</li>
 <li>16th December 2015 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.8</a> released</li>
 <li>7th August 2015 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.7</a> released</li>
 <li>2nd September 2014 - Version <a href="https://github.com/landro/TesTcl/releases">1.0.6</a> released</li>
@@ -37,13 +38,13 @@ are used when configuring <a href="http://www.f5.com/products/big-ip/">F5 BIG-IP
 </ul>
 
 <h2>
-<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting started</h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting started</h2>
 
 <p>If you're familiar with unit testing and <a href="http://en.wikipedia.org/wiki/Mock_object">mocking</a> in particular,
 using TesTcl should't be to hard. Check out the examples below:</p>
 
 <h3>
-<a id="simple-example" class="anchor" href="#simple-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Simple example</h3>
+<a id="simple-example" class="anchor" href="#simple-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Simple example</h3>
 
 <p>Let's say you want to test the following simple iRule found in <em>simple_irule.tcl</em>:</p>
 
@@ -66,7 +67,7 @@ using TesTcl should't be to hard. Check out the examples below:</p>
 
 <p>Now, create a file called <em>test_simple_irule.tcl</em> containing the following lines:</p>
 
-<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.8
+<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.9
 <span class="pl-k">namespace</span> import ::testcl::*
 
 <span class="pl-c"># Comment in to enable logging</span>
@@ -96,15 +97,15 @@ it <span class="pl-s"><span class="pl-pds">"</span>should replace existing Vary 
 }</pre></div>
 
 <h4>
-<a id="installing-jtcl-including-jtcl-irule-extensions" class="anchor" href="#installing-jtcl-including-jtcl-irule-extensions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing JTcl including jtcl-irule extensions</h4>
+<a id="installing-jtcl-including-jtcl-irule-extensions" class="anchor" href="#installing-jtcl-including-jtcl-irule-extensions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installing JTcl including jtcl-irule extensions</h4>
 
 <h5>
-<a id="install-jtcl" class="anchor" href="#install-jtcl" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install JTcl</h5>
+<a id="install-jtcl" class="anchor" href="#install-jtcl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install JTcl</h5>
 
 <p>Download <a href="http://jtcl.kenai.com/">JTcl</a>, unzip it and add it to your path.</p>
 
 <h5>
-<a id="add-jtcl-irule-to-your-jtcl-installation" class="anchor" href="#add-jtcl-irule-to-your-jtcl-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add jtcl-irule to your JTcl installation</h5>
+<a id="add-jtcl-irule-to-your-jtcl-installation" class="anchor" href="#add-jtcl-irule-to-your-jtcl-installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add jtcl-irule to your JTcl installation</h5>
 
 <p>Add the <a href="http://landro.github.com/jtcl-irule/">jtcl-irule</a> extension to JTcl. If you don't have the time to build it yourself, you can download the 
 jar artifact from the <a href="https://github.com/landro/TesTcl/downloads">downloads</a> section or you can use the direct <a href="https://github.com/downloads/landro/TesTcl/jtcl-irule.jar">link</a>.
@@ -113,7 +114,7 @@ Add jtcl-irule to the classpath in <em>jtcl</em> or <em>jtcl.bat</em>.
 <strong>IMPORTANT!</strong> Make sure you place the <em>jtcl-irule.jar</em> on the classpath <strong>before</strong> the standard jtcl-.jar</p>
 
 <h6>
-<a id="macos-x-and-linux" class="anchor" href="#macos-x-and-linux" aria-hidden="true"><span class="octicon octicon-link"></span></a>MacOS X and Linux</h6>
+<a id="macos-x-and-linux" class="anchor" href="#macos-x-and-linux" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>MacOS X and Linux</h6>
 
 <p>On MacOs X and Linux, this can be achieved by putting the following line just above the last line in the jtcl shell script</p>
 
@@ -121,7 +122,7 @@ Add jtcl-irule to the classpath in <em>jtcl</em> or <em>jtcl.bat</em>.
 </code></pre>
 
 <h6>
-<a id="windows" class="anchor" href="#windows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Windows</h6>
+<a id="windows" class="anchor" href="#windows" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Windows</h6>
 
 <p>On Windows, modify the following line in jtcl.bat from </p>
 
@@ -134,7 +135,7 @@ Add jtcl-irule to the classpath in <em>jtcl</em> or <em>jtcl.bat</em>.
 </code></pre>
 
 <h5>
-<a id="verify-installation" class="anchor" href="#verify-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Verify installation</h5>
+<a id="verify-installation" class="anchor" href="#verify-installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Verify installation</h5>
 
 <p>Create a script file named <em>test_jtcl_irule.tcl</em> containing the following lines </p>
 
@@ -150,12 +151,12 @@ Add jtcl-irule to the classpath in <em>jtcl</em> or <em>jtcl.bat</em>.
 <p>You should get a success message.</p>
 
 <h5>
-<a id="add-the-testcl-library-to-your-library-path" class="anchor" href="#add-the-testcl-library-to-your-library-path" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add the testcl library to your library path</h5>
+<a id="add-the-testcl-library-to-your-library-path" class="anchor" href="#add-the-testcl-library-to-your-library-path" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add the testcl library to your library path</h5>
 
 <p>Download latest <a href="https://github.com/landro/TesTcl/releases">TesTcl distribution</a> from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the <a href="http://jtcl.kenai.com/gettingstarted.html">TCLLIBPATH</a> environment variable:</p>
 
-<pre><code>export TCLLIBPATH=whereever/TesTcl-1.0.8
+<pre><code>export TCLLIBPATH=whereever/TesTcl-1.0.9
 </code></pre>
 
 <p>In order to run this example, type in the following at the command-line:</p>
@@ -184,7 +185,7 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 </code></pre>
 
 <h4>
-<a id="explanations" class="anchor" href="#explanations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Explanations</h4>
+<a id="explanations" class="anchor" href="#explanations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Explanations</h4>
 
 <ul>
 <li>Require the <strong>testcl</strong> package and import the commands and variables found in the <strong>testcl</strong> namespace to use it.</li>
@@ -206,7 +207,7 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 </ul>
 
 <h5>
-<a id="a-word-on-the-testcl-commands" class="anchor" href="#a-word-on-the-testcl-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>A word on the TesTcl commands</h5>
+<a id="a-word-on-the-testcl-commands" class="anchor" href="#a-word-on-the-testcl-commands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A word on the TesTcl commands</h5>
 
 <ul>
 <li>
@@ -237,10 +238,10 @@ verification of 'there should be Accept-Encoding value in Vary header' done.
 </ul>
 
 <h5>
-<a id="a-word-on-stubs-or-mockups-you-choose-what-to-call-em" class="anchor" href="#a-word-on-stubs-or-mockups-you-choose-what-to-call-em" aria-hidden="true"><span class="octicon octicon-link"></span></a>A word on stubs or mockups (you choose what to call 'em)</h5>
+<a id="a-word-on-stubs-or-mockups-you-choose-what-to-call-em" class="anchor" href="#a-word-on-stubs-or-mockups-you-choose-what-to-call-em" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A word on stubs or mockups (you choose what to call 'em)</h5>
 
 <h6>
-<a id="http-namespace" class="anchor" href="#http-namespace" aria-hidden="true"><span class="octicon octicon-link"></span></a>HTTP namespace</h6>
+<a id="http-namespace" class="anchor" href="#http-namespace" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>HTTP namespace</h6>
 
 <p>Most of the other commands in the HTTP namespace have been implemented. We've done our best, but might have missed some details. Look at the sourcecode if 
 you wonder what is going on in the mocks.
@@ -248,7 +249,7 @@ In particular, the <a href="https://devcentral.f5.com/wiki/irules.HTTP__header.a
 However <em>insert_modssl_fields</em> subcommand is not supported in current version.</p>
 
 <h6>
-<a id="uri-namespace" class="anchor" href="#uri-namespace" aria-hidden="true"><span class="octicon octicon-link"></span></a>URI namespace</h6>
+<a id="uri-namespace" class="anchor" href="#uri-namespace" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>URI namespace</h6>
 
 <p>Partial support for </p>
 
@@ -258,7 +259,7 @@ However <em>insert_modssl_fields</em> subcommand is not supported in current ver
 </ul>
 
 <h6>
-<a id="global-namespace" class="anchor" href="#global-namespace" aria-hidden="true"><span class="octicon octicon-link"></span></a>GLOBAL namespace</h6>
+<a id="global-namespace" class="anchor" href="#global-namespace" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>GLOBAL namespace</h6>
 
 <p>Support for</p>
 
@@ -269,7 +270,7 @@ However <em>insert_modssl_fields</em> subcommand is not supported in current ver
 </ul>
 
 <h4>
-<a id="avoiding-code-duplication-using-the-before-command" class="anchor" href="#avoiding-code-duplication-using-the-before-command" aria-hidden="true"><span class="octicon octicon-link"></span></a>Avoiding code duplication using the before command</h4>
+<a id="avoiding-code-duplication-using-the-before-command" class="anchor" href="#avoiding-code-duplication-using-the-before-command" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Avoiding code duplication using the before command</h4>
 
 <p>In order to avoid code duplication, one can use the <em>before</em> command.
 The argument passed to the <em>before</em> command will be executed <em>before</em> the following <em>it</em> specifications.</p>
@@ -278,7 +279,7 @@ The argument passed to the <em>before</em> command will be executed <em>before</
 
 <p>Using the <em>before</em> command, <em>test_simple_irule.tcl</em> can be rewritten as:</p>
 
-<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.8
+<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.9
 <span class="pl-k">namespace</span> import ::testcl::*
 
 <span class="pl-c"># Comment in to enable logging</span>
@@ -314,7 +315,7 @@ it <span class="pl-s"><span class="pl-pds">"</span>should replace existing Vary 
 <p>On a side note, it's worth mentioning that there is no <em>after</em> command, since we're always dealing with mocks.</p>
 
 <h3>
-<a id="advanced-example" class="anchor" href="#advanced-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced example</h3>
+<a id="advanced-example" class="anchor" href="#advanced-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advanced example</h3>
 
 <p>Let's have a look at a more advanced iRule (advanced_irule.tcl):</p>
 
@@ -356,7 +357,7 @@ it <span class="pl-s"><span class="pl-pds">"</span>should replace existing Vary 
 
 <p>The specs for this iRule would look like this:</p>
 
-<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.8
+<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.9
 <span class="pl-k">namespace</span> import ::testcl::*
 
 <span class="pl-c"># Comment out to suppress logging</span>
@@ -433,7 +434,7 @@ it <span class="pl-s"><span class="pl-pds">"</span>should give 404 when request 
 stats</pre></div>
 
 <h3>
-<a id="modification-of-http-headers-example" class="anchor" href="#modification-of-http-headers-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modification of HTTP headers example</h3>
+<a id="modification-of-http-headers-example" class="anchor" href="#modification-of-http-headers-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Modification of HTTP headers example</h3>
 
 <p>Let's have a look at another iRule (headers_irule.tcl):</p>
 
@@ -468,7 +469,7 @@ stats</pre></div>
 
 <p>The example specs for this iRule would look like this:</p>
 
-<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.8
+<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.9
 <span class="pl-k">namespace</span> import ::testcl::*
 
 <span class="pl-c"># Comment out to suppress logging</span>
@@ -495,13 +496,13 @@ it <span class="pl-s"><span class="pl-pds">"</span>should add X-Common-Name-SSL 
 }</pre></div>
 
 <h3>
-<a id="classes-example" class="anchor" href="#classes-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Classes Example</h3>
+<a id="classes-example" class="anchor" href="#classes-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Classes Example</h3>
 
 <p>TesTcl has partial support for the <code>class</code> command. For example, we could test the following rule:</p>
 
 <div class="highlight highlight-source-tcl"><pre>rule classes {
   when HTTP_REQUEST {
-    <span class="pl-k">if</span> { [class match [IP::remote_addr] equals blacklist] } {
+    <span class="pl-k">if</span> { [class match [IP::remote_addr] eq blacklist] } {
       drop
     } <span class="pl-k">else</span> {
       pool main-pool
@@ -511,7 +512,7 @@ it <span class="pl-s"><span class="pl-pds">"</span>should add X-Common-Name-SSL 
 
 <p>with code that looks like this</p>
 
-<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.8
+<div class="highlight highlight-source-tcl"><pre><span class="pl-k">package</span> require -exact testcl 1.0.9
 <span class="pl-k">namespace</span> import testcl::*
 
 before {
@@ -534,12 +535,12 @@ it <span class="pl-s"><span class="pl-pds">"</span>should drop blacklisted addre
 }</pre></div>
 
 <h2>
-<a id="how-stable-is-this-code" class="anchor" href="#how-stable-is-this-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>How stable is this code?</h2>
+<a id="how-stable-is-this-code" class="anchor" href="#how-stable-is-this-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How stable is this code?</h2>
 
 <p>This work is quite stable, but you can expect minor breaking changes.</p>
 
 <h2>
-<a id="why-i-created-this-project" class="anchor" href="#why-i-created-this-project" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why I created this project</h2>
+<a id="why-i-created-this-project" class="anchor" href="#why-i-created-this-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why I created this project</h2>
 
 <p>Configuring BIG-IP devices is no trivial task, and typically falls in under a DevOps kind of role.
 In order to make your system perform the best it can, you need:</p>
@@ -584,7 +585,7 @@ In order to make your system perform the best it can, you need:</p>
 <p>Clearly, <strong>manual</strong> testing is not the way forward!</p>
 
 <h2>
-<a id="test-matrix-and-compatibility" class="anchor" href="#test-matrix-and-compatibility" aria-hidden="true"><span class="octicon octicon-link"></span></a>Test matrix and compatibility</h2>
+<a id="test-matrix-and-compatibility" class="anchor" href="#test-matrix-and-compatibility" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test matrix and compatibility</h2>
 
 <table>
 <thead>
@@ -628,13 +629,13 @@ In order to make your system perform the best it can, you need:</p>
 <p>If you use TesTcl on a different platform, please let us know</p>
 
 <h2>
-<a id="getting-help" class="anchor" href="#getting-help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting help</h2>
+<a id="getting-help" class="anchor" href="#getting-help" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting help</h2>
 
 <p>Post questions to the group at <a href="https://groups.google.com/forum/?fromgroups#!forum/testcl-user">TesTcl user group</a><br>
 File bugs over at <a href="https://github.com/landro/TesTcl">github</a></p>
 
 <h2>
-<a id="contributing-code" class="anchor" href="#contributing-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing code</h2>
+<a id="contributing-code" class="anchor" href="#contributing-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing code</h2>
 
 <p>Contributions are very welcomed. There are just a few things to remember:</p>
 
@@ -651,17 +652,17 @@ File bugs over at <a href="https://github.com/landro/TesTcl">github</a></p>
 </ul>
 
 <h2>
-<a id="who-uses-it" class="anchor" href="#who-uses-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>Who uses it?</h2>
+<a id="who-uses-it" class="anchor" href="#who-uses-it" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Who uses it?</h2>
 
 <p>Well, I can't really tell you, but according to Google Analytics, this site gets around 5 hits per day.</p>
 
 <h2>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
 
 <p>Just like JTcl, TesTcl is licensed under a BSD-style license. </p>
 
 <h2>
-<a id="please-please-please" class="anchor" href="#please-please-please" aria-hidden="true"><span class="octicon octicon-link"></span></a>Please please please</h2>
+<a id="please-please-please" class="anchor" href="#please-please-please" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Please please please</h2>
 
 <p>Drop me a line if you use this library and find it useful: stefan.landro <strong>you know what</strong> gmail.com</p>
 
