@@ -1,0 +1,8 @@
+title: TesTcl - a library for unit testing BIG-IP iRules
+description: when you don't have the balls to test your iRules directly in production
+google_analytics: UA-33046216-1
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
