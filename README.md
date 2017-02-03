@@ -75,7 +75,7 @@ it "should replace existing Vary http response headers with Accept-Encoding valu
 #### Installing JTcl including jtcl-irule extensions
 
 ##### Install JTcl
-Download [JTcl](http://jtcl.kenai.com/), unzip it and add it to your path.
+Download [JTcl](https://jtcl-project.github.io/jtcl/), unzip it and add it to your path.
 
 ##### Add jtcl-irule to your JTcl installation
 Add the [jtcl-irule](http://landro.github.com/jtcl-irule/) extension to JTcl. If you don't have the time to build it yourself, you can download the 
