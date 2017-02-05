@@ -6,6 +6,7 @@ package require base64
 namespace eval ::testcl::URI {
 	
   namespace export encode 
+  namespace export host
 	
 }
 
@@ -67,4 +68,15 @@ proc ::testcl::URI::encode {uri} {
   return $encodedString
 	
 }
-	
+
+proc ::testcl::URI::host {uri} {
+
+  set host ""
+  regexp {^.+:\/\/(.+)\/.*} $uri -> host
+
+  log::log debug "URI::host returning $host"
+
+  return $host
+
+}
+
