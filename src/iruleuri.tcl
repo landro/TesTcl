@@ -70,13 +70,12 @@ proc ::testcl::URI::encode {uri} {
 }
 
 proc ::testcl::URI::host {uri} {
+  log::log debug "URI::host $uri invoked"
 
   set host ""
-  regexp {^.+:\/\/(.+)\/.*} $uri -> host
+  regexp {^.+:\/\/([^:/]+)(?::\d+)?\/.*} $uri -> host
 
   log::log debug "URI::host returning $host"
-
   return $host
-
 }
 
