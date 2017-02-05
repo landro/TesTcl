@@ -7,6 +7,7 @@ namespace eval ::testcl::URI {
 	
   namespace export encode 
   namespace export host
+  namespace export basename
 	
 }
 
@@ -77,5 +78,15 @@ proc ::testcl::URI::host {uri} {
 
   log::log debug "URI::host returning $host"
   return $host
+}
+
+proc ::testcl::URI::basename {uri} {
+  log::log debug "URI::basename $uri invoked"
+
+  regexp {([^?]+)(?:\?.*)?} $uri -> withoutquery
+  set basename [lindex [split $withoutquery "/"] end]
+
+  log::log debug "URI::basename returning $basename"
+  return basename
 }
 
