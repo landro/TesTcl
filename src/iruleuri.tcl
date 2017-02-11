@@ -10,6 +10,7 @@ namespace eval ::testcl::URI {
   namespace export basename
   namespace export port
   namespace export protocol
+  namespace export query
 	
 }
 
@@ -129,5 +130,29 @@ proc ::testcl::URI::protocol {uri} {
 
   log::log debug "URI::protocol returning $proto"
   return $proto
+}
+
+proc ::testcl::URI::query {uri {param ""}} {
+  log::log debug "URI::query $uri $param invoked"
+
+  set query ""
+  regexp {^.*\?(.+).*} $uri -> query
+
+  if { $param eq "" } {
+    log::log debug "URI::query returning whole query string: $query"
+    return $query
+  }
+
+  foreach parameter [split $query "&"] {
+    set splittedparam [split $parameter "="]
+    if { [lindex $splittedparam 0] eq $param } {
+      set result [lindex $splittedparam 1]
+      log::log debug "URI::query returning value of parameter $param: $result"
+      return $result
+    }
+  }
+
+  log::log debug "URI::query did not find a value for $param. Returning blank"
+  return ""
 }
 
