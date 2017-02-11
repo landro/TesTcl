@@ -8,6 +8,7 @@ namespace eval ::testcl::URI {
   namespace export encode 
   namespace export host
   namespace export basename
+  namespace export port
 	
 }
 
@@ -88,5 +89,34 @@ proc ::testcl::URI::basename {uri} {
 
   log::log debug "URI::basename returning $basename"
   return basename
+}
+
+proc ::testcl::URI::port {uri} {
+  log::log debug "URI::port $uri invoked"
+
+  regexp {^([a-z][a-z0-9+\-.]+):\/\/(?:[^:/]+):?(\d+)?(?:\/.*)?} [string tolower $uri] -> proto port
+
+  if { ![info exists proto] } {
+    #This is a bit strange, but it seems to be what the F5 does
+    log::log debug "URI::port could not parse URI. Returning 80"
+    return 80
+  }
+
+  if { $port ne "" } {
+    log::log debug "URI::port returning $port. Was specified in URI"
+    return $port
+  }
+
+  switch $proto {
+    "http" { set port 80 }
+    "https" { set port 443 }
+    "ftp" { set port 21 }
+    "ldap" { set port 389 }
+    "sip" { set port 5060 }
+    default { set port 0 }
+  }
+
+  log::log debug "URI::port returning port $port for protocol $proto"
+  return $port
 }
 
