@@ -9,6 +9,7 @@ namespace eval ::testcl::URI {
   namespace export host
   namespace export basename
   namespace export port
+  namespace export protocol
 	
 }
 
@@ -118,5 +119,15 @@ proc ::testcl::URI::port {uri} {
 
   log::log debug "URI::port returning port $port for protocol $proto"
   return $port
+}
+
+proc ::testcl::URI::protocol {uri} {
+  log::log debug "URI::protocol $uri invoked"
+
+  set proto ""
+  regexp {^([a-z0-9+\-.]+):\/\/(?:.*)} $uri -> proto
+
+  log::log debug "URI::protocol returning $proto"
+  return $proto
 }
 
