@@ -11,6 +11,7 @@ namespace eval ::testcl::URI {
   namespace export port
   namespace export protocol
   namespace export query
+  namespace export path
 	
 }
 
@@ -154,5 +155,49 @@ proc ::testcl::URI::query {uri {param ""}} {
 
   log::log debug "URI::query did not find a value for $param. Returning blank"
   return ""
+}
+
+proc ::testcl::URI::path {uri {start ""} {end ""}} {
+  log::log debug "URI::path $uri $start $end invoked"
+
+  regexp {^(?:.+:\/\/[^:/]+)?(?::\d+)?([^?]+)} $uri -> fullpath
+  set splitted [lrange [split $fullpath "/"] 0 end-1]
+
+  if { [llength $splitted] eq 0 } {
+    log::log debug "URI::path returning blank as no /"
+    return ""
+  }
+
+  if { $start eq "depth" } {
+    set length [expr [llength $splitted] - 1]
+    log::log debug "URI::path returning depth $length"
+    return $length
+  }
+
+  if { $start eq 0 } {
+    error {"0 is not a valid start"}
+  }
+  if { $start eq "" } {
+    set start 0
+  }
+  if { $end eq "" } {
+    set end "end"
+  }
+  if { $start > $end } {
+    error {end value not greater than start value}
+  }
+
+  set pathelements [lrange $splitted $start $end]
+  set path [join $pathelements "/"]/
+
+  if { $start > 0 } {
+    set path "/$path"
+  }
+
+  set path [string map {// /} $path]
+
+  log::log debug "URI::path returning $path"
+
+  return $path
 }
 
