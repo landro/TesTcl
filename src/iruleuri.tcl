@@ -90,7 +90,7 @@ proc ::testcl::URI::basename {uri} {
   set basename [lindex [split $withoutquery "/"] end]
 
   log::log debug "URI::basename returning $basename"
-  return basename
+  return $basename
 }
 
 proc ::testcl::URI::port {uri} {
