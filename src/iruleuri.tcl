@@ -77,7 +77,7 @@ proc ::testcl::URI::host {uri} {
   log::log debug "URI::host $uri invoked"
 
   set host ""
-  regexp {^.+:\/\/([^:/]+)(?::\d+)?\/.*} $uri -> host
+  regexp {^.+:\/\/([^:/]+):?(?:\d+)?(?:\/.*)?} $uri -> host
 
   log::log debug "URI::host returning $host"
   return $host
@@ -126,7 +126,7 @@ proc ::testcl::URI::protocol {uri} {
   log::log debug "URI::protocol $uri invoked"
 
   set proto ""
-  regexp {^([a-z0-9+\-.]+):\/\/(?:.*)} $uri -> proto
+  regexp {^([A-Za-z0-9+\-.]+):\/\/(?:.*)} $uri -> proto
 
   log::log debug "URI::protocol returning $proto"
   return $proto
