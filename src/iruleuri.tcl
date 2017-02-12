@@ -12,6 +12,7 @@ namespace eval ::testcl::URI {
   namespace export protocol
   namespace export query
   namespace export path
+  namespace export compare
 	
 }
 
@@ -199,5 +200,32 @@ proc ::testcl::URI::path {uri {start ""} {end ""}} {
   log::log debug "URI::path returning $path"
 
   return $path
+}
+
+proc ::testcl::URI::compare {uri1 uri2} {
+  log::log debug "URI::compare $uri1 $uri2 invoked"
+
+  if { [string tolower [protocol $uri1]] ne [string tolower [protocol $uri2]] } {
+    log::log debug "URI::compare returning false because the protocols do not match"
+    return 0
+  } elseif { [string tolower [host $uri1]] ne [string tolower [host $uri2]] } {
+    log::log debug "URI::compare returning false because the hosts do not match"
+    return 0
+  } elseif { [port $uri1] ne [port $uri2] } {
+    log::log debug "URI::compare returning false because the ports do not match"
+    return 0
+  } elseif { [path $uri1] ne [path $uri2] } {
+    log::log debug "URI::compare returning false because the paths do not match"
+    return 0
+  } elseif { [basename $uri1] ne [basename $uri2] } {
+    log::log debug "URI::compare returning false because the basenames do not match"
+    return 0
+  } elseif { [query $uri1] ne [query $uri2] } {
+    log::log debug "URI::compare returning false because the query strings do not match"
+    return 0
+  } else {
+    log::log debug "URI::compare returning true, as all the checks passed"
+    return 1
+  }
 }
 
