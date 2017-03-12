@@ -4,8 +4,8 @@ package require log
 package require base64
 
 namespace eval ::testcl::URI {
-	
-  namespace export encode 
+
+  namespace export encode
   namespace export host
   namespace export basename
   namespace export port
@@ -13,7 +13,7 @@ namespace eval ::testcl::URI {
   namespace export query
   namespace export path
   namespace export compare
-	
+
 }
 
 # TODO Incomplete
@@ -24,55 +24,91 @@ proc ::testcl::URI::encode {uri} {
   log::log debug "Encoding $uri"
 
   set utf8_uri [encoding convertto utf-8 $uri]
-  
-  set encodedString ""	
-	
+
+  set encodedString ""
+
   for {set i 0} {$i < [string length $utf8_uri]} {incr i} {
 
     set char [string index $utf8_uri $i]
-	  
+
       if { "A" <= $char && $char <= "Z" } {
-        log::log debug " - Keeping uppercase A-Z $char"  
-	append encodedString $char  
-      } elseif {"a" <= $char && $char <= "z" } { 
-        log::log debug " - Keeping lowercase a-z char $char"    
-	append encodedString $char
+        log::log debug " - Keeping uppercase A-Z $char"
+        append encodedString $char
+      } elseif {"a" <= $char && $char <= "z" } {
+        log::log debug " - Keeping lowercase a-z char $char"
+        append encodedString $char
       } elseif { "0" <= $char && $char <= "9" } {
-        log::log debug " - Keeping numeric char $char"    
-        append encodedString $char		  		  
+        log::log debug " - Keeping numeric char $char"
+        append encodedString $char
       } elseif { " " eq $char } {
-      	log::log debug " - Converting reserved char $char"    
-      	append encodedString "%20"		  		      	      
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%20"
       } elseif { "!" eq $char } {
-        log::log debug " - Converting reserved char $char"    
-        append encodedString "%21"		  		      	      
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%21"
       } elseif { "#" eq $char } {
-        log::log debug " - Converting reserved char $char"    
-        append encodedString "%23"		  		      	      
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%23"
       } elseif { "$" eq $char } {
-      	log::log debug " - Converting reserved char $char"    
-      	append encodedString "%24"		  		      	      
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%24"
+      } elseif { "%" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%25"
       } elseif { "&" eq $char } {
-      	log::log debug " - Converting reserved char $char"    
-      	append encodedString "%26"		  		      	      
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%26"
       } elseif { "'" eq $char } {
-      	log::log debug " - Converting reserved char $char"    
-      	append encodedString "%27"		  		      	      
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%27"
       } elseif { "(" eq $char } {
-      	log::log debug " - Converting reserved char $char"    
-      	append encodedString "%28"		  		      	      
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%28"
       } elseif { ")" eq $char } {
-      	log::log debug " - Converting reserved char $char"    
-      	append encodedString "%29"		  		      	      
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%29"
+      } elseif { "*" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%2a"
+      } elseif { "+" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%2b"
+      } elseif { "," eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%2c"
+      } elseif { "/" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%2f"
+      } elseif { ":" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%3a"
+      } elseif { ";" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%3b"
+      } elseif { "=" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%3d"
+      } elseif { "?" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%3f"
+      } elseif { "@" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%40"
+      } elseif { "\[" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%5b"
+      } elseif { "]" eq $char } {
+        log::log debug " - Converting reserved char $char"
+        append encodedString "%5d"
       } else {
-        log::log critical "Not converting char $char - to be implemented in iruleuri.tcl"    
-        append encodedString "$char"		  		      	            
+        log::log critical "Not converting char $char - to be implemented in iruleuri.tcl"
+        append encodedString "$char"
       }
-	      
+
   }
-	
+
   return $encodedString
-	
+
 }
 
 proc ::testcl::URI::host {uri} {
