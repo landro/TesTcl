@@ -6,6 +6,7 @@ package require base64
 namespace eval ::testcl::URI {
 
   namespace export encode
+  namespace export decode
   namespace export host
   namespace export basename
   namespace export port
@@ -108,6 +109,95 @@ proc ::testcl::URI::encode {uri} {
   }
 
   return $encodedString
+
+}
+
+# Not complete, but matches URI::encode
+proc ::testcl::URI::decode {uri} {
+
+  log::log debug "Decoding $uri"
+
+  set decodedString ""
+
+  for {set i 0} {$i < [string length $uri]} {incr i} {
+
+    set char [string index $uri $i]
+
+      if { $char ne "%" } {
+        log::log debug " - Keeping not encoded char $char"
+	append decodedString $char
+      } else {
+	set char [string tolower [string range $uri $i [expr {$i + 2}]]]
+	incr i 2
+
+        if { "%20" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString " "
+        } elseif { "%21" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "!"
+        } elseif { "%23" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "#"
+        } elseif { "%24" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "$"
+        } elseif { "%25" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "%"
+        } elseif { "%26" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "&"
+        } elseif { "%27" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "'"
+        } elseif { "%28" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "("
+        } elseif { "%29" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString ")"
+        } elseif { "%2a" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "*"
+        } elseif { "%2b" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "+"
+        } elseif { "%2c" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString ","
+        } elseif { "%2f" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "/"
+        } elseif { "%3a" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString ":"
+        } elseif { "%3b" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString ";"
+        } elseif { "%3d" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "="
+        } elseif { "%3f" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "?"
+        } elseif { "%40" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "@"
+        } elseif { "%5b" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "\["
+        } elseif { "%5d" eq $char } {
+          log::log debug " - Converting encoded char $char"
+          append decodedString "]"
+        } else {
+          log::log critical "Not converting char $char - to be implemented in iruleuri.tcl"
+          append decodedString "$char"
+        }
+     }
+  }
+
+  return $decodedString
 
 }
 
