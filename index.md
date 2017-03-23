@@ -5,11 +5,11 @@
 are used when configuring [F5 BIG-IP](http://www.f5.com/products/big-ip/) devices.
 
 ## News
+- 23rd March 2017 - Version [1.0.10](https://github.com/landro/TesTcl/releases) released
 - 29th April 2016 - Version [1.0.9](https://github.com/landro/TesTcl/releases) released
 - 16th December 2015 - Version [1.0.8](https://github.com/landro/TesTcl/releases) released
 - 7th August 2015 - Version [1.0.7](https://github.com/landro/TesTcl/releases) released
 - 2nd September 2014 - Version [1.0.6](https://github.com/landro/TesTcl/releases) released
-- 27th July 2014 - Version [1.0.5](https://github.com/landro/TesTcl/releases) released 
 
 ## Getting started
 
@@ -42,7 +42,7 @@ rule simple {
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
 ```tcl
-package require -exact testcl 1.0.9
+package require -exact testcl 1.0.10
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -120,7 +120,7 @@ You should get a success message.
 Download latest [TesTcl distribution](https://github.com/landro/TesTcl/releases) from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the [TCLLIBPATH](http://jtcl.kenai.com/gettingstarted.html) environment variable:
 
-    export TCLLIBPATH=whereever/TesTcl-1.0.9
+    export TCLLIBPATH=whereever/TesTcl-1.0.10
 
 In order to run this example, type in the following at the command-line:
 
@@ -180,9 +180,12 @@ In particular, the [HTTP::header](https://devcentral.f5.com/wiki/irules.HTTP__he
 However _insert_modssl_fields_ subcommand is not supported in current version.
 
 ###### URI namespace ######
-Partial support for 
+Everything should be supported, with the exception of:
 
- - [URI::encode](https://devcentral.f5.com/wiki/iRules.URI__encode.ashx) 
+ - [URI::encode](https://devcentral.f5.com/wiki/iRules.URI__encode.ashx)
+ - [URI::decode](https://devcentral.f5.com/wiki/iRules.URI__decode.ashx)
+
+which is only partially supported.
 
 ###### GLOBAL namespace ######
 Support for
@@ -200,7 +203,7 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
 ```tcl
-package require -exact testcl 1.0.9
+package require -exact testcl 1.0.10
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -281,7 +284,7 @@ rule advanced {
 The specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.9
+package require -exact testcl 1.0.10
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -396,7 +399,7 @@ rule headers {
 The example specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.9
+package require -exact testcl 1.0.10
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -442,7 +445,7 @@ rule classes {
 with code that looks like this
 
 ```tcl
-package require -exact testcl 1.0.9
+package require -exact testcl 1.0.10
 namespace import testcl::*
 
 before {
