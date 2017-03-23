@@ -1,4 +1,4 @@
-package require -exact testcl 1.0.9
+package require -exact testcl 1.0.10
 namespace import ::testcl::*
 
 # Comment in to enable logging
