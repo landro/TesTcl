@@ -114,7 +114,8 @@ and execute it using
 
     jtcl test_jtcl_irule.tcl
 
-You should get a success message.
+You should get a success message. 
+If you get a message saying *syntax error in expression ""aa" starts_with "a"": variable references require preceding $*, jtcl-irule is not on the classpath **before** the standard jtcl-<version>.jar. Please review instructions above.
 
 ##### Add the testcl library to your library path
 Download latest [TesTcl distribution](https://github.com/landro/TesTcl/releases) from github containing all the files (including examples) found in the project.
