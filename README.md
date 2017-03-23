@@ -180,9 +180,12 @@ In particular, the [HTTP::header](https://devcentral.f5.com/wiki/irules.HTTP__he
 However _insert_modssl_fields_ subcommand is not supported in current version.
 
 ###### URI namespace ######
-Partial support for 
+Everything should be supported, with the exception of:
 
- - [URI::encode](https://devcentral.f5.com/wiki/iRules.URI__encode.ashx) 
+ - [URI::encode](https://devcentral.f5.com/wiki/iRules.URI__encode.ashx)
+ - [URI::decode](https://devcentral.f5.com/wiki/iRules.URI__decode.ashx)
+
+which is only partially supported.
 
 ###### GLOBAL namespace ######
 Support for

@@ -140,5 +140,10 @@ proc ::testcl::getfield { str delim ind } {
 #
 proc ::testcl::log { faclvl msg } {
     set level [lindex [split $faclvl "."] 1]
+
+    if { $level eq "" } {
+        set level "info"
+    }
+
     log::log $level $msg
 }
