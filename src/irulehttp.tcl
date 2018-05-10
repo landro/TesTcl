@@ -641,7 +641,7 @@ proc ::testcl::HTTP::path {args} {
   
   variable uri
   if { ![info exists uri] } {
-    set uri /
+    set uri [HTTP::uri]
   }
 
   if { ![regexp {^([A-z]+://[^/]+)(.*)} $uri match host pathquery] } {
