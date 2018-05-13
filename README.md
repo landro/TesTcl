@@ -79,16 +79,16 @@ Download [JTcl](https://jtcl-project.github.io/jtcl/), unzip it and add it to yo
 
 ##### Add jtcl-irule to your JTcl installation
 Add the [jtcl-irule](http://landro.github.com/jtcl-irule/) extension to JTcl. If you don't have the time to build it yourself, you can download the 
-jar artifact from the [downloads](https://github.com/landro/TesTcl/downloads) section or you can use the direct [link](https://github.com/downloads/landro/TesTcl/jtcl-irule.jar).
+jar artifact from the [downloads](https://bintray.com/landro/maven/TesTcl) section or you can use the direct [link](https://bintray.com/landro/maven/download_file?file_path=com/testcl/jtcl-irule/0.9/jtcl-irule-0.9.jar).
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in _jtcl_ or _jtcl.bat_.
-**IMPORTANT!** Make sure you place the _jtcl-irule.jar_ on the classpath **before** the standard jtcl-<version>.jar
+**IMPORTANT!** Make sure you place the _jtcl-irule-0.9.jar_ on the classpath **before** the standard jtcl-<version>.jar
 
 ###### MacOS X and Linux
 
 On MacOs X and Linux, this can be achieved by putting the following line just above the last line in the jtcl shell script
 
-    export CLASSPATH=$dir/jtcl-irule.jar:$CLASSPATH
+    export CLASSPATH=$dir/jtcl-irule-0.9.jar:$CLASSPATH
     
 ###### Windows
 
@@ -98,7 +98,7 @@ On Windows, modify the following line in jtcl.bat from
 
 to
 
-    set cp="%dir%\jtcl-irule.jar;%dir%\jtcl-%jtclver%.jar;%CLASSPATH%"
+    set cp="%dir%\jtcl-irule-0.9.jar;%dir%\jtcl-%jtclver%.jar;%CLASSPATH%"
 
 ##### Verify installation
 
