@@ -3,6 +3,7 @@ package require log
 
 namespace eval ::testcl {
   variable expectedEvent
+  variable variables
   namespace export rule
   namespace export when
   namespace export event
@@ -63,6 +64,13 @@ proc ::testcl::when args {
   } else {
     set event [lindex $args 0]
     set body [lindex $args end]
+  }
+
+  variable variables
+  if [ info exists variables ] {
+    foreach { key value } [ array get variables ] {
+      uplevel 0 {set $key $value}
+    }
   }
 
   variable expectedEvent
@@ -150,8 +158,11 @@ proc ::testcl::event {event_type} {
 #
 # Results:
 # none
-proc ::testcl::run {irule rulename} {
+proc ::testcl::run {irule rulename {vars {}}} {
   log::log info "Running irule $irule"
+  variable variables
+  upvar 1 $vars a
+  array set variables [array get a]
   set rc [catch {source $irule} result]
   if { 0 != $rc } {
     log::log error "Running irule $irule failed: $result"	  
