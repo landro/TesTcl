@@ -5,11 +5,11 @@
 are used when configuring [F5 BIG-IP](http://www.f5.com/products/big-ip/) devices.
 
 ## News
+- 24th May 2018 - Version [1.0.11](https://github.com/landro/TesTcl/releases) released
 - 23rd March 2017 - Version [1.0.10](https://github.com/landro/TesTcl/releases) released
 - 29th April 2016 - Version [1.0.9](https://github.com/landro/TesTcl/releases) released
 - 16th December 2015 - Version [1.0.8](https://github.com/landro/TesTcl/releases) released
 - 7th August 2015 - Version [1.0.7](https://github.com/landro/TesTcl/releases) released
-- 2nd September 2014 - Version [1.0.6](https://github.com/landro/TesTcl/releases) released
 
 ## Getting started
 
