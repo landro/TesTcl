@@ -42,7 +42,7 @@ rule simple {
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.11
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -121,7 +121,7 @@ If you get a message saying *syntax error in expression ""aa" starts_with "a"": 
 Download latest [TesTcl distribution](https://github.com/landro/TesTcl/releases) from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the [TCLLIBPATH](http://jtcl.kenai.com/gettingstarted.html) environment variable:
 
-    export TCLLIBPATH=whereever/TesTcl-1.0.10
+    export TCLLIBPATH=whereever/TesTcl-1.0.11
 
 In order to run this example, type in the following at the command-line:
 
@@ -204,7 +204,7 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.11
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -285,7 +285,7 @@ rule advanced {
 The specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.11
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -400,7 +400,7 @@ rule headers {
 The example specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.11
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -446,7 +446,7 @@ rule classes {
 with code that looks like this
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.11
 namespace import testcl::*
 
 before {
