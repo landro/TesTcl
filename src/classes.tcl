@@ -92,7 +92,7 @@ proc ::testcl::class {cmd args} {
       for {set i 0} {$i < [llength $clazz] / 2} {incr i} {
         set element_name [lindex $clazz [expr 2 * $i]]
         set element_value [lindex $clazz [expr 2 * $i + 1]]
-        if "\$element_value $operator \$item" $return_command
+        if "\$element_name $operator \$item" $return_command
       }
       eval $return_failure_block
     }
@@ -105,7 +105,7 @@ proc ::testcl::class {cmd args} {
       for {set i 0} {$i < [llength $clazz] / 2} {incr i} {
         set element_name [lindex $clazz [expr 2 * $i]]
         set element_value [lindex $clazz [expr 2 * $i + 1]]
-        if "\$item $operator \$element_value" $return_command
+        if "\$item $operator \$element_name" $return_command
       }
       eval $return_failure_block
     }

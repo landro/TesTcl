@@ -18,16 +18,17 @@ class configure protocols {
 }
 
 if { $::tcl_platform(platform) eq "java" } {
-  assertStringEquals [class search -value server ends_with "0.1"] "192.168.0.1"
-  assertStringEquals [class search -name server ends_with "0.2"] "server2"
+  assertStringEquals [class search -value server ends_with "r1"] "192.168.0.1"
+  assertStringEquals [class search -name server ends_with "r2"] "server2"
   assertStringEquals [class match -element "http://localhost" starts_with protocols] [list "http" "http://"]
   assertNumberEquals [class match -index "ftp://locahost" starts_with protocols] 2	
+  assertNumberEquals [class match -value "server1" eq server] "192.168.0.1"
 }
-assertNumberEquals [class search server eq "192.168.0.1"] 1
+assertNumberEquals [class search server eq "server1"] 1
 assertNumberEquals [class search server eq "doesn't exist"] 0
-assertNumberEquals [class search doesnt_exist eq "192.168.0.1"] 0
+assertNumberEquals [class search doesnt_exist eq "server1"] 0
 assertStringEquals [class -value search server eq "doesn't exist"] ""
-assertStringEquals [class -name search doesnt_exist eq "192.168.0.1"] ""
+assertStringEquals [class -name search doesnt_exist eq "server1"] ""
 assertNumberEquals [class size protocols] 3
 assertNumberEquals [class size doesnt_exist] 0
 assertStringEquals [class element 2 protocols] [list "ftp" "ftp://"]
