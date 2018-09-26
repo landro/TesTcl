@@ -4,7 +4,7 @@ namespace import ::testcl::*
 before {
   event HTTP_REQUEST
   class configure blacklist {
-    "blacklisted" "192.168.6.66"
+    "192.168.6.66" "blacklisted"
   }
 }
 
@@ -14,7 +14,7 @@ it "should drop blacklisted addresses" {
   run irules/classes_irule.tcl classes
 }
 
-it "should drop blacklisted addresses" {
+it "should not drop adresses that are not blacklisted" {
   on IP::remote_addr return "192.168.0.1"
   endstate pool main-pool
   run irules/classes_irule.tcl classes

@@ -22,7 +22,7 @@ if { $::tcl_platform(platform) eq "java" } {
   assertStringEquals [class search -name server ends_with "r2"] "server2"
   assertStringEquals [class match -element "http://localhost" starts_with protocols] [list "http" "http://"]
   assertNumberEquals [class match -index "ftp://locahost" starts_with protocols] 2	
-  assertNumberEquals [class match -value "server1" eq server] "192.168.0.1"
+  assertStringEquals [class match -value "server1" eq server] "192.168.0.1"
 }
 assertNumberEquals [class search server eq "server1"] 1
 assertNumberEquals [class search server eq "doesn't exist"] 0
