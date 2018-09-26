@@ -64,7 +64,7 @@ set sources {}
 foreach {f} $files {
     lappend sources [list source [file join $dir src $f]]
 }
-package ifneeded testcl 1.0.11 [join $sources "\n"]
+package ifneeded testcl 1.0.12 [join $sources "\n"]
 
 # Disable certain Tcl commands from iRules
 if { $::tcl_platform(platform) eq "java" } {
