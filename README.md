@@ -5,11 +5,11 @@
 are used when configuring [F5 BIG-IP](http://www.f5.com/products/big-ip/) devices.
 
 ## News
+- 26th September 2018 - Version [1.0.12](https://github.com/landro/TesTcl/releases) released
+- 24th May 2018 - Version [1.0.11](https://github.com/landro/TesTcl/releases) released
 - 23rd March 2017 - Version [1.0.10](https://github.com/landro/TesTcl/releases) released
 - 29th April 2016 - Version [1.0.9](https://github.com/landro/TesTcl/releases) released
 - 16th December 2015 - Version [1.0.8](https://github.com/landro/TesTcl/releases) released
-- 7th August 2015 - Version [1.0.7](https://github.com/landro/TesTcl/releases) released
-- 2nd September 2014 - Version [1.0.6](https://github.com/landro/TesTcl/releases) released
 
 ## Getting started
 
@@ -42,7 +42,7 @@ rule simple {
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.12
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -79,16 +79,16 @@ Download [JTcl](https://jtcl-project.github.io/jtcl/), unzip it and add it to yo
 
 ##### Add jtcl-irule to your JTcl installation
 Add the [jtcl-irule](http://landro.github.com/jtcl-irule/) extension to JTcl. If you don't have the time to build it yourself, you can download the 
-jar artifact from the [downloads](https://github.com/landro/TesTcl/downloads) section or you can use the direct [link](https://github.com/downloads/landro/TesTcl/jtcl-irule.jar).
+jar artifact from the [downloads](https://bintray.com/landro/maven/TesTcl) section or you can use the direct [link](https://bintray.com/landro/maven/download_file?file_path=com/testcl/jtcl-irule/0.9/jtcl-irule-0.9.jar).
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in _jtcl_ or _jtcl.bat_.
-**IMPORTANT!** Make sure you place the _jtcl-irule.jar_ on the classpath **before** the standard jtcl-<version>.jar
+**IMPORTANT!** Make sure you place the _jtcl-irule-0.9.jar_ on the classpath **before** the standard jtcl-<version>.jar
 
 ###### MacOS X and Linux
 
 On MacOs X and Linux, this can be achieved by putting the following line just above the last line in the jtcl shell script
 
-    export CLASSPATH=$dir/jtcl-irule.jar:$CLASSPATH
+    export CLASSPATH=$dir/jtcl-irule-0.9.jar:$CLASSPATH
     
 ###### Windows
 
@@ -98,7 +98,7 @@ On Windows, modify the following line in jtcl.bat from
 
 to
 
-    set cp="%dir%\jtcl-irule.jar;%dir%\jtcl-%jtclver%.jar;%CLASSPATH%"
+    set cp="%dir%\jtcl-irule-0.9.jar;%dir%\jtcl-%jtclver%.jar;%CLASSPATH%"
 
 ##### Verify installation
 
@@ -121,7 +121,7 @@ If you get a message saying *syntax error in expression ""aa" starts_with "a"": 
 Download latest [TesTcl distribution](https://github.com/landro/TesTcl/releases) from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the [TCLLIBPATH](http://jtcl.kenai.com/gettingstarted.html) environment variable:
 
-    export TCLLIBPATH=whereever/TesTcl-1.0.10
+    export TCLLIBPATH=whereever/TesTcl-1.0.12
 
 In order to run this example, type in the following at the command-line:
 
@@ -204,7 +204,7 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.12
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -285,7 +285,7 @@ rule advanced {
 The specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.12
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -400,7 +400,7 @@ rule headers {
 The example specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.12
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -446,13 +446,13 @@ rule classes {
 with code that looks like this
 
 ```tcl
-package require -exact testcl 1.0.10
+package require -exact testcl 1.0.12
 namespace import testcl::*
 
 before {
   event HTTP_REQUEST
   class configure blacklist {
-    "blacklisted" "192.168.6.66"
+    "192.168.6.66" "blacklisted"
   }
 }
 
@@ -462,7 +462,7 @@ it "should drop blacklisted addresses" {
   run irules/classes.tcl classes
 }
 
-it "should drop blacklisted addresses" {
+it "should not drop addresses that are not blacklisted" {
   on IP::remote_addr return "192.168.0.1"
   endstate pool main-pool
   run irules/classes.tcl classes
@@ -527,13 +527,7 @@ File bugs over at [github](https://github.com/landro/TesTcl)
 
 ## Contributing code
 
-Contributions are very welcomed. There are just a few things to remember:
-
- - Run tests against JTcl since the custom iRule extensions have only been implemented in that Tcl implementation
-    - Run _examples.sh_ and _tests.sh_ or their Windows equivalents, and verify output
- - Please follow existing coding style and indentation (2 spaces for tabs)
- - Add new example or test when appropriate
- - Add or update documentation when necessary and make sure it is correct (as in test it)
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Who uses it?
 

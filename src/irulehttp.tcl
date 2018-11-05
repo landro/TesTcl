@@ -1,4 +1,4 @@
-package provide testcl 1.0.10
+package provide testcl 1.0.12
 package require log
 
 package require base64
@@ -641,7 +641,7 @@ proc ::testcl::HTTP::path {args} {
   
   variable uri
   if { ![info exists uri] } {
-    set uri /
+    set uri [HTTP::uri]
   }
 
   if { ![regexp {^([A-z]+://[^/]+)(.*)} $uri match host pathquery] } {
