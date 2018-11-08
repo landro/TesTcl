@@ -202,9 +202,17 @@ assertStringEquals "/path/to/" [path "/path/to/file.ext?param=value" 1]
 assertStringEquals "/to/" [path "/path/to/file.ext?param=value" 2]
 assertStringEquals "/to/some/" [path "/path/to/some/crazy/file.ext?param=value" 2 3]
 
-# This is probably a bug
-# assertStringEquals "1" [compare "http://testcl.com" "http://testcl.com/"]
+assertStringEquals "1" [compare "http://testcl.com" "http://testcl.com/"]
 assertStringEquals "1" [compare "http://TesTcl.com/" "http://testcl.com/"]
 assertStringEquals "1" [compare "http://TesTcl.com/" "HTTP://testcl.com/"]
+assertStringEquals "1" [compare "http://TesTcl.com:80/" "HTTP://testcl.com/"]
+assertStringEquals "1" [compare "http://TesTcl.com:80/!test/" "HTTP://testcl.com/%21test/"]
+
+assertStringEquals "0" [compare "https://testcl.com" "http://testcl.com/"]
+assertStringEquals "0" [compare "http://testcl.com" "http://testcl2.com/"]
+assertStringEquals "0" [compare "http://TesTcl.com/test/" "http://TesTcl.com:81/test/"]
+assertStringEquals "0" [compare "http://TesTcl.com/test/" "http://TesTcl.com/Test/"]
+assertStringEquals "0" [compare "http://TesTcl.com/test/?userid=test02" "http://TesTcl.com/test/?userid=test01"]
+assertStringEquals "0" [compare "http://TesTcl.com/!test/" "HTTP://testcl.com/%22test/"]
 
 

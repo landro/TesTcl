@@ -292,29 +292,36 @@ proc ::testcl::URI::path {uri {start ""} {end ""}} {
 }
 
 proc ::testcl::URI::compare {uri1 uri2} {
-  log::log debug "URI::compare $uri1 $uri2 invoked"
+  set uriListToCompare "$uri1 $uri2"
+  log::log debug "URI::compare $uriListToCompare invoked"
 
-  if { [string tolower [protocol $uri1]] ne [string tolower [protocol $uri2]] } {
-    log::log debug "URI::compare returning false because the protocols do not match"
+  if {[llength $uriListToCompare] != 2} {
+    log::log error "URI::compare number of arguments invalid, expecting 2 but got [llength $uriListToCompare], returning false!"
     return 0
-  } elseif { [string tolower [host $uri1]] ne [string tolower [host $uri2]] } {
-    log::log debug "URI::compare returning false because the hosts do not match"
-    return 0
-  } elseif { [port $uri1] ne [port $uri2] } {
-    log::log debug "URI::compare returning false because the ports do not match"
-    return 0
-  } elseif { [path $uri1] ne [path $uri2] } {
-    log::log debug "URI::compare returning false because the paths do not match"
-    return 0
-  } elseif { [basename $uri1] ne [basename $uri2] } {
-    log::log debug "URI::compare returning false because the basenames do not match"
-    return 0
-  } elseif { [query $uri1] ne [query $uri2] } {
-    log::log debug "URI::compare returning false because the query strings do not match"
-    return 0
-  } else {
-    log::log debug "URI::compare returning true, as all the checks passed"
+  }
+
+  set urisToTest {}
+
+  # Loop over URIs and produces full decoded string of <protocol>://<host>:<port><path>/<basename>?<query>
+  foreach uri $uriListToCompare {
+    set tempUri ""
+    if {!($uri starts_with "/")} {
+      append tempUri "[string tolower [protocol $uri]]://[string tolower [host $uri]]:[port $uri]"
+    }
+
+    if {[path $uri] == ""} {
+      append tempUri [decode "/?[query $uri]"]
+    } else {
+      append tempUri [decode "[path $uri][basename $uri]?[query $uri]"]
+    }
+    lappend urisToTest $tempUri
+  }
+
+  if {[lindex $urisToTest 0] == [lindex $urisToTest 1]} {
+    log::log debug "URI::compare returning true, [lindex $urisToTest 0] matches [lindex $urisToTest 1]"
     return 1
+  } else {
+    log::log debug "URI::compare returning false, [lindex $urisToTest 0] does not match [lindex $urisToTest 1]"
+    return 0
   }
 }
-
