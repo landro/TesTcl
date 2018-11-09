@@ -62,8 +62,6 @@ proc ::testcl::URI::encode {uri} {
 
 proc ::testcl::URI::decode {uri} {
 
-  set utf8_uri [encoding convertto utf-8 $uri]
-
   set decodedString [string map {
     "%20" " "
     "%21" "!"
