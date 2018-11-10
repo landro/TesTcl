@@ -22,183 +22,146 @@ namespace eval ::testcl::URI {
 # https://en.wikipedia.org/wiki/Percent-encoding
 proc ::testcl::URI::encode {uri} {
 
-  log::log debug "Encoding $uri"
-
   set utf8_uri [encoding convertto utf-8 $uri]
 
-  set encodedString ""
+  set encodedString [string map {
+    " " "%20"
+    "!" "%21"
+    "\"" "%22"
+    "#" "%23"
+    "\$" "%24"
+    "%" "%25"
+    "&" "%26"
+    "'" "%27"
+    "(" "%28"
+    ")" "%29"
+    "*" "%2a"
+    "+" "%2b"
+    "," "%2c"
+    "/" "%2f"
+    ":" "%3a"
+    ";" "%3b"
+    "<" "%3c"
+    "=" "%3d"
+    ">" "%3e"
+    "?" "%3f"
+    "@" "%40"
+    "\[" "%5b"
+    "\\" "%5c"
+    "\]" "%5d"
+    "^" "%5e"
+    "`" "%60"
+    "\{" "%7b"
+    "|" "%7c"
+    "\}" "%7d"
+  } $utf8_uri]
 
-  for {set i 0} {$i < [string length $utf8_uri]} {incr i} {
-
-    set char [string index $utf8_uri $i]
-
-      if { "A" <= $char && $char <= "Z" } {
-        log::log debug " - Keeping uppercase A-Z $char"
-        append encodedString $char
-      } elseif {"a" <= $char && $char <= "z" } {
-        log::log debug " - Keeping lowercase a-z char $char"
-        append encodedString $char
-      } elseif { "0" <= $char && $char <= "9" } {
-        log::log debug " - Keeping numeric char $char"
-        append encodedString $char
-      } elseif { " " eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%20"
-      } elseif { "!" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%21"
-      } elseif { "#" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%23"
-      } elseif { "$" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%24"
-      } elseif { "%" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%25"
-      } elseif { "&" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%26"
-      } elseif { "'" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%27"
-      } elseif { "(" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%28"
-      } elseif { ")" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%29"
-      } elseif { "*" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%2a"
-      } elseif { "+" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%2b"
-      } elseif { "," eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%2c"
-      } elseif { "/" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%2f"
-      } elseif { ":" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%3a"
-      } elseif { ";" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%3b"
-      } elseif { "=" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%3d"
-      } elseif { "?" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%3f"
-      } elseif { "@" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%40"
-      } elseif { "\[" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%5b"
-      } elseif { "]" eq $char } {
-        log::log debug " - Converting reserved char $char"
-        append encodedString "%5d"
-      } else {
-        log::log critical "Not converting char $char - to be implemented in iruleuri.tcl"
-        append encodedString "$char"
-      }
-
-  }
-
+  log::log debug "Encoding $uri to $encodedString"
   return $encodedString
-
 }
 
-# Not complete, but matches URI::encode
 proc ::testcl::URI::decode {uri} {
 
-  log::log debug "Decoding $uri"
+  set decodedString [string map {
+    "%20" " "
+    "%21" "!"
+    "%22" "\""
+    "%23" "#"
+    "%24" "\$"
+    "%25" "%"
+    "%26" "&"
+    "%27" "'"
+    "%28" "("
+    "%29" ")"
+    "%2A" "*" "%2a" "*"
+    "%2B" "+" "%2b" "+"
+    "%2C" "," "%2c" ","
+    "%2D" "-" "%2d" "-"
+    "%2E" "." "%2e" "."
+    "%2F" "/" "%2f" "/"
+    "%30" "0"
+    "%31" "1"
+    "%32" "2"
+    "%33" "3"
+    "%34" "4"
+    "%35" "5"
+    "%36" "6"
+    "%37" "7"
+    "%38" "8"
+    "%39" "9"
+    "%3A" ":" "%3a" ":"
+    "%3B" ";" "%3b" ";"
+    "%3C" "<" "%3c" "<"
+    "%3D" "=" "%3d" "="
+    "%3E" ">" "%3e" ">"
+    "%3F" "?" "%3f" "?"
+    "%40" "@"
+    "%41" "A"
+    "%42" "B"
+    "%43" "C"
+    "%44" "D"
+    "%45" "E"
+    "%46" "F"
+    "%47" "G"
+    "%48" "H"
+    "%49" "I"
+    "%4A" "J" "%4a" "J"
+    "%4B" "K" "%4b" "K"
+    "%4C" "L" "%4c" "L"
+    "%4D" "M" "%4d" "M"
+    "%4E" "N" "%4e" "N"
+    "%4F" "O" "%4f" "O"
+    "%50" "P"
+    "%51" "Q"
+    "%52" "R"
+    "%53" "S"
+    "%54" "T"
+    "%55" "U"
+    "%56" "V"
+    "%57" "W"
+    "%58" "X"
+    "%59" "Y"
+    "%5A" "Z" "%5a" "Z"
+    "%5B" "\[" "%5b" "\["
+    "%5C" "\\" "%5c" "\\"
+    "%5D" "\]" "%5d" "\]"
+    "%5E" "^" "%5e" "^"
+    "%5F" "_" "%5f" "_"
+    "%60" "`"
+    "%61" "a"
+    "%62" "b"
+    "%63" "c"
+    "%64" "d"
+    "%65" "e"
+    "%66" "f"
+    "%67" "g"
+    "%68" "h"
+    "%69" "i"
+    "%6A" "j" "%6a" "j"
+    "%6B" "k" "%6b" "k"
+    "%6C" "l" "%6c" "l"
+    "%6D" "m" "%6d" "m"
+    "%6E" "n" "%6e" "n"
+    "%6F" "o" "%6f" "o"
+    "%70" "p"
+    "%71" "q"
+    "%72" "r"
+    "%73" "s"
+    "%74" "t"
+    "%75" "u"
+    "%76" "v"
+    "%77" "w"
+    "%78" "x"
+    "%79" "y"
+    "%7A" "z" "%7a" "z"
+    "%7B" "\{" "%7b" "\{"
+    "%7C" "|" "%7c" "|"
+    "%7D" "\}" "%7d" "\}"
+    "%7E" "~" "%7e" "~"
+  } $uri]
 
-  set decodedString ""
-
-  for {set i 0} {$i < [string length $uri]} {incr i} {
-
-    set char [string index $uri $i]
-
-      if { $char ne "%" } {
-        log::log debug " - Keeping not encoded char $char"
-	append decodedString $char
-      } else {
-	set char [string tolower [string range $uri $i [expr {$i + 2}]]]
-	incr i 2
-
-        if { "%20" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString " "
-        } elseif { "%21" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "!"
-        } elseif { "%23" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "#"
-        } elseif { "%24" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "$"
-        } elseif { "%25" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "%"
-        } elseif { "%26" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "&"
-        } elseif { "%27" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "'"
-        } elseif { "%28" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "("
-        } elseif { "%29" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString ")"
-        } elseif { "%2a" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "*"
-        } elseif { "%2b" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "+"
-        } elseif { "%2c" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString ","
-        } elseif { "%2f" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "/"
-        } elseif { "%3a" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString ":"
-        } elseif { "%3b" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString ";"
-        } elseif { "%3d" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "="
-        } elseif { "%3f" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "?"
-        } elseif { "%40" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "@"
-        } elseif { "%5b" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "\["
-        } elseif { "%5d" eq $char } {
-          log::log debug " - Converting encoded char $char"
-          append decodedString "]"
-        } else {
-          log::log critical "Not converting char $char - to be implemented in iruleuri.tcl"
-          append decodedString "$char"
-        }
-     }
-  }
-
+  log::log debug "Decoding $uri to $decodedString"
   return $decodedString
-
 }
 
 proc ::testcl::URI::host {uri} {
@@ -329,29 +292,36 @@ proc ::testcl::URI::path {uri {start ""} {end ""}} {
 }
 
 proc ::testcl::URI::compare {uri1 uri2} {
-  log::log debug "URI::compare $uri1 $uri2 invoked"
+  set uriListToCompare "$uri1 $uri2"
+  log::log debug "URI::compare $uriListToCompare invoked"
 
-  if { [string tolower [protocol $uri1]] ne [string tolower [protocol $uri2]] } {
-    log::log debug "URI::compare returning false because the protocols do not match"
+  if {[llength $uriListToCompare] != 2} {
+    log::log error "URI::compare number of arguments invalid, expecting 2 but got [llength $uriListToCompare], returning false!"
     return 0
-  } elseif { [string tolower [host $uri1]] ne [string tolower [host $uri2]] } {
-    log::log debug "URI::compare returning false because the hosts do not match"
-    return 0
-  } elseif { [port $uri1] ne [port $uri2] } {
-    log::log debug "URI::compare returning false because the ports do not match"
-    return 0
-  } elseif { [path $uri1] ne [path $uri2] } {
-    log::log debug "URI::compare returning false because the paths do not match"
-    return 0
-  } elseif { [basename $uri1] ne [basename $uri2] } {
-    log::log debug "URI::compare returning false because the basenames do not match"
-    return 0
-  } elseif { [query $uri1] ne [query $uri2] } {
-    log::log debug "URI::compare returning false because the query strings do not match"
-    return 0
-  } else {
-    log::log debug "URI::compare returning true, as all the checks passed"
+  }
+
+  set urisToTest {}
+
+  # Loop over URIs and produces full decoded string of <protocol>://<host>:<port><path>/<basename>?<query>
+  foreach uri $uriListToCompare {
+    set tempUri ""
+    if {!([string first "/" $uri] == 0)} {
+      append tempUri "[string tolower [protocol $uri]]://[string tolower [host $uri]]:[port $uri]"
+    }
+
+    if {[path $uri] == ""} {
+      append tempUri [decode "/?[query $uri]"]
+    } else {
+      append tempUri [decode "[path $uri][basename $uri]?[query $uri]"]
+    }
+    lappend urisToTest $tempUri
+  }
+
+  if {[lindex $urisToTest 0] == [lindex $urisToTest 1]} {
+    log::log debug "URI::compare returning true, [lindex $urisToTest 0] matches [lindex $urisToTest 1]"
     return 1
+  } else {
+    log::log debug "URI::compare returning false, [lindex $urisToTest 0] does not match [lindex $urisToTest 1]"
+    return 0
   }
 }
-
