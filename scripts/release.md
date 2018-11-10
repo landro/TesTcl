@@ -7,5 +7,5 @@ Mac OS X/Free BSD
 
 Tagging a new release and pushing to origin
 
-    git tag -a v1.0.12 -m 'Release 1.0.12' 
+    git tag -a v1.0.13 -m 'Release 1.0.13' 
     git push --tags
