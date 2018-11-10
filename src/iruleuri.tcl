@@ -305,7 +305,7 @@ proc ::testcl::URI::compare {uri1 uri2} {
   # Loop over URIs and produces full decoded string of <protocol>://<host>:<port><path>/<basename>?<query>
   foreach uri $uriListToCompare {
     set tempUri ""
-    if {!($uri starts_with "/")} {
+    if {!([string first "/" $uri] == 0)} {
       append tempUri "[string tolower [protocol $uri]]://[string tolower [host $uri]]:[port $uri]"
     }
 
