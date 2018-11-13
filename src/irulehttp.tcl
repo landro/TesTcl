@@ -1,4 +1,4 @@
-package provide testcl 1.0.13
+package provide testcl 1.0.12
 package require log
 
 package require base64
@@ -45,7 +45,7 @@ namespace eval ::testcl::HTTP {
 }
 
 
-# testcl::HTTP::cookie -- !!! TODO !!!
+# testcl::HTTP::cookie --
 #
 # stub for the iRule HTTP::cookie - Queries for or manipulates cookies in HTTP requests and responses
 #
@@ -80,10 +80,10 @@ namespace eval ::testcl::HTTP {
 # HTTP::cookie httponly <name> [enable|disable]
 # HTTP::cookie sanitize <-attributes|-names>
 #
-proc ::testcl::HTTP::cookie {args} {
-  log::log debug "HTTP::cookie $args invoked"
+proc ::testcl::HTTP::cookie {cmd args} {
+  log::log debug "HTTP::cookie $cmd $args invoked"
 
-  set cmdargs [concat HTTP::cookie $args]
+  set cmdargs [concat HTTP::cookie $cmd $args]
   #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
   set rc [catch { return [eval testcl::expected $cmdargs] } res]
   if {$rc != 1500} {
@@ -93,8 +93,138 @@ proc ::testcl::HTTP::cookie {args} {
     }
     return -code $rc $res
   }
-  error "HTTP::cookie command is not implemented - use on HTTP::cookie..."
-  TODO !important: should reuse headers
+
+  variable headers
+  if { ![array exists headers] } {
+    array set headers {}
+  }
+
+  set name [string tolower [lindex $args 0]]
+
+  switch $cmd {
+    value {
+      # HTTP::cookie [value] <name>
+      if { ![info exists headers($name)] } {
+        log::log debug "there is no value for cookie: $name"
+        return {}
+      }
+      set v [lindex $headers($name) end]
+      log::log debug "cookie '$name' last value is: $v"
+      return $v
+    }
+    values {
+      # HTTP::cookie values <name>
+      if { ![info exists headers($name)] } {
+        log::log debug "there is no value for cookie: $name"
+        return {}
+      }
+      log::log debug "cookie '$name' values are: $headers($name)"
+      return $headers($name)
+    }
+    names {
+      # HTTP::cookie names
+      set res {}
+      foreach l [array names headers] {
+        lappend res [lrepeat [llength $headers($l)] $l]
+      }
+      log::log debug "cookie names: $res"
+      return $res
+    }
+    count {
+      # HTTP::cookie count <name>
+      if { $name eq "" } {
+        #return number of all cookies
+        set res 0
+        foreach l [array names headers] {
+          incr res [llength $headers($l)]
+        }
+        log::log debug "number of all cookies: $res"
+        return $res
+      }
+      if { ![info exists headers($name)] } {
+        log::log debug "number of cookies with name '$name': 0"
+        return 0
+      }
+      set cnt [llength $headers($name)]
+      log::log debug "number of cookies with name '$name': $cnt"
+      return $cnt
+    }
+    exists {
+      # HTTP::cookie exists <name>
+      set res [info exists headers($name)]
+      log::log debug "cookie '$name' exists: $res"
+      return $res
+    }
+    insert {
+      # HTTP::cookie insert [<name> <value>]+
+      variable sent
+      if { [info exists sent] } {
+        error "response to client was already sent - HTTP::cookie insert call not allowed (sent: $sent)"
+      }
+      foreach {n v} $args {
+        set n [string tolower $n]
+        log::log debug "appending cookie '$n' value: $v"
+        lappend headers($n) $v
+      }
+    }
+    replace {
+      # HTTP::cookie replace <name> [<string>]
+      variable sent
+      if { [info exists sent] } {
+        error "response to client was already sent - HTTP::cookie replace call not allowed"
+      }
+      set v [lindex $args 1]
+      if { [info exists headers($name)] } {
+        log::log debug "replace cookie '$name' with value: $v"
+        set headers($name) [lreplace $headers($name)[set headers($name) {}] end end $v]
+      } else {
+        log::log debug "append cookie '$name' with value: $v"
+        lappend headers($name) $v
+      }
+    }
+    remove {
+      # HTTP::cookie remove <name>
+      variable sent
+      if { [info exists sent] } {
+        error "response to client was already sent - HTTP::cookie remove call not allowed"
+      }
+      if { $name eq "" } {
+        array unset headers
+        variable lws
+        set lws 0
+        log::log debug "all cookies removed"
+      } else {
+        array unset headers $name
+        log::log debug "removed cookie '$name'"
+      }
+    }
+    version { error "HTTP:cookie $cmd call is not yet implemented." }
+    path { error "HTTP:cookie $cmd call is not yet implemented." }
+    domain { error "HTTP:cookie $cmd call is not yet implemented." }
+    ports { error "HTTP:cookie $cmd call is not yet implemented." }
+    maxage { error "HTTP:cookie $cmd call is not yet implemented." }
+    expires { error "HTTP:cookie $cmd call is not yet implemented." }
+    comment { error "HTTP:cookie $cmd call is not yet implemented." }
+    secure { error "HTTP:cookie $cmd call is not yet implemented." }
+    commenturl { error "HTTP:cookie $cmd call is not yet implemented." }
+    encrypt { error "HTTP:cookie $cmd call is not yet implemented." }
+    decrypt { error "HTTP:cookie $cmd call is not yet implemented." }
+    httponly { error "HTTP:cookie $cmd call is not yet implemented." }
+    sanitize { error "HTTP:cookie $cmd call is not yet implemented." }
+    default {
+      # HTTP::cookie [value] <name>
+      #without command name
+      set name [string tolower $cmd]
+      if { ![info exists headers($name)] } {
+        log::log debug "there is no value for cookie: $name"
+        return {}
+      }
+      set v [lindex $headers($name) end]
+      log::log debug "cookie '$name' last value is: $v"
+      return $v
+    }
+  }
+  return {}
 }
 
 
