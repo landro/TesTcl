@@ -159,7 +159,7 @@ proc ::testcl::pool { name } {
 
    set rc [catch {lsearch -exact $availablePools $name} found]
 
-   log::log debug "rc=$rc   found=$found"
+   log::log debug "rc=$rc found=$found"
 
    if { $found >= 0} {
 
@@ -170,6 +170,6 @@ proc ::testcl::pool { name } {
        return -code 0 "pool $name"
    }
    
-   return -code 100 "pool $name"
+   return -code 1000 "pool $name"
 
 }
