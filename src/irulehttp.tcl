@@ -41,11 +41,11 @@ namespace eval ::testcl::HTTP {
   namespace export version
 
 #DEBUG
-  #namespace export debug
+  namespace export debug
 }
 
 
-# testcl::HTTP::cookie -- !!! TODO !!!
+# testcl::HTTP::cookie --
 #
 # stub for the iRule HTTP::cookie - Queries for or manipulates cookies in HTTP requests and responses
 #
@@ -80,10 +80,9 @@ namespace eval ::testcl::HTTP {
 # HTTP::cookie httponly <name> [enable|disable]
 # HTTP::cookie sanitize <-attributes|-names>
 #
-proc ::testcl::HTTP::cookie {args} {
-  log::log debug "HTTP::cookie $args invoked"
-
-  set cmdargs [concat HTTP::cookie $args]
+proc ::testcl::HTTP::cookie {cmd args} {
+  log::log debug "HTTP::cookie $cmd $args invoked"
+  set cmdargs [concat HTTP::cookie $cmd $args]
   #set rc [catch { return [testcl::expected {*}$cmdargs] } res]
   set rc [catch { return [eval testcl::expected $cmdargs] } res]
   if {$rc != 1500} {
@@ -93,8 +92,202 @@ proc ::testcl::HTTP::cookie {args} {
     }
     return -code $rc $res
   }
-  error "HTTP::cookie command is not implemented - use on HTTP::cookie..."
-  TODO !important: should reuse headers
+  # List of supported attributes. Add new attributes here!
+  set supported [list name value path domain version]
+
+  variable headers
+  if { ![array exists headers] } {
+    array set headers {}
+  }
+  
+  variable attributes
+  if { ![array exists attributes] } {
+    array set attributes {}
+  }
+
+  set name [string tolower [lindex $args 0]]
+  switch -- $cmd {
+    value {
+      # HTTP::cookie [value] <name>
+      # Sets or gets the value of an existing cookie with the given 
+      # name. You can omit the keyword "value" from this command if
+      # the cookie name does not collide with any of the other 
+      # commands. If the cookie does not exist when retrieving a 
+      # cookie value, a null string will be returned.
+      if { ![info exists headers(Cookie)] } {
+        log::log debug "There is no cookie header."
+        return {}
+      }
+      set arg [lindex $args 0]
+      set cookies [lindex $headers(Cookie)]
+      foreach cookie $cookies {
+        if { [catch {array set cookarr [lindex $cookie]} fid] } {
+          error "A malformed cookie was found! $fid"
+          continue
+        }
+        if { $cookarr(name) eq $arg } {
+          #error "cookie '$arg' exists."
+          return $cookarr(value)
+        }
+      }
+    }
+    names {
+      # HTTP::cookie names
+      # Returns a TCL list containing the names of all the cookies
+      # present in the HTTP headers.
+      if { ![info exists headers(Cookie)] } {
+        log::log debug "There is no Cookie header."
+        return {}
+      }
+
+      set cookies [lindex $headers(Cookie)]
+      set names {}
+      foreach cookie $cookies {
+        if { [catch {array set cookarr [lindex $cookie] } fid] } {
+          error "A malformed cookie was found! $fid"
+          continue
+        }
+        lappend names $cookarr(name)
+      }
+      return $names
+    }
+    count {
+      # HTTP::cookie count
+      # Returns the number of cookies present in the HTTP headers.
+      if { ![info exists headers(Cookie)] } {
+        log::log debug "There is no Cookie header."
+        return {}
+      }
+      set cookies [lindex $headers(Cookie)]
+      set res [llength cookies]
+
+      log::log debug "number of all cookies: $res"
+      return $res
+    }
+    exists {
+      # HTTP::cookie exists <name>
+      # Returns a true value if the cookie exists.
+      # 
+      # Note: The iRule documentation syntax is HTTP::cookie exist
+      # But implementation syntax is HTTP::cookie exist <name>
+      if { ![info exists headers(Cookie)] } {
+        error "There is no Cookie header."
+        return false
+      }
+      set cookies [lindex $headers(Cookie)]
+      set arg [lindex $args 0]
+
+      foreach cookie $cookies {
+        if { [catch { array set cookarr [lindex $cookie] } fid] } {
+          error "Unable to parse cookie $fid."
+          continue
+        }
+	
+	if { $cookarr(name) == $arg } {
+          log::log debug "Cookie '$arg' exists."
+	  return true
+        }
+      }
+      return false
+    }
+    insert {
+      # HTTP::cookie insert name <name> value <value> [path <path>] [domain <domain>] [version <0 | 1 | 2>]
+      # Note: Documentation syntax variation
+      # HTTP::cookie insert name value [path ] [domain ] [version <0 | 1 | 2>]
+      # * In an HTTP response, adds an additional Set-Cookie header.
+      #   The default value for the version is 0. If the cookie already
+      #   exists, a second cookie will be inserted (tested in 9.2.4).
+      # * Within the HTTP_REQUEST event, this command adds an
+      #   additional Cookie header (tested in 10.2.4) which is not RFC
+      #   compliant and is known to cause issues on certain web
+      #   servers. Although the behavior renders the command useless
+      #   within a request, the behavior is not a bug and is by design.
+      #   To correctly insert a cookie in a request, compliant with
+      #   RFC 6265, use HTTP::header to modify the value of the cookie
+      #   header directly.
+      variable sent
+      if { [info exists sent] } {
+        error "response to client was already sent - HTTP::cookie insert call not allowed (sent: $sent)"
+      }
+      set supported [list name value path domain version]
+
+      if { [llength $args] == 0 } {
+        return {}
+      }
+
+      if {[lsearch -exact $args {name}] == -1} {
+        # Positional arguments will be parsed and named.
+        set argno 0
+        set newargs {}
+        while {$argno < [llength $args]} {
+          lappend newargs [lindex $supported $argno]
+          lappend newargs [lindex $args $argno]
+	  incr argno
+        }
+	set args $newargs
+      }
+
+      if {[expr [llength $args] % 2 ] != 0 } {
+        error "Odd amount of cookie headers [llength $args]"
+        # TODO: In this case a name parsing function should
+        # detect known singleton cookie names (such as httpOnly)
+        # and assign the value true.
+      }
+      # If named args are even we should have a perfect array list.
+      array set cookie [lindex $args]
+      lappend headers(Cookie) [array get cookie]
+    }
+    remove {
+      # HTTP::cookie remove <name>
+      # Removes a cookie.
+      variable sent
+      if { [info exists sent] } {
+        error "response to client was already sent - HTTP::cookie remove call not allowed"
+      }
+      if { ![info exists headers(Cookie)] } {
+        error "There is no Cookie header."
+        return
+      }
+      
+      set newcookies {}
+      if { $name eq "" } {
+        unset $headers(Cookie)
+        log::log debug "all cookies removed"
+      } else {
+        set arg [lindex $args 0]
+        set cookies [lindex $headers(Cookie)]
+        foreach cookie $cookies {
+          if { [catch { array set cookarr [lindex $cookie] } fid] } {
+            log::log debug "Unable to parse cookie, $fid."
+          }
+          if { $cookarr(name) != $arg } {
+            lappend newcookies $cookie
+          }
+        }
+        set headers(Cookie) $newcookies
+        log::log debug "Removed cookie '$name'"
+      }
+    }
+    version { error "HTTP:cookie $cmd call is not yet implemented." }
+    path { error "HTTP:cookie $cmd call is not yet implemented." }
+    domain { error "HTTP:cookie $cmd call is not yet implemented." }
+    ports { error "HTTP:cookie $cmd call is not yet implemented." }
+    maxage { error "HTTP:cookie $cmd call is not yet implemented." }
+    expires { error "HTTP:cookie $cmd call is not yet implemented." }
+    comment { error "HTTP:cookie $cmd call is not yet implemented." }
+    secure { error "HTTP:cookie $cmd call is not yet implemented." }
+    commenturl { error "HTTP:cookie $cmd call is not yet implemented." }
+    encrypt { error "HTTP:cookie $cmd call is not yet implemented." }
+    decrypt { error "HTTP:cookie $cmd call is not yet implemented." }
+    httponly { error "HTTP:cookie $cmd call is not yet implemented." }
+    sanitize { error "HTTP:cookie $cmd call is not yet implemented." }
+    default {
+      # HTTP::cookie [value] <name>
+      # Without command name.
+      return [::testcl::HTTP::cookie value $cmd]
+    }
+  }
+  return {}
 }
 
 
