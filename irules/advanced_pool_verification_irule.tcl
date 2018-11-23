@@ -1,4 +1,4 @@
-rule advances_pool {
+rule advanced_pools {
 
   when HTTP_REQUEST priority 100 {
       

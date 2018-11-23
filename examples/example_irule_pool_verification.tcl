@@ -18,7 +18,7 @@ it "should set the right pool when available" {
 
   given_pools fallback go_to_bar
 
-  on HTTP::uri return "http://some.host.com/admin"
+  HTTP::header insert Host "some.host.com"
 
   verify "Final pool is the expected one after a match" "go_to_bar" eq { endstate_pool }
   
