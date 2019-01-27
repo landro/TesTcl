@@ -74,6 +74,17 @@ proc ::testcl::reset_expectations { } {
     log::log debug "Reset HTTP payload"
     unset HTTP::payload
   }
+  variable currentPool
+  if { [info exists currentPool] } {
+    log::log debug "Reset current pool"
+    unset currentPool
+  }
+  variable availablePools
+  if { [info exists availablePools] } {
+    log::log debug "Reset available pools"
+    set availablePools [list]
+  }
+
 }
 
 # testcl::before --
