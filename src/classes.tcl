@@ -99,6 +99,11 @@ proc ::testcl::class {cmd args} {
     match {
       set item [lindex $args 0]
       set operator [lindex $args 1]
+      # Translate operator to standard Tcl for compatibility with Tclsh
+      # TODO implement translations for starts_with, ends_with, contains
+      if {$operator eq "equals"} {
+      	set operator "eq"
+      }
       set classname [lindex $args 2]
       if {[expr ! [info exists classes($classname)]]} $return_failure_block
       set clazz $classes($classname)

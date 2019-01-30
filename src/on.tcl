@@ -205,3 +205,15 @@ proc ::testcl::expected {args} {
   log::log debug "expectation not found for $args (return code 1500)"
   return -code 1500 "expectation not found"
 }
+
+proc ::testcl::endstate_pool {} {
+  variable currentPool
+  if { [info exists currentPool] } {    
+    return $currentPool
+  }
+}
+
+proc ::testcl::given_pools { args } {
+    variable availablePools
+    set availablePools $args
+}

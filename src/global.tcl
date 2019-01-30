@@ -2,6 +2,8 @@ package provide testcl 1.0.13
 package require log
 
 namespace eval ::testcl {
+    variable availablePools [list]
+    variable currentPool
   # namespace export accumulate
   # namespace export active_members
   # namespace export active_nodes
@@ -60,7 +62,7 @@ namespace eval ::testcl {
   # namespace export Operators
   # namespace export peer
   # namespace export persist
-  # namespace export pool
+   namespace export pool
   # namespace export priority
   # namespace export rateclass
   # namespace export redirect
@@ -146,4 +148,29 @@ proc ::testcl::log { faclvl msg } {
     }
 
     log::log $level $msg
+}
+
+proc ::testcl::pool { name } {
+
+   variable availablePools
+   variable currentPool
+
+   log::log debug "Available pools  => $availablePools"
+   log::log debug "Target pool name  => $name"
+
+   set rc [catch {lsearch -exact $availablePools $name} found]
+
+   log::log debug "rc=$rc found=$found"
+
+   if { $found >= 0} {
+
+       set currentPool $name
+
+       log::log debug "Current pool is now => $currentPool"
+       
+       return -code 0 "pool $name"
+   }
+   
+   return -code 1000 "pool $name"
+
 }
