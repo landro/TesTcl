@@ -5,7 +5,7 @@ rule advanced_pools {
       set new_pool ""
       set hostname [string tolower [getfield [HTTP::host] ":" 1]]      
 
-      if { not [ catch { set next_step [class match -value -- $hostname equals "foo-datagroup"] } ] } {
+      if { ! [ catch { set next_step [class match -value -- $hostname equals "foo-datagroup"] } ] } {
           if { $next_step ne "" } {
               set new_pool $next_step
           }
