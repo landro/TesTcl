@@ -156,6 +156,7 @@ proc ::testcl::pool { name } {
    variable currentPool
 
    log::log debug "Available pools  => $availablePools"
+   log::log debug "Target pool name  => $name"
 
    set rc [catch {lsearch -exact $availablePools $name} found]
 
