@@ -69,7 +69,7 @@ it "should replace existing Vary http response headers with Accept-Encoding valu
   verify "there should be Accept-Encoding value in Vary header" "Accept-Encoding" eq {HTTP::header Vary}
   HTTP::header insert Vary "dummy value"
   HTTP::header insert Vary "another dummy value"
-  run irules/simple_irule.tcl simple
+  run simple_irule.tcl simple
 }
 ```
 
