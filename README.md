@@ -122,7 +122,11 @@ If you get a message saying *syntax error in expression ""aa" starts_with "a"": 
 Download latest [TesTcl distribution](https://github.com/landro/TesTcl/releases) from github containing all the files (including examples) found in the project.
 Unzip, and add unzipped directory to the [TCLLIBPATH](http://jtcl.kenai.com/gettingstarted.html) environment variable:
 
+On MacOS X and Linux:
+
     export TCLLIBPATH=whereever/TesTcl-1.0.13
+    
+On Windows, create a System Variable named `TCLLIBPATH` and make sure that the path uses forward slashes '/'
 
 In order to run this example, type in the following at the command-line:
 
