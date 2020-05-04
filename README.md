@@ -5,12 +5,12 @@
 are used when configuring [F5 BIG-IP](http://www.f5.com/products/big-ip/) devices.
 
 ## News
+- 4th May 2020 - Version [1.0.14](https://github.com/landro/TesTcl/releases) released
 - 10th November 2018 - Version [1.0.13](https://github.com/landro/TesTcl/releases) released
 - 26th September 2018 - Version [1.0.12](https://github.com/landro/TesTcl/releases) released
 - 24th May 2018 - Version [1.0.11](https://github.com/landro/TesTcl/releases) released
 - 23rd March 2017 - Version [1.0.10](https://github.com/landro/TesTcl/releases) released
 - 29th April 2016 - Version [1.0.9](https://github.com/landro/TesTcl/releases) released
-- 16th December 2015 - Version [1.0.8](https://github.com/landro/TesTcl/releases) released
 
 ## Getting started
 
@@ -43,7 +43,7 @@ rule simple {
 Now, create a file called *test_simple_irule.tcl* containing the following lines:
 
 ```tcl
-package require -exact testcl 1.0.13
+package require -exact testcl 1.0.14
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -124,7 +124,7 @@ Unzip, and add unzipped directory to the [TCLLIBPATH](http://jtcl.kenai.com/gett
 
 On MacOS X and Linux:
 
-    export TCLLIBPATH=whereever/TesTcl-1.0.13
+    export TCLLIBPATH=whereever/TesTcl-1.0.14
     
 On Windows, create a System Variable named `TCLLIBPATH` and make sure that the path uses forward slashes '/'
 
@@ -209,7 +209,7 @@ NB! Be carefull with using _on_ commands in _before_. If there will be another d
 Using the _before_ command, *test_simple_irule.tcl* can be rewritten as:
 
 ```tcl
-package require -exact testcl 1.0.13
+package require -exact testcl 1.0.14
 namespace import ::testcl::*
 
 # Comment in to enable logging
@@ -290,7 +290,7 @@ rule advanced {
 The specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.13
+package require -exact testcl 1.0.14
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -405,7 +405,7 @@ rule headers {
 The example specs for this iRule would look like this:
 
 ```tcl
-package require -exact testcl 1.0.13
+package require -exact testcl 1.0.14
 namespace import ::testcl::*
 
 # Comment out to suppress logging
@@ -451,7 +451,7 @@ rule classes {
 with code that looks like this
 
 ```tcl
-package require -exact testcl 1.0.13
+package require -exact testcl 1.0.14
 namespace import testcl::*
 
 before {
