@@ -79,7 +79,7 @@ it "should replace existing Vary http response headers with Accept-Encoding valu
 Download [JTcl](https://jtcl-project.github.io/jtcl/), unzip it and add it to your path.
 
 ##### Add jtcl-irule to your JTcl installation
-Add the [jtcl-irule](http://landro.github.com/jtcl-irule/) extension to JTcl. If you don't have the time to build it yourself, you can download the 
+Add the [jtcl-irule](http://landro.github.io/jtcl-irule/) extension to JTcl. If you don't have the time to build it yourself, you can download the 
 jar artifact from the [downloads](https://bintray.com/landro/maven/TesTcl) section or you can use the direct [link](https://bintray.com/landro/maven/download_file?file_path=com/testcl/jtcl-irule/0.9/jtcl-irule-0.9.jar).
 Next, copy the jar file into the directory where you installed JTcl.
 Add jtcl-irule to the classpath in _jtcl_ or _jtcl.bat_.
