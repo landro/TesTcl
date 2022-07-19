@@ -123,7 +123,12 @@ namespace eval ::testcl {
 proc ::testcl::getfield { str delim ind } {
   log::log debug "GLOBAL::getfield $str $delim $ind invoked"
 
-  return [lindex [split $str $delim] [expr {$ind - 1}]]
+  if { [string len $delim] == 1 } {
+    return [lindex [split $str $delim] [expr {$ind - 1}]]	  	  
+  }
+  # See https://gist.github.com/ncimino/5526288
+  set mc \x00
+  return [lindex [split [string map [list $delim $mc] $str] $mc] [expr {$ind - 1}]]
 }
 
 # testcl::log --
