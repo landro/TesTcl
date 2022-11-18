@@ -91,7 +91,26 @@ my-repo/
 You can very simply run:
 <!-- NOTE TO MAINTAINER: please update to the official docker image address if you merge-->
 ```bash
-docker run -it --rm -v ${PWD}:/app ghcr.io/chrisns/testcl:latest
+docker run -it --rm -v ${PWD}:/app ghcr.io/chrisns/testcl
+```
+
+In CI you can simply use something like this in GitHub Actions
+```yaml
+# example: https://github.com/chrisns/bigip-irule-demo/blob/main/.github/workflows/ci.yaml
+
+# .github/workflows/ci.yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: docker://ghcr.io/chrisns/testcl
 ```
 
 #### Installing JTcl including jtcl-irule extensions
