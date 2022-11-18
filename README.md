@@ -73,6 +73,27 @@ it "should replace existing Vary http response headers with Accept-Encoding valu
 }
 ```
 
+#### Jumpstart with Docker and use in CI
+
+Assuming you have a directory structure that looks like:
+```text
+my-repo/
+├─ test/
+│  ├─ test_one.tcl
+│  ├─ test_two.tcl
+│  ├─ test_three.tcl
+│  ├─ test_four.tcl
+├─ one.tcl
+├─ two.tcl
+├─ three.tcl
+```
+
+You can very simply run:
+<!-- NOTE TO MAINTAINER: please update to the official docker image address if you merge-->
+```bash
+docker run -it --rm -v ${PWD}:/app ghcr.io/chrisns/testcl:latest
+```
+
 #### Installing JTcl including jtcl-irule extensions
 
 ##### Install JTcl
