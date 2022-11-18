@@ -14,11 +14,11 @@ failures=()
 
 for file in test/test_*.tcl
 do
-    OUTPUT=$(run_test "$1" "$file")
-    if [ $? -gt 0 ] || grep -q "error" <<< "${OUTPUT}" ; then
+    run_test "$1" "$file" > /tmp/output 2>&1
+    if [ $? -gt 0 ] || grep -q 'error' /tmp/output ; then
         failures+=($file)
     fi
-    echo $OUTPUT
+    cat /tmp/output
 done
 
 echo "Test Summary"
