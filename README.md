@@ -73,6 +73,46 @@ it "should replace existing Vary http response headers with Accept-Encoding valu
 }
 ```
 
+#### Jumpstart with Docker and use in CI
+
+Assuming you have a directory structure that looks like:
+```text
+my-repo/
+├─ test/
+│  ├─ test_one.tcl
+│  ├─ test_two.tcl
+│  ├─ test_three.tcl
+│  ├─ test_four.tcl
+├─ one.tcl
+├─ two.tcl
+├─ three.tcl
+```
+
+You can very simply run:
+<!-- NOTE TO MAINTAINER: please update to the official docker image address if you merge-->
+```bash
+docker run -it --rm -v ${PWD}:/app ghcr.io/chrisns/testcl
+```
+
+In CI you can simply use something like this in GitHub Actions
+```yaml
+# example: https://github.com/chrisns/bigip-irule-demo/blob/main/.github/workflows/ci.yaml
+
+# .github/workflows/ci.yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: docker://ghcr.io/chrisns/testcl
+```
+
 #### Installing JTcl including jtcl-irule extensions
 
 ##### Install JTcl
