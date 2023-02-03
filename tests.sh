@@ -14,10 +14,11 @@ failures=()
 
 for file in test/test_*.tcl
 do
-    run_test "$1" "$file"
-    if [ $? -gt 0 ] ; then
+    run_test "$1" "$file" > /tmp/output 2>&1
+    if [ $? -gt 0 ] || grep -q 'error' /tmp/output ; then
         failures+=($file)
     fi
+    cat /tmp/output
 done
 
 echo "Test Summary"
@@ -26,6 +27,9 @@ if [ ${#failures[@]} -gt 0 ] ; then
     echo ${#failures[@]} " tests failed:"
     for failure in ${failures[@]} ; do
         echo "    ${failure}"
+        if [ -n "${CI}" ] ; then 
+            echo "::error file=${failure}::error" ; 
+        fi
     done
     exit ${#failures[@]}
 else
